@@ -1,0 +1,82 @@
+/* --- Social buttons (LinkedIn, GitHub, Email) --- */
+.btn-social {
+  /* Use your theme tokens if present, else fall back */
+  --btn-border: var(--brand-500, #0f0d1b);
+  --btn-text: var(--text-0, #f4f2ff);
+  --btn-bg: transparent;
+
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 3px solid var(--btn-border);
+  border-radius: 999px; /* pill */
+  padding: 0.5rem 0.75rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  position: relative;
+  right: 920px;
+  bottom: 45px;
+}
+
+.btn-social:hover,
+.btn-social:focus-visible {
+  background: var(--brand-500, #8b5cf6);
+  color: #0e0b14; /* contrast on purple */
+  border-color: var(--brand-400, #a78bfa);
+  box-shadow: 0 0 16px rgba(139, 92, 246, 0.55);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.btn-social:active {
+  transform: translateY(0);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+}
+
+
+/* Ensure root fills viewport */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+/* Optional: global dark fallback */
+body {
+  background-color: #000;
+}
+
+.hover-card {
+  color: #1b1633;
+  display: block;                 /* ensure anchor covers full card */
+  width: 100%;                    /* force card to span its column */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 5px #09070f;
+}
+
+.hover-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 15px rgba(75, 0, 75, 0.7); }
+
+/* .page-split-bg {
+  background: linear-gradient(to bottom, #151225 0 47%, #0f0d1b 40% 100%);
+} */
+
+.page-split-bg { 
+  background: linear-gradient(to bottom, transparent 47%, rgba(0,0,0,0.45) 47%, transparent 48%), 
+              linear-gradient(to bottom, #151225 0 47%, #0f0d1b 47% 100%); 
+}
+
+.profile-card {
+  position: relative;
+  bottom: 220px;
+  right: 600px;
+}
+
+.welcome-header {
+  position: relative;
+  text-align: center;
+  bottom: 60px;
+  right: 760px;
+}
