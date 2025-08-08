@@ -1,6 +1,4 @@
-/* --- Social buttons (LinkedIn, GitHub, Email) --- */
 .btn-social {
-  /* Use your theme tokens if present, else fall back */
   --btn-border: var(--brand-500, #0f0d1b);
   --btn-text: var(--text-0, #f4f2ff);
   --btn-bg: transparent;
@@ -36,21 +34,19 @@
 }
 
 
-/* Ensure root fills viewport */
 html, body, #root {
   height: 100%;
   margin: 0;
 }
 
-/* Optional: global dark fallback */
 body {
   background-color: #000;
 }
 
 .hover-card {
   color: #1b1633;
-  display: block;                 /* ensure anchor covers full card */
-  width: 100%;                    /* force card to span its column */
+  display: block;                 
+  width: 100%;                    
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 0 5px #09070f;
 }
@@ -58,10 +54,6 @@ body {
 .hover-card:hover {
   transform: scale(1.03);
   box-shadow: 0 0 15px rgba(75, 0, 75, 0.7); }
-
-/* .page-split-bg {
-  background: linear-gradient(to bottom, #151225 0 47%, #0f0d1b 40% 100%);
-} */
 
 .page-split-bg { 
   background: linear-gradient(to bottom, transparent 47%, rgba(0,0,0,0.45) 47%, transparent 48%), 
