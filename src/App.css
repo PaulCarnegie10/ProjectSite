@@ -13,17 +13,14 @@
   align-items: flex-start;
   justify-content: left;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-  margin-bottom: 50px;
-  position: relative;
-  top: 150px;
 }
 
-social-bar { 
+.social-bar { 
   display: flex; 
   align-self: flex-start;
   justify-content: left; 
   flex-wrap: wrap; 
-  gap: 0.75rem;
+  margin-bottom: auto;
 }
 
 .btn-social:hover,
@@ -45,6 +42,7 @@ social-bar {
 html, body, #root {
   height: 100%;
   margin: 0;
+  --split: 47vh;
 }
 
 body {
@@ -69,22 +67,57 @@ body {
               linear-gradient(to bottom, #151225 0 47%, #0f0d1b 47% 100%); 
 }
 
+.page-split-norm { 
+  background: linear-gradient(to bottom, transparent 5%, rgba(0,0,0,0.45) 5%, transparent 6%), 
+              linear-gradient(to bottom, #151225 0 5%, #0f0d1b 5% 100%); 
+}
+
 .header-area { 
   max-width: 720px; 
-  margin-bottom: 150px; 
+  margin-bottom: 50px; 
   margin-left: 10px;
   display: flex; 
   flex-direction: column; 
   align-items: flex-start; 
   gap: 0.75rem;
+  max-height: 47vh;
+}
+.header-area-norm { 
+  max-width: 100vw; 
+  margin-left: 10px;
+  display: flex; 
+  flex-direction: row; 
+  align-items: flex-start; 
+  gap: 0.75rem;
+  max-height: 10vh;
+}
+
+.project-cards {
+  height: 20vh;
+  width: 100vh;
+  margin-top: 5vh;
+  margin-bottom: 70vh;
 }
 
 .profile-card {
   position: relative;
   left: 100px;
+  margin-bottom: 155px;
 }
 
 .welcome-header {
   text-align: left;
   
+}
+
+.card-bg-icon { 
+  position: absolute; 
+  top: 50%; 
+  left: 75%; 
+  transform: translate(-50%, -50%); 
+  pointer-events: none;
+  user-select: none; 
+  font-size: 8rem; 
+  color: rgba(255, 255, 255, 0.08); 
+  line-height: 1; 
 }
