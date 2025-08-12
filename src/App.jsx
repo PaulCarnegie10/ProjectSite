@@ -2,7 +2,8 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-import { Container, Row, Col, Card, ProgressBar, Button, Image } from 'react-bootstrap';
+import {useState} from 'react';
+import { Container, Row, Col, Card, ProgressBar, Button, Image, Carousel} from 'react-bootstrap';
 import { BsGithub, BsLinkedin, BsEnvelopeFill } from 'react-icons/bs';
 
 const cardData = [
@@ -37,20 +38,44 @@ const progressCards = [
   { title: 'Deployment', now: 25, variant: 'warning', link: '/deploy' },
 ];
 
+const slides = [
+  {
+    src: 'Paul-Profile.jpg',
+    title: 'First slide label',
+    text: 'Nulla vitae elit libero, a pharetra augue mollis interdum.',
+    alt: 'First slide'
+  },
+  {
+    src: '/Paul-Profile.jpg',
+    title: 'Second slide label',
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    alt: 'Second slide'
+  },
+  {
+    src: '/Paul-Profile.jpg',
+    title: 'Third slide label',
+    text: 'Praesent commodo cursus magna, vel scelerisque nisl consectetur.',
+    alt: 'Third slide'
+  }
+  ];
+
 function App() {
+  const [index, setIndex] = useState(0);
+  const handleSelect = (selectedIndex) => setIndex(selectedIndex);
   return (
     <div className="page-split-bg text-light min-vh-100 d-flex flex-column justify-content-end">
-      <header>
-        <Container fluid className="welcome-header" style={{ height: '20vh', width: '30vw' }}>
+      <header className='header-area'>
+        <Container fluid className="welcome-header">
           <h1 className="display-5 mb-1">Paul Colombo's Portfolio</h1>
         </Container>
 
-        <Container fluid className='profile-card' style={{width: '30vw'}}>
+        <Container fluid className='profile-card'>
           <Image src="Paul-Profile.jpg" alt="" style={{maxWidth: 240, maxHeight: 240}} roundedCircle className='border border-4 border-dark'/>
         </Container>
 
-        <Container fluid className="social-bar" style={{ width: '30vw' }}>
-          <div className="d-flex justify-content-center gap-3 flex-wrap">
+
+        <Container fluid className="social-bar">
+          <div className="d-flex gap-3 flex-wrap">
             <Button
               as="a"
               href="https://www.linkedin.com/in/paul-colombo-09aa18336/"

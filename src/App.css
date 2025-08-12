@@ -10,12 +10,20 @@
   padding: 0.5rem 0.75rem;
   line-height: 1;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: left;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  margin-bottom: 50px;
   position: relative;
-  right: 920px;
-  bottom: 45px;
+  top: 150px;
+}
+
+social-bar { 
+  display: flex; 
+  align-self: flex-start;
+  justify-content: left; 
+  flex-wrap: wrap; 
+  gap: 0.75rem;
 }
 
 .btn-social:hover,
@@ -43,6 +51,7 @@ body {
   background-color: #000;
 }
 
+
 .hover-card {
   color: #1b1633;
   display: block;                 
@@ -60,15 +69,22 @@ body {
               linear-gradient(to bottom, #151225 0 47%, #0f0d1b 47% 100%); 
 }
 
+.header-area { 
+  max-width: 720px; 
+  margin-bottom: 150px; 
+  margin-left: 10px;
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start; 
+  gap: 0.75rem;
+}
+
 .profile-card {
   position: relative;
-  bottom: 220px;
-  right: 600px;
+  left: 100px;
 }
 
 .welcome-header {
-  position: relative;
-  text-align: center;
-  bottom: 60px;
-  right: 760px;
+  text-align: left;
+  
 }
