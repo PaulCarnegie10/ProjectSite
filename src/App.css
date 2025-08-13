@@ -20,7 +20,12 @@
   align-self: flex-start;
   justify-content: left; 
   flex-wrap: wrap; 
-  margin-bottom: auto;
+  margin-bottom: 10px;
+  position: absolute;
+  right: 5px;
+  bottom: 0;
+  z-index: 10;
+  gap: 0.5rem;
 }
 
 .btn-social:hover,
@@ -28,7 +33,12 @@
   background: var(--brand-500, #8b5cf6);
   color: #0e0b14; /* contrast on purple */
   border-color: var(--brand-400, #a78bfa);
-  box-shadow: 0 0 16px rgba(139, 92, 246, 0.55);
+  box-shadow:
+    0 0 16px rgba(139, 92, 246, 0.55),
+    0 0 32px rgba(139, 92, 246, 0.35),
+    0 0 48px rgba(139, 92, 246, 0.2);
+  outline: 2px solid rgba(167, 139, 250, 0.35);
+  outline-offset: 2px;
   transform: translateY(-1px);
   text-decoration: none;
 }
@@ -54,17 +64,72 @@ body {
   color: #1b1633;
   display: block;                 
   width: 100%;                    
+  --rx: 0deg;
+  --ry: 0deg;
+  --s: 1;
+  transform: perspective(800px) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--s));
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
   box-shadow: 0 0 5px #09070f;
 }
 
 .hover-card:hover {
-  transform: scale(1.03);
+  --s: 1.03;
+  --rx: -1deg;
+  --ry: 1deg;
   box-shadow: 0 0 15px rgba(75, 0, 75, 0.7); }
 
+/* Keyboard focus ring for accessibility */
+.hover-card:focus-visible {
+  outline: 3px solid #a78bfa;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px rgba(167, 139, 250, 0.25), 0 0 15px rgba(75, 0, 75, 0.7);
+}
+
+/* Microinteractions for card content */
+.hover-card .card-title,
+.hover-card .card-text {
+  transition: transform 150ms ease, opacity 150ms ease, color 150ms ease;
+}
+
+.hover-card:hover .card-title {
+  transform: translateY(-2px);
+}
+
+.hover-card:hover .card-text {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+
 .page-split-bg { 
-  background: linear-gradient(to bottom, transparent 47%, rgba(0,0,0,0.45) 47%, transparent 48%), 
-              linear-gradient(to bottom, #151225 0 47%, #0f0d1b 47% 100%); 
+  background: linear-gradient(to top, transparent 94%, rgba(255, 255, 255, 0.10) 94%, transparent 94.1%),
+              linear-gradient(to bottom, transparent 47%, rgba(255, 255, 255, 0.10) 47%, transparent 47.1%),
+              linear-gradient(to top, transparent 94%, rgba(0,0,0,0.45) 94%, transparent 95%), 
+              linear-gradient(to bottom, transparent 47%, rgba(0,0,0,0.45) 47%, transparent 48%), 
+              linear-gradient(to bottom, #0f0d1b 0% 6%,#151225 6% 47%, #0f0d1b 47% 100%); 
+  
+  position: relative;
+}
+
+.page-split-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 3px 3px;
+  opacity: 0.25;
+}
+
+.page-split-norm::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 3px 3px;
+  opacity: 0.25;
 }
 
 .page-split-norm { 
@@ -74,13 +139,15 @@ body {
 
 .header-area { 
   max-width: 720px; 
-  margin-bottom: 50px; 
+  margin-bottom: 30px; 
   margin-left: 10px;
   display: flex; 
   flex-direction: column; 
   align-items: flex-start; 
   gap: 0.75rem;
   max-height: 47vh;
+  min-height: 47vh;
+  position: relative;
 }
 .header-area-norm { 
   max-width: 100vw; 
@@ -102,12 +169,42 @@ body {
 .profile-card {
   position: relative;
   left: 100px;
-  margin-bottom: 155px;
+  margin-bottom: 150px;
+  top: 10px;
+}
+.profile-card img {
+  width: clamp(120px, 20vw, 240px);
+  height: clamp(120px, 20vw, 240px);
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .welcome-header {
   text-align: left;
-  
+}
+
+.welcome-header h1 {
+  background: linear-gradient(90deg, #ffffff, #c4b5fd 30%, #ffffff 60%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% 100%;
+  font-size: clamp(2rem, 3vw, 3.25rem);
+  line-height: 1.1;
+  animation: title-sheen 8s ease-in-out infinite;
+}
+@keyframes title-sheen {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .welcome-header h1 { animation: none; }
+}
+
+.welcome-header .lead {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  line-height: 1.4;
+  opacity: 0.9;
 }
 
 .card-bg-icon { 
@@ -120,4 +217,31 @@ body {
   font-size: 8rem; 
   color: rgba(255, 255, 255, 0.08); 
   line-height: 1; 
+}
+
+.hover-card::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -120%;
+  width: 60%;
+  height: 140%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.16) 45%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  transform: skewX(-20deg);
+  transition: transform 0.6s ease, left 0.6s ease;
+  pointer-events: none;
+}
+
+.hover-card:hover::after {
+  left: 140%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-card { transition: none; }
+  .hover-card::after { transition: none; }
 }
