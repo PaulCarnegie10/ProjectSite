@@ -10,7 +10,7 @@ import { FaQuestion } from "react-icons/fa";
 
 
 
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import { Container, Row, Col, Card, ProgressBar, Button, Image, Carousel} from 'react-bootstrap';
 import { BsGithub, BsLinkedin, BsEnvelopeFill } from 'react-icons/bs';
 
@@ -53,6 +53,22 @@ const progressCards = [
 export default function Home() {
   const [index, setIndex] = useState(0);
   const handleSelect = (selectedIndex) => setIndex(selectedIndex);
+
+  const username = 'PaulCarnegie10';
+  const [repos, setRepos] = useState([]);
+  const [loadingRepos, setLoadingRepos] = useState(true);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=2`, { signal: controller.signal })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setRepos(data);
+      })
+      .catch(() => {})
+      .finally(() => setLoadingRepos(false));
+    return () => controller.abort();
+  }, []);
   return (
     <div className="page-split-bg text-light min-vh-100 d-flex flex-column justify-content-end">
       <header className='header-area'>
@@ -103,6 +119,31 @@ export default function Home() {
           </div>
         </Container>
       </header>
+
+      <div className="header-side-panel" aria-label="GitHub activity and recent repositories">
+        <div className="gh-graph" role="img" aria-label="GitHub contribution graph">
+          <img
+            src={`https://github-readme-activity-graph.vercel.app/graph?username=${username}&bg_color=0f0d1b&color=c4b5fd&line=a78bfa&point=ffffff&area=true&hide_border=true`}
+            alt="GitHub contribution activity graph"
+            loading="lazy"
+          />
+        </div>
+        <div className="repo-list">
+          <div className="repo-list-header">Recent repositories</div>
+          {loadingRepos && <div className="repo-skeleton">Loading...</div>}
+          {!loadingRepos && repos.map((r) => (
+            <a key={r.id} href={r.html_url} target="_blank" rel="noopener noreferrer" className="repo-item">
+              <div className="repo-name">{r.name}</div>
+              {r.description && <div className="repo-desc">{r.description}</div>}
+              <div className="repo-meta">
+                {r.language && <span className="repo-lang">{r.language}</span>}
+                <span className="repo-updated">Updated {new Date(r.updated_at).toLocaleDateString()}</span>
+                <span className="repo-stars">★ {r.stargazers_count}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
 
       <Container fluid className='p-0' style={{ height:'50vh', width:'70vw'}}>
         <Row xs={2} sm={2} md={2} lg={2} className="g-4 h-100">
