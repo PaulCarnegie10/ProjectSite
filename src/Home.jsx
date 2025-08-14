@@ -69,6 +69,15 @@ export default function Home() {
       .finally(() => setLoadingRepos(false));
     return () => controller.abort();
   }, []);
+
+  // Freeze top band geometry to the initial viewport height (prevents middle bar from adjusting on height changes)
+  useEffect(() => {
+    const ih = window.innerHeight;
+    const topBandH = Math.round(ih * 0.47);      // original split height ~47vh
+    const topBandOffset = Math.round(ih * 0.065); // original offset ~6.5vh
+    document.documentElement.style.setProperty('--topBandH', `${topBandH}px`);
+    document.documentElement.style.setProperty('--topBandOffset', `${topBandOffset}px`);
+  }, []);
   return (
     <div className="page-split-bg text-light min-vh-100 d-flex flex-column justify-content-end">
       <header className='header-area'>
@@ -79,7 +88,6 @@ export default function Home() {
         <Container fluid className='profile-card'>
           <Image src="Paul-Profile.jpg" alt="" style={{maxWidth: 240, maxHeight: 240}} roundedCircle className='border border-4 border-dark'/>
         </Container>
-
 
         <Container fluid className="social-bar">
           <div className="d-flex gap-3 flex-wrap">
@@ -119,6 +127,26 @@ export default function Home() {
           </div>
         </Container>
       </header>
+
+      {/* Middle profile info cards between header and side panel */}
+      <div className="header-mid-cards" aria-label="Profile information cards">
+        <div className="info-card">
+          <div className="info-title">School</div>
+          <div className="info-body">
+            Carnegie Mellon University School of Computer Science
+          </div>
+        </div>
+        <div className="info-card">
+          <div className="info-title">Degree Pursuit</div>
+          <div className="info-body">
+            Bachelors: Computer Science with a Concentration in Robotics 
+          </div>
+        </div>
+        <div className='info-card'>
+          <div className='info-title'>Graduation</div>
+          <div className='info-body'>Class of 2028</div>
+        </div>
+      </div>
 
       <div className="header-side-panel" aria-label="GitHub activity and recent repositories">
         <div className="gh-graph" role="img" aria-label="GitHub contribution graph">

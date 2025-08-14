@@ -102,12 +102,15 @@ body {
 }
 
 
-.page-split-bg { 
+.page-split-bg {
+  
   background: linear-gradient(to top, transparent 94%, rgba(255, 255, 255, 0.10) 94%, transparent 94.1%),
               linear-gradient(to bottom, transparent 47%, rgba(255, 255, 255, 0.10) 47%, transparent 47.1%),
               linear-gradient(to top, transparent 94%, rgba(0,0,0,0.45) 94%, transparent 95%), 
               linear-gradient(to bottom, transparent 47%, rgba(0,0,0,0.45) 47%, transparent 48%), 
               linear-gradient(to bottom, #0f0d1b 0% 6%,#151225 6% 47%, #0f0d1b 47% 100%); 
+  
+  
   
   position: relative;
 }
@@ -145,8 +148,7 @@ body {
   flex-direction: column; 
   align-items: flex-start; 
   gap: 0.75rem;
-  max-height: 47vh;
-  min-height: 47vh;
+  height: var(--topBandH, 520px);
   position: relative;
 }
 .header-area-norm { 
@@ -167,10 +169,8 @@ body {
 }
 
 .profile-card {
-  position: relative;
-  left: 100px;
-  margin-bottom: 150px;
-  top: 10px;
+  position: static;
+  margin: 0;
 }
 .profile-card img {
   width: clamp(120px, 20vw, 240px);
@@ -250,8 +250,8 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  height: 47vh;
-  max-height: 47vh;
+  height: var(--topBandH, 520px);
+  max-height: var(--topBandH, 520px);
   width: clamp(320px, 40vw, 720px);
   display: flex;
   flex-direction: column;
@@ -259,12 +259,12 @@ body {
   padding: 0.75rem 0.75rem 0.5rem;
   box-sizing: border-box;
   z-index: 5;
-  margin-top: 6.5vh;
+  margin-top: var(--topBandOffset, 64px);
 }
 
 .gh-graph {
   flex: 0 0 auto;
-  height: clamp(160px, 24vh, 260px);
+  height: 240px;
   overflow: hidden;
   border: 2px solid rgba(167, 139, 250, 0.2);
   border-radius: 12px;
@@ -320,6 +320,46 @@ body {
   flex-wrap: wrap;
 }
 
+.header-mid-cards {
+  position: absolute;
+  top: 0;
+  left: calc(10px + min(720px, 33vw));
+  right: clamp(320px, 40vw, 720px);
+  height: var(--topBandH, 520px);
+  max-height: var(--topBandH, 520px);
+  margin-top: var(--topBandOffset, 64px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  z-index: 4;
+  overflow: auto;
+}
+
+/* Prevent flex overflow within middle cards */
+.header-mid-cards > * {
+  min-width: 0;
+}
+
+.info-card {
+  border: 2px solid rgba(167, 139, 250, 0.2);
+  border-radius: 12px;
+  padding: 0.5rem 0.75rem;
+  background: rgba(21, 18, 37, 0.65);
+}
+
+.info-title {
+  font-weight: 600;
+  opacity: 0.9;
+  margin-bottom: 0.25rem;
+}
+
+.info-body {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
 @media (max-width: 992px) {
   .header-side-panel {
     position: static;
@@ -328,5 +368,22 @@ body {
     max-height: none;
     margin: 0 10px 10px;
   }
-  .gh-graph { height: 200px; }
-}
+  .gh-graph { height: 210px; }
+
+  .header-mid-cards {
+    position: static;
+    left: auto;
+    right: auto;
+    height: auto;
+    max-height: none;
+    margin: 0 10px 10px;
+    padding: 0.75rem;
+    z-index: 0;
+  }
+
+  .header-area {
+    max-height: none;
+    min-height: auto;
+  }
+
+  }
