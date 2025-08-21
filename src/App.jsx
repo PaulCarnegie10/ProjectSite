@@ -6,6 +6,9 @@ import Skills from './Skills.jsx';
 import Experience from './Experience.jsx';
 import About from './About.jsx';
 import TerrainMapper from './TerrainMapper.jsx';
+import DrWuCrew from './DrWuCrew.jsx';
+import Portfolio from './PortfolioWebsite.jsx';
+
 
 
 function App() {
@@ -16,7 +19,9 @@ function App() {
       <Route path="/skills" element={<Skills/>} />
       <Route path="/experience" element={<Experience/>} />
       <Route path="/about" element={<About/>} />
-      <Route path="/terrainmapper" elemnt={<TerrainMapper/>} />
+      <Route path="/terrainmapper" element={<TerrainMapper/>} />
+      <Route path="/drwucrew" element={<DrWuCrew/>} />
+      <Route path="/portfolio" element={<Portfolio/>} />
     </Routes>
   );
 }

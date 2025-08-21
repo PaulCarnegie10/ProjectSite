@@ -22,14 +22,14 @@ const cardData = [
     title: 'APCSP AutoGrader',
     text: 'Under Construction',
     img: 'https://via.placeholder.com/100x160',
-    link: '/ProjectSite/skills',
+    link: '/ProjectSite/drwucrew',
     icon: GoBrowser  
   },
   {
     title: 'Portfolio Website',
     text: 'Under Construction',
     img: 'https://via.placeholder.com/100x160',
-    link: '/ProjectSite/experience',
+    link: '/ProjectSite/portfolio',
     icon: GoFileDirectory
   },
 ];
