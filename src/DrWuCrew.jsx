@@ -19,8 +19,12 @@ export default function TerrainMapper() {
             <button type="button" className="back-link" aria-label="Go back" onClick={() => navigate(-1)}>
                 <BsArrowLeft />
             </button>
-            <h1 className="display-5 mb-1" style={{ margin: 0 }}>Projects</h1>
+            <h1 className="display-5 mb-1" style={{ margin: 0 }}>APCSP Auto Grader</h1>
             </Container>
         </header>
+        <Container className='Project-Top-Bar'>
+        </Container>
+        <Container className='Project-Bottom-Bar'>
+        </Container>
     </div>);
 }
