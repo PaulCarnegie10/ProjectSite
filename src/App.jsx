@@ -5,6 +5,7 @@ import Projects from './Projects.jsx';
 import Skills from './Skills.jsx';
 import Experience from './Experience.jsx';
 import About from './About.jsx';
+import TerrainMapper from './TerrainMapper.jsx';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Route path="/skills" element={<Skills/>} />
       <Route path="/experience" element={<Experience/>} />
       <Route path="/about" element={<About/>} />
+      <Route path="/terrainmapper" elemnt={<TerrainMapper/>} />
     </Routes>
   );
 }

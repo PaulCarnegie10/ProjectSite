@@ -136,8 +136,8 @@ body {
 }
 
 .page-split-norm { 
-  background: linear-gradient(to bottom, transparent 5%, rgba(0,0,0,0.45) 5%, transparent 6%), 
-              linear-gradient(to bottom, #151225 0 5%, #0f0d1b 5% 100%); 
+  background: linear-gradient(to bottom, transparent 6%, rgba(0,0,0,0.45) 6%, transparent 7%), 
+              linear-gradient(to bottom, #151225 0 6%, #0f0d1b 6% 100%); 
 }
 
 .header-area { 
@@ -156,9 +156,39 @@ body {
   margin-left: 10px;
   display: flex; 
   flex-direction: row; 
-  align-items: flex-start; 
+  align-items: center; 
   gap: 0.75rem;
+  min-height: 6vh;
   max-height: 10vh;
+}
+
+.back-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: rgba(244, 242, 255, 0.85);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
+}
+
+.back-link:hover,
+.back-link:focus-visible {
+  color: #c4b5fd;
+  transform: translateX(-2px) scale(1.06);
+  outline: none;
+}
+
+.back-link svg {
+  width: 22px;
+  height: 22px;
+}
+
+.header-area-norm h1 {
+  margin: 0;
 }
 
 .project-cards {

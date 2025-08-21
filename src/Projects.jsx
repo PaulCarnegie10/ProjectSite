@@ -7,14 +7,15 @@ import {GoBrowser,GoFileDirectory} from "react-icons/go";
 
 import {useState} from 'react';
 import { Container, Row, Col, Card, ProgressBar, Button, Image, Carousel} from 'react-bootstrap';
-import { BsGithub, BsLinkedin, BsEnvelopeFill } from 'react-icons/bs';
+import { BsGithub, BsLinkedin, BsEnvelopeFill, BsArrowLeft } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
 
 const cardData = [
   {
     title: 'Terrain Mapper',
     text: 'Under Construction',
     img: 'https://via.placeholder.com/100x160',
-    link: '/ProjectSite/projects',
+    link: '/ProjectSite/terrainmapper',
     icon: BsAirplaneEngines
   },
   {
@@ -34,10 +35,16 @@ const cardData = [
 ];
 
 export default function Projects() {
+  const navigate = useNavigate();
   return (
     <div className="page-split-norm text-light min-vh-100 d-flex flex-column justify-content-end">
         <header className='header-area-norm'>
-            <h1>Projects</h1>
+          <Container fluid className='welcome-header d-flex align-items-center gap-2 p-0'>
+            <button type="button" className="back-link" aria-label="Go back" onClick={() => navigate(-1)}>
+              <BsArrowLeft />
+            </button>
+            <h1 className="display-5 mb-1" style={{ margin: 0 }}>Projects</h1>
+          </Container>
         </header>
 
         <Container className='project-cards'>
