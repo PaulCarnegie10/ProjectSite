@@ -4,7 +4,6 @@ import './App.css';
 import {BsAirplaneEngines, BsAward} from "react-icons/bs";
 import {GoBrowser,GoFileDirectory} from "react-icons/go";
 
-
 import {useState} from 'react';
 import { Container, Row, Col, Card, ProgressBar, Button, Image, Carousel} from 'react-bootstrap';
 import { BsGithub, BsLinkedin, BsEnvelopeFill, BsArrowLeft } from 'react-icons/bs';

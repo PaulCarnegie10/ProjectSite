@@ -17,14 +17,14 @@ import { BsGithub, BsLinkedin, BsEnvelopeFill } from 'react-icons/bs';
 const cardData = [
   {
     title: 'Projects',
-    text: 'Under Construction',
+    text: 'Check out what Ive been working on',
     img: 'https://via.placeholder.com/100x160',
     link: '/ProjectSite/projects',
     icon: IoIosBuild 
   },
   {
     title: 'Skills',
-    text: 'Under Construction',
+    text: 'See what languages and tools I have experience with',
     img: 'https://via.placeholder.com/100x160',
     link: '/ProjectSite/skills',
     icon: FaLaptopCode

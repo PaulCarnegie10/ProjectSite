@@ -130,14 +130,12 @@ body {
   --ry: 1deg;
   box-shadow: 0 0 15px rgba(75, 0, 75, 0.7); }
 
-/* Keyboard focus ring for accessibility */
 .hover-card:focus-visible {
   outline: 3px solid #a78bfa;
   outline-offset: 2px;
   box-shadow: 0 0 0 6px rgba(167, 139, 250, 0.25), 0 0 15px rgba(75, 0, 75, 0.7);
 }
 
-/* Microinteractions for card content */
 .hover-card .card-title,
 .hover-card .card-text {
   transition: transform 150ms ease, opacity 150ms ease, color 150ms ease;
@@ -151,7 +149,6 @@ body {
   transform: translateY(-1px);
   opacity: 0.95;
 }
-
 
 .page-split-bg {
   
