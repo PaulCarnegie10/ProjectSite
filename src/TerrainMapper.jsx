@@ -1,8 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import {BsAirplaneEngines, BsAward} from "react-icons/bs";
-import {GoBrowser,GoFileDirectory} from "react-icons/go";
 
 import { CodeBlock, dracula } from 'react-code-blocks';
 
@@ -200,9 +198,9 @@ export default function TerrainMapper() {
         <Container className='Project-Top-Bar' style={{ opacity: mounted ? 1 : 0, transform: mounted ? 'translateY(0)' : 'translateY(-6px)', transition: 'opacity 500ms ease, transform 500ms ease' }}>
             <Container className='Project-Top-Panel'>
                 <div style={{
-                  marginTop: '8px',
+                  marginTop: '10px',
                   width: '100%',
-                  height: '100%',
+                  height: '98%',
                   padding: '4px 8px',
                   overflow: 'auto',
                   background: 'transparent',
