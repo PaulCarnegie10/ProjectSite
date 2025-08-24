@@ -44,11 +44,6 @@ const cardData = [
   }
 ];
 
-const progressCards = [
-  { title: 'Build Status', now: 25, variant: 'info', link: '/status' },
-  { title: 'Deployment', now: 25, variant: 'warning', link: '/deploy' },
-];
-
 // Language colors for the distribution bar - themed to match the website
 const languageColors = {
   'JavaScript': '#c4b5fd',
@@ -125,7 +120,7 @@ export default function Home() {
   const [loadingLanguages, setLoadingLanguages] = useState(true);
   const [totalStars, setTotalStars] = useState(0);
   const [totalForks, setTotalForks] = useState(0);
-  const [actualContributions, setActualContributions] = useState(34); // Your actual GitHub contributions
+  const [actualContributions, setActualContributions] = useState(0); // Will be fetched dynamically
 
   // Fetch user profile data
   useEffect(() => {
@@ -257,13 +252,11 @@ export default function Home() {
           sortedLanguages['Other/Unknown'] = estimatedUnknownBytes;
         }
 
-        // Estimate commits based on repository count and activity
-        const estimatedTotalCommits = Math.round(allRepos.length * 25);
-
         setLanguageDistribution(sortedLanguages);
         setTotalStars(totalStarsCount);
         setTotalForks(totalForksCount);
-        setTotalCommits(estimatedTotalCommits);
+        // Use actual contributions instead of estimated commits
+        // setTotalCommits(estimatedTotalCommits);
 
         console.log('Detailed language analysis:', {
           totalRepos: allRepos.length,
@@ -283,6 +276,66 @@ export default function Home() {
 
     fetchAllRepos();
 
+    return () => controller.abort();
+  }, []);
+
+  // Fetch contribution count using actual commit data
+  useEffect(() => {
+    const controller = new AbortController();
+    
+    const fetchActualCommits = async () => {
+      try {
+        // First get all repositories
+        const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`, {
+          signal: controller.signal
+        });
+        
+        if (reposResponse.ok) {
+          const repos = await reposResponse.json();
+          
+          // Fetch commit count for each repository
+          const commitPromises = repos.map(async (repo) => {
+            try {
+              // Get the total commit count for this repository
+              const commitsResponse = await fetch(`https://api.github.com/repos/${username}/${repo.name}/commits?per_page=1`, {
+                signal: controller.signal
+              });
+              
+              if (commitsResponse.ok) {
+                // Get the total count from headers
+                const linkHeader = commitsResponse.headers.get('Link');
+                if (linkHeader) {
+                  // Parse the last page number from Link header
+                  const lastPageMatch = linkHeader.match(/page=(\d+)>; rel="last"/);
+                  if (lastPageMatch) {
+                    return parseInt(lastPageMatch[1]);
+                  }
+                }
+                // Fallback: count commits in first page
+                const commits = await commitsResponse.json();
+                return commits.length;
+              }
+              return 0;
+            } catch (error) {
+              console.error(`Error fetching commits for ${repo.name}:`, error);
+              return 0;
+            }
+          });
+
+          const commitCounts = await Promise.all(commitPromises);
+          const totalCommits = commitCounts.reduce((sum, count) => sum + count, 0);
+          
+          setActualContributions(totalCommits);
+          console.log('Total commits across all repositories:', totalCommits);
+        }
+      } catch (error) {
+        console.error('Error fetching commit data:', error);
+        // Fallback to a reasonable estimate
+        setActualContributions(50);
+      }
+    };
+
+    fetchActualCommits();
     return () => controller.abort();
   }, []);
 
