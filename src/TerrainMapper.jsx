@@ -208,16 +208,15 @@ export default function TerrainMapper() {
                   background: 'transparent',
                   borderLeft: '3px solid rgba(167, 139, 250, 0.3)'
                 }}>
-                  <h2 style={{ marginTop: 0, marginBottom: '8px' }}>Terrain Mapper</h2>
+                  <h2 style={{ marginTop: 0, marginBottom: '8px' }}>About the TM  project</h2>
                   <p style={{ opacity: 0.9 }}>
-                    Terrain Mapper is a tool for visualizing elevation data, generating slope and aspect maps,
-                    and exporting contours for GIS and game engines.
+                    The goal of this project is to use lidar sensors and Java to render a detailed 3d map of the terrain. This project is still in progress.
                   </p>
                   <ul style={{ marginBottom: 0, opacity: 0.9 }}>
-                    <li>Import DEM/heightmap rasters</li>
-                    <li>Interactive 2D and 3D views</li>
-                    <li>Contour extraction with smoothing</li>
-                    <li>GeoTIFF/PNG export</li>
+                    <li>Utilizes JavaFX</li>
+                    <li>Based on an Arduino Uno Wifi</li>
+                    <li>Gathers magnometer, accelerometer, and gyroscope data for position</li>
+                    <li>Uses a lidar for ranging measurements</li>
                   </ul>
                 </div>
             </Container>
