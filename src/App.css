@@ -469,9 +469,9 @@ body {
 
 /* Skills Page Styles */
 .skills-container {
-  padding: 2rem 1rem;
-  max-width: 1400px;
-  margin: 0 auto;
+  padding: 1rem 1rem;
+  max-width: 80vw;
+  margin-top:auto
 }
 
 /* GitHub Stats Cards */
