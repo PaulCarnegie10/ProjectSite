@@ -4,7 +4,7 @@ import './App.css';
 import {BsAirplaneEngines, BsAward} from "react-icons/bs";
 import {GoBrowser,GoFileDirectory} from "react-icons/go";
 
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import { Container, Row, Col, Card, ProgressBar, Button, Image, Carousel} from 'react-bootstrap';
 import { BsGithub, BsLinkedin, BsEnvelopeFill, BsArrowLeft } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
@@ -35,6 +35,15 @@ const cardData = [
 
 export default function Projects() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+  const ih = window.innerHeight;
+  const topBandH = Math.round(ih);      // original split height ~47vh
+  const topBandOffset = Math.round(ih); // original offset ~6.5vh
+  document.documentElement.style.setProperty('--topBandH', `${topBandH}px`);
+  document.documentElement.style.setProperty('--topBandOffset', `${topBandOffset}px`);
+  }, []);
+  
   return (
     <div className="page-split-norm text-light min-vh-100 d-flex flex-column justify-content-end">
         <header className='header-area-norm'>

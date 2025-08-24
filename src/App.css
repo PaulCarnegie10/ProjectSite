@@ -244,7 +244,7 @@ body {
   height: 20vh;
   width: 100vh;
   margin-top: 5vh;
-  margin-bottom: 70vh;
+  margin-bottom: 69vh;
 }
 
 .profile-card {
@@ -466,3 +466,392 @@ body {
   }
 
   }
+
+/* Skills Page Styles */
+.skills-container {
+  padding: 2rem 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* GitHub Stats Cards */
+.github-stats-section {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  width: clamp(300px, 35vw, 600px);
+  margin-top: var(--topBandOffset, 64px);
+  z-index: 6;
+}
+
+.stats-container {
+  padding: 0;
+}
+
+.stats-card {
+  border: 2px solid rgba(167, 139, 250, 0.2);
+  border-radius: 12px;
+  background: rgba(21, 18, 37, 0.8) !important;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.stats-card:hover {
+  border-color: rgba(167, 139, 250, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+}
+
+.stats-card .card-body {
+  padding: 1rem 0.75rem;
+}
+
+.stats-icon {
+  color: #c4b5fd;
+  opacity: 0.9;
+}
+
+.stats-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f4f2ff;
+  margin-bottom: 0.25rem;
+  font-family: 'Courier New', monospace;
+}
+
+.stats-label {
+  font-size: 0.85rem;
+  color: rgba(244, 242, 255, 0.8);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* GitHub Stats within Info Cards */
+.github-stats-card {
+  background: rgba(139, 92, 246, 0.1) !important;
+  border-color: rgba(167, 139, 250, 0.3) !important;
+}
+
+.github-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.github-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+}
+
+.github-stat-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.stat-icon {
+  color: #c4b5fd;
+  margin-bottom: 0.25rem;
+}
+
+.stat-number {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #f4f2ff;
+  font-family: 'Courier New', monospace;
+  margin-bottom: 0.125rem;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: rgba(244, 242, 255, 0.7);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Language Distribution Bar */
+.language-distribution {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+.language-distribution-title {
+  font-size: 0.8rem;
+  color: rgba(244, 242, 255, 0.8);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.language-distribution-bar {
+  display: flex;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.language-segment {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  min-width: 0;
+}
+
+.language-segment:hover {
+  transform: scaleY(1.1);
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.language-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.language-segment:hover .language-label {
+  opacity: 1;
+}
+
+.language-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 0.75rem;
+  color: rgba(244, 242, 255, 0.6);
+  font-style: italic;
+}
+
+/* Responsive adjustments for language distribution */
+@media (max-width: 768px) {
+  .language-distribution {
+    margin-top: 0.75rem;
+    padding-top: 0.5rem;
+  }
+  
+  .language-distribution-title {
+    font-size: 0.75rem;
+    margin-bottom: 0.375rem;
+  }
+  
+  .language-distribution-bar {
+    height: 16px;
+  }
+  
+  .language-label {
+    font-size: 0.6rem;
+  }
+  
+  .language-loading {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .language-distribution-bar {
+    height: 14px;
+  }
+  
+  .language-label {
+    font-size: 0.55rem;
+  }
+}
+
+/* Responsive adjustments for stats cards */
+@media (max-width: 1200px) {
+  .github-stats-section {
+    position: static;
+    width: auto;
+    margin: 1rem 10px;
+    order: -1;
+  }
+  
+  .stats-card .card-body {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .stats-number {
+    font-size: 1.25rem;
+  }
+  
+  .stats-label {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .github-stats-section {
+    margin: 0.5rem 10px;
+  }
+  
+  .stats-card .card-body {
+    padding: 0.5rem;
+  }
+  
+  .stats-number {
+    font-size: 1.1rem;
+  }
+  
+  .stats-label {
+    font-size: 0.75rem;
+  }
+  
+  .github-stats-grid {
+    gap: 0.5rem;
+  }
+  
+  .github-stat-item {
+    padding: 0.375rem;
+  }
+  
+  .stat-number {
+    font-size: 1rem;
+  }
+  
+  .stat-label {
+    font-size: 0.65rem;
+  }
+}
+
+.skill-category-card {
+  border: 2px solid rgba(167, 139, 250, 0.2);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  background: rgba(21, 18, 37, 0.8) !important;
+  backdrop-filter: blur(10px);
+}
+
+.skill-category-card:hover {
+  border-color: rgba(167, 139, 250, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+}
+
+.skill-category-card .card-header {
+  background: rgba(139, 92, 246, 0.1);
+  border-bottom: 1px solid rgba(167, 139, 250, 0.2);
+  border-radius: 14px 14px 0 0 !important;
+  padding: 1rem;
+}
+
+.skill-category-card .card-body {
+  padding: 1.5rem;
+}
+
+.skill-item {
+  transition: all 0.2s ease;
+}
+
+.skill-item:hover {
+  transform: translateX(4px);
+}
+
+.skill-name {
+  font-weight: 500;
+  color: #f4f2ff;
+}
+
+.skill-level {
+  font-weight: 600;
+  color: #c4b5fd;
+  font-size: 0.9rem;
+}
+
+.skill-progress {
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.skill-progress .progress-bar {
+  border-radius: 6px;
+  transition: width 1s ease-in-out;
+}
+
+.additional-info-card {
+  border: 2px solid rgba(167, 139, 250, 0.2);
+  border-radius: 16px;
+  background: rgba(21, 18, 37, 0.8) !important;
+  backdrop-filter: blur(10px);
+}
+
+.additional-info-card .card-header {
+  background: rgba(139, 92, 246, 0.1);
+  border-bottom: 1px solid rgba(167, 139, 250, 0.2);
+  border-radius: 14px 14px 0 0 !important;
+}
+
+.additional-info-card h6 {
+  color: #c4b5fd;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.additional-info-card .d-flex.align-items-center.gap-2 {
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+}
+
+.additional-info-card .d-flex.align-items-center.gap-2:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Animation for progress bars */
+@keyframes progressFill {
+  from { width: 0%; }
+  to { width: var(--progress-width); }
+}
+
+.skill-progress .progress-bar {
+  animation: progressFill 1.5s ease-out forwards;
+}
+
+/* Responsive adjustments for skills page */
+@media (max-width: 768px) {
+  .skills-container {
+    padding: 1rem 0.5rem;
+  }
+  
+  .skill-category-card .card-body {
+    padding: 1rem;
+  }
+  
+  .skill-category-card .card-header {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .skills-container {
+    padding: 0.5rem;
+  }
+  
+  .skill-category-card {
+    margin-bottom: 1rem;
+  }
+}
