@@ -49,7 +49,14 @@ export default function AuroraBackground() {
       });
     };
 
+    let lastDraw = 0;
     const frame = (t) => {
+      // ~30fps is plenty for a slow twinkle; halves main-thread cost
+      if (t - lastDraw < 32) {
+        raf = requestAnimationFrame(frame);
+        return;
+      }
+      lastDraw = t;
       const { innerWidth: w, innerHeight: h } = window;
       ctx.clearRect(0, 0, w, h);
       const time = t / 1000;

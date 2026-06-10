@@ -164,7 +164,7 @@ export default function Nav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35, ease: EASE }}
-            className="fixed inset-0 z-40 flex flex-col justify-between bg-[rgba(5,3,15,0.92)] px-8 pb-10 pt-28 backdrop-blur-2xl lg:hidden"
+            className="fixed inset-0 z-40 flex flex-col justify-between bg-[rgba(5,3,15,0.96)] px-8 pb-10 pt-28 lg:hidden"
           >
             <motion.ul
               initial="hidden"
