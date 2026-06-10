@@ -1,29 +1,37 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Home from './Home.jsx';
-import Projects from './Projects.jsx';
-import Skills from './Skills.jsx';
-import Experience from './Experience.jsx';
-import About from './About.jsx';
-import TerrainMapper from './TerrainMapper.jsx';
-import DrWuCrew from './DrWuCrew.jsx';
-import Portfolio from './PortfolioWebsite.jsx';
+import News from './pages/News.jsx';
+import TerrainMapper from './pages/TerrainMapper.jsx';
+import DrWuCrew from './pages/DrWuCrew.jsx';
 
-
-
-function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<Home/>} />
-      <Route path="/projects" element={<Projects/>} />
-      <Route path="/skills" element={<Skills/>} />
-      <Route path="/experience" element={<Experience/>} />
-      <Route path="/about" element={<About/>} />
-      <Route path="/terrainmapper" element={<TerrainMapper/>} />
-      <Route path="/drwucrew" element={<DrWuCrew/>} />
-      <Route path="/portfolio" element={<Portfolio/>} />
-    </Routes>
-  );
+// Scroll to the hash target after route changes (e.g. /#about from a
+// subpage), otherwise jump to the top of the new page.
+function ScrollManager() {
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    if (hash) {
+      const el = document.getElementById(hash.slice(1));
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [pathname, hash]);
+  return null;
 }
 
-export default App;
+export default function App() {
+  return (
+    <>
+      <ScrollManager />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/news" element={<News />} />
+        <Route path="/projects/terrain-mapper" element={<TerrainMapper />} />
+        <Route path="/projects/dr-wu-crew" element={<DrWuCrew />} />
+      </Routes>
+    </>
+  );
+}
