@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { fadeUp, stagger, VIEWPORT } from '../lib/motion.js';
 
-// Uniform section header: mono index/eyebrow line + Unbounded display title.
+// Uniform section header: mono index/eyebrow line + display-font title.
 // `title` may be a node, e.g. <>Tools I <span className="text-aurora">reach for</span>.</>
 export default function SectionHeading({ index, eyebrow, title, align = 'left', className = '' }) {
   const right = align === 'right';

@@ -6,7 +6,7 @@ import { EASE, fadeUp, fadeIn, stagger } from '../lib/motion.js';
 // Same hues as .text-aurora — repeated here so the gradient can be sliced
 // per-letter via background-position while reading as one continuous sweep.
 const AURORA =
-  'linear-gradient(100deg, #c4b5fd 0%, #a78bfa 30%, #60a5fa 70%, #7dd3fc 100%)';
+  'linear-gradient(100deg, #ff9ad8 0%, #ff6ec7 30%, #b78cff 70%, #6cc4ff 100%)';
 
 const letterRise = {
   hidden: { y: '115%' },
@@ -100,13 +100,13 @@ export default function Hero() {
                 strokeWidth="1"
               />
               {/* glowing satellite riding the ring */}
-              <circle cx="586" cy="300" r="9" fill="rgba(125, 211, 252, 0.22)" />
+              <circle cx="586" cy="300" r="9" fill="rgba(183, 140, 255, 0.22)" />
               <circle
                 cx="586"
                 cy="300"
                 r="3"
                 fill="var(--color-cyan)"
-                style={{ filter: 'drop-shadow(0 0 6px rgba(125, 211, 252, 0.9))' }}
+                style={{ filter: 'drop-shadow(0 0 6px rgba(183, 140, 255, 0.9))' }}
               />
             </g>
           </svg>

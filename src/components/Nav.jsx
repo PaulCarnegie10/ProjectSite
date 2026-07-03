@@ -83,7 +83,7 @@ export default function Nav() {
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
           scrolled && !open
-            ? 'border-b border-[var(--color-line)] bg-[rgba(5,3,15,0.7)] backdrop-blur-xl'
+            ? 'border-b border-[var(--color-line)] bg-[rgba(28,21,51,0.7)] backdrop-blur-xl'
             : 'bg-transparent'
         }`}
       >
@@ -164,7 +164,7 @@ export default function Nav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35, ease: EASE }}
-            className="fixed inset-0 z-40 flex flex-col justify-between bg-[rgba(5,3,15,0.96)] px-8 pb-10 pt-28 lg:hidden"
+            className="fixed inset-0 z-40 flex flex-col justify-between bg-[rgba(28,21,51,0.96)] px-8 pb-10 pt-28 lg:hidden"
           >
             <motion.ul
               initial="hidden"

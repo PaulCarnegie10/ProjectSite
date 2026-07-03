@@ -20,7 +20,7 @@ function TimelineNode({ pulse }) {
           transition={{ duration: 2.6, ease: 'easeOut', repeat: Infinity }}
         />
       )}
-      <span className="relative h-[7px] w-[7px] rounded-full bg-[var(--color-violet-bright)] shadow-[0_0_10px_rgba(167,139,250,0.8)]" />
+      <span className="relative h-[7px] w-[7px] rounded-full bg-[var(--color-violet-bright)] shadow-[0_0_10px_rgba(255,110,199,0.8)]" />
     </span>
   );
 }
@@ -83,7 +83,7 @@ export default function NewsTeaser() {
         {/* vertical gradient rail, centered under the 11px nodes */}
         <div
           aria-hidden="true"
-          className="absolute bottom-3 left-[5px] top-3 w-px bg-[linear-gradient(to_bottom,transparent,rgba(167,139,250,0.5)_12%,rgba(96,165,250,0.5)_88%,transparent)]"
+          className="absolute bottom-3 left-[5px] top-3 w-px bg-[linear-gradient(to_bottom,transparent,rgba(255,110,199,0.5)_12%,rgba(108,196,255,0.5)_88%,transparent)]"
         />
         {NEWS.slice(0, 3).map((entry, i) => (
           <TimelineEntry key={`${entry.date}-${entry.title}`} entry={entry} newest={i === 0} />

@@ -8,9 +8,9 @@ import { EASE, VIEWPORT, fadeUp, stagger } from '../lib/motion.js';
 
 // Distinct accent shades per language (no longer near-monochrome purple)
 const LANGUAGE_COLORS = {
-  Python: '#a78bfa',
+  Python: '#ff6ec7',
   JavaScript: '#fbbf24',
-  TypeScript: '#60a5fa',
+  TypeScript: '#6cc4ff',
   Java: '#fb923c',
   'C++': '#f472b6',
   C: '#94a3b8',
@@ -22,7 +22,7 @@ const LANGUAGE_COLORS = {
   Jupyter: '#facc15',
   Go: '#22d3ee',
   Rust: '#f97316',
-  default: '#a78bfa',
+  default: '#ff6ec7',
 };
 
 function Counter({ to, loading }) {
@@ -49,7 +49,7 @@ function Counter({ to, loading }) {
 
 function StatTile({ Icon, label, value, loading }) {
   return (
-    <div className="glass group rounded-2xl p-6 transition-[border-color,box-shadow] duration-300 hover:border-[var(--color-line-bright)] hover:shadow-[0_0_40px_rgba(167,139,250,0.16)]">
+    <div className="glass group rounded-2xl p-6 transition-[border-color,box-shadow] duration-300 hover:border-[var(--color-line-bright)] hover:shadow-[0_0_40px_rgba(255,110,199,0.16)]">
       <Icon className="h-5 w-5 text-[var(--color-violet)] transition-colors duration-300 group-hover:text-[var(--color-violet-bright)]" aria-hidden="true" />
       <div
         className="mt-4 text-4xl font-bold tracking-tight text-[var(--color-fg)] md:text-5xl"
@@ -113,7 +113,7 @@ export default function GitHub() {
           <span>Top languages</span>
           {loading.langs && <span>Loading…</span>}
         </div>
-        <div className="flex h-2.5 w-full overflow-hidden rounded-full bg-[var(--color-bg-elevated)] shadow-[0_0_18px_rgba(167,139,250,0.3)] ring-1 ring-[var(--color-line)]">
+        <div className="flex h-2.5 w-full overflow-hidden rounded-full bg-[var(--color-bg-elevated)] shadow-[0_0_18px_rgba(255,110,199,0.3)] ring-1 ring-[var(--color-line)]">
           {Object.entries(languages).map(([lang, bytes]) => {
             const pct = totalLangBytes > 0 ? (bytes / totalLangBytes) * 100 : 0;
             return (
@@ -153,7 +153,7 @@ export default function GitHub() {
         className="glass mt-12 overflow-hidden rounded-2xl"
       >
         <img
-          src={`https://github-readme-activity-graph.vercel.app/graph?username=${username}&bg_color=05030f&color=c4b5fd&line=a78bfa&point=7dd3fc&area=true&hide_border=true`}
+          src={`https://github-readme-activity-graph.vercel.app/graph?username=${username}&bg_color=1c1533&color=ff9ad8&line=ff6ec7&point=6cc4ff&area=true&hide_border=true`}
           alt={`${username} contribution activity`}
           loading="lazy"
           className="block h-auto w-full"
@@ -185,7 +185,7 @@ export default function GitHub() {
             variants={fadeUp}
             whileHover={{ y: -4 }}
             transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-            className="group glass flex flex-col gap-3 rounded-2xl p-6 transition-[border-color,box-shadow] duration-300 hover:border-[var(--color-line-bright)] hover:shadow-[0_8px_32px_rgba(124,58,237,0.18)]"
+            className="group glass flex flex-col gap-3 rounded-2xl p-6 transition-[border-color,box-shadow] duration-300 hover:border-[var(--color-line-bright)] hover:shadow-[0_8px_32px_rgba(255,110,199,0.18)]"
           >
             <div className="flex items-center justify-between">
               <h3 className="font-semibold text-[var(--color-fg)] transition-colors group-hover:text-[var(--color-violet-bright)]">

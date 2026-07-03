@@ -57,7 +57,7 @@ export default function Resume() {
           whileInView="visible"
           viewport={VIEWPORT}
           variants={scaleIn}
-          className="glass hidden rounded-2xl p-2 shadow-[0_0_60px_rgba(124,58,237,0.22),0_0_120px_rgba(96,165,250,0.1)] sm:block"
+          className="glass hidden rounded-2xl p-2 shadow-[0_0_60px_rgba(255,110,199,0.22),0_0_120px_rgba(108,196,255,0.1)] sm:block"
         >
           <div className="aspect-[8.5/11] max-h-[70vh] w-full">
             <object
@@ -67,7 +67,7 @@ export default function Resume() {
               aria-label="Resume PDF"
             >
               {/* Shown when the browser can't inline PDFs */}
-              <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-xl bg-[rgba(16,11,34,0.6)] px-8 text-center">
+              <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-xl bg-[rgba(47,36,86,0.6)] px-8 text-center">
                 <FiFileText className="text-3xl text-[var(--color-violet)]" aria-hidden />
                 <p
                   className="text-xs text-[var(--color-fg-muted)]"
@@ -96,7 +96,7 @@ export default function Resume() {
           className="glass block rounded-2xl p-6 sm:hidden"
         >
           <div className="flex items-center gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[rgba(167,139,250,0.08)]">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[rgba(255,110,199,0.08)]">
               <FiFileText className="text-xl text-[var(--color-violet)]" aria-hidden />
             </span>
             <div className="min-w-0">

@@ -34,7 +34,7 @@ export default function AuroraBackground() {
         base: Math.random() * 0.5 + 0.25,
         phase: Math.random() * Math.PI * 2,
         speed: Math.random() * 1.2 + 0.3,
-        hue: Math.random() < 0.18 ? '167,139,250' : Math.random() < 0.5 ? '125,211,252' : '244,242,255',
+        hue: Math.random() < 0.18 ? '255,110,199' : Math.random() < 0.5 ? '183,140,255' : '241,236,255',
       }));
     };
 
@@ -87,8 +87,8 @@ export default function AuroraBackground() {
           meteor.x, meteor.y,
           meteor.x - meteor.vx * 12, meteor.y - meteor.vy * 12
         );
-        grad.addColorStop(0, `rgba(196,181,253,${meteor.life})`);
-        grad.addColorStop(1, 'rgba(196,181,253,0)');
+        grad.addColorStop(0, `rgba(255,154,216,${meteor.life})`);
+        grad.addColorStop(1, 'rgba(255,154,216,0)');
         ctx.strokeStyle = grad;
         ctx.lineWidth = 1.4;
         ctx.beginPath();
@@ -135,7 +135,7 @@ export default function AuroraBackground() {
         className="aurora-blob"
         style={{
           top: '-20%', left: '-10%', width: '55vw', height: '55vw',
-          background: 'radial-gradient(circle, rgba(124,58,237,0.22), transparent 65%)',
+          background: 'radial-gradient(circle, rgba(255,110,199,0.22), transparent 65%)',
           animation: 'aurora-a 90s ease-in-out infinite',
         }}
       />
@@ -143,7 +143,7 @@ export default function AuroraBackground() {
         className="aurora-blob"
         style={{
           top: '20%', right: '-15%', width: '60vw', height: '60vw',
-          background: 'radial-gradient(circle, rgba(37,99,235,0.16), transparent 65%)',
+          background: 'radial-gradient(circle, rgba(183,140,255,0.16), transparent 65%)',
           animation: 'aurora-b 110s ease-in-out infinite',
         }}
       />
@@ -151,7 +151,7 @@ export default function AuroraBackground() {
         className="aurora-blob"
         style={{
           bottom: '-25%', left: '15%', width: '50vw', height: '50vw',
-          background: 'radial-gradient(circle, rgba(56,189,248,0.10), transparent 65%)',
+          background: 'radial-gradient(circle, rgba(108,196,255,0.10), transparent 65%)',
           animation: 'aurora-c 130s ease-in-out infinite',
         }}
       />

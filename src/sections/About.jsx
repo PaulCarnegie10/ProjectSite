@@ -52,7 +52,7 @@ export default function About() {
                 className="absolute -inset-6 -z-10 rounded-[2.5rem] blur-3xl"
                 style={{
                   background:
-                    'radial-gradient(60% 60% at 32% 28%, rgba(167,139,250,0.4), transparent 70%), radial-gradient(55% 55% at 72% 76%, rgba(96,165,250,0.35), transparent 70%)',
+                    'radial-gradient(60% 60% at 32% 28%, rgba(255,110,199,0.4), transparent 70%), radial-gradient(55% 55% at 72% 76%, rgba(108,196,255,0.35), transparent 70%)',
                 }}
               />
               {/* corner brackets */}

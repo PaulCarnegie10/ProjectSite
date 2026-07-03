@@ -37,7 +37,7 @@ export default function MagneticLink({
     'inline-flex items-center justify-center gap-2.5 rounded-full px-7 py-3.5 font-[var(--font-mono)] text-xs uppercase tracking-[0.22em] transition-colors duration-300 select-none';
   const styles =
     variant === 'solid'
-      ? 'text-[#0a0618] font-medium bg-[linear-gradient(100deg,#c4b5fd,#a78bfa_35%,#60a5fa)] shadow-[0_0_24px_rgba(139,107,250,0.35)] hover:shadow-[0_0_36px_rgba(139,107,250,0.55)]'
+      ? 'text-[#261d45] font-medium bg-[linear-gradient(100deg,#ff9ad8,#ff6ec7_35%,#6cc4ff)] shadow-[0_0_24px_rgba(255,110,199,0.35)] hover:shadow-[0_0_36px_rgba(255,110,199,0.55)]'
       : 'glass text-[var(--color-fg)] hover:border-[var(--color-line-bright)] hover:text-[var(--color-violet-bright)]';
 
   const props = {

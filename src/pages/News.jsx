@@ -30,7 +30,7 @@ function TimelineNode({ pulse }) {
           transition={{ duration: 2.6, ease: 'easeOut', repeat: Infinity }}
         />
       )}
-      <span className="relative h-[7px] w-[7px] rounded-full bg-[var(--color-violet-bright)] shadow-[0_0_10px_rgba(167,139,250,0.8)]" />
+      <span className="relative h-[7px] w-[7px] rounded-full bg-[var(--color-violet-bright)] shadow-[0_0_10px_rgba(255,110,199,0.8)]" />
     </span>
   );
 }
@@ -124,7 +124,7 @@ export default function News() {
         <div className="relative pb-28 md:pb-36">
           <div
             aria-hidden="true"
-            className="absolute bottom-32 left-[5px] top-1 w-px bg-[linear-gradient(to_bottom,transparent,rgba(167,139,250,0.5)_6%,rgba(96,165,250,0.5)_94%,transparent)]"
+            className="absolute bottom-32 left-[5px] top-1 w-px bg-[linear-gradient(to_bottom,transparent,rgba(255,110,199,0.5)_6%,rgba(108,196,255,0.5)_94%,transparent)]"
           />
           {YEARS.map(({ year, entries }, gi) => (
             <motion.div

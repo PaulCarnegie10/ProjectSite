@@ -1,33 +1,33 @@
 @import "tailwindcss";
 
 @theme {
-  /* ─── Aurora Observatory palette ───────────────────────────────
-     Deep-space indigo base, purple→blue aurora accents.
+  /* ─── Orchid palette ───────────────────────────────────────────
+     Dark violet base, hot-pink aurora accents.
      Legacy aliases (--color-accent*) kept so nothing breaks mid-migration. */
-  --color-bg: #05030f;
-  --color-bg-soft: #0a0618;
-  --color-bg-elevated: #100b22;
-  --color-fg: #f4f2ff;
-  --color-fg-muted: #aaa4c8;
-  --color-fg-faint: #645e82;
+  --color-bg: #1c1533;
+  --color-bg-soft: #261d45;
+  --color-bg-elevated: #2f2456;
+  --color-fg: #f1ecff;
+  --color-fg-muted: #a99fce;
+  --color-fg-faint: #7a7295;
 
-  --color-violet: #a78bfa;
-  --color-violet-bright: #c4b5fd;
-  --color-violet-deep: #7c3aed;
-  --color-blue: #60a5fa;
-  --color-cyan: #7dd3fc;
+  --color-violet: #ff6ec7;
+  --color-violet-bright: #ff9ad8;
+  --color-violet-deep: #c73d94;
+  --color-blue: #6cc4ff;
+  --color-cyan: #b78cff;
 
-  --color-line: rgba(167, 139, 250, 0.15);
-  --color-line-bright: rgba(167, 139, 250, 0.45);
+  --color-line: rgba(255, 110, 199, 0.15);
+  --color-line-bright: rgba(255, 110, 199, 0.45);
 
   /* Legacy aliases */
-  --color-accent: #a78bfa;
-  --color-accent-hover: #c4b5fd;
-  --color-accent-deep: #7c3aed;
+  --color-accent: #ff6ec7;
+  --color-accent-hover: #ff9ad8;
+  --color-accent-deep: #c73d94;
 
-  /* Type system: Unbounded = display, Sora = body, Plex Mono = labels */
-  --font-display: "Unbounded", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Sora", ui-sans-serif, system-ui, sans-serif;
+  /* Type system: Bricolage Grotesque = display, Instrument Sans = body, Plex Mono = labels */
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
@@ -60,14 +60,14 @@ body {
 /* Thin themed scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(167, 139, 250, 0.35) transparent;
+  scrollbar-color: rgba(255, 110, 199, 0.35) transparent;
 }
 *::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 *::-webkit-scrollbar-thumb {
-  background: rgba(167, 139, 250, 0.35);
+  background: rgba(255, 110, 199, 0.35);
   border-radius: 999px;
 }
 *::-webkit-scrollbar-track {
@@ -78,7 +78,7 @@ body {
 
 /* Gradient text — the signature accent */
 .text-aurora {
-  background: linear-gradient(100deg, #c4b5fd 0%, #a78bfa 30%, #60a5fa 70%, #7dd3fc 100%);
+  background: linear-gradient(100deg, #ff9ad8 0%, #ff6ec7 30%, #b78cff 70%, #6cc4ff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -88,8 +88,8 @@ body {
    over a fixed background it tanks frame rate; a translucent fill over the
    near-black page reads identically. */
 .glass {
-  background: linear-gradient(160deg, rgba(167, 139, 250, 0.09), rgba(96, 165, 250, 0.05)),
-    rgba(10, 6, 24, 0.55);
+  background: linear-gradient(160deg, rgba(255, 110, 199, 0.09), rgba(108, 196, 255, 0.05)),
+    rgba(38, 29, 69, 0.55);
   border: 1px solid var(--color-line);
 }
 
@@ -106,7 +106,7 @@ body {
 .glow-line {
   height: 1px;
   border: 0;
-  background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.5), rgba(96, 165, 250, 0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 110, 199, 0.5), rgba(108, 196, 255, 0.5), transparent);
 }
 
 /* Subtle film-grain layer (no blend mode — it forces offscreen

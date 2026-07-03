@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Home from './Home.jsx';
 import News from './pages/News.jsx';
-import TerrainMapper from './pages/TerrainMapper.jsx';
-import DrWuCrew from './pages/DrWuCrew.jsx';
+import ProjectsIndex from './pages/ProjectsIndex.jsx';
+import ProjectDeepDive from './pages/ProjectDeepDive.jsx';
 
 // Scroll to the hash target after route changes (e.g. /#about from a
 // subpage), otherwise jump to the top of the new page.
@@ -29,8 +29,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/news" element={<News />} />
-        <Route path="/projects/terrain-mapper" element={<TerrainMapper />} />
-        <Route path="/projects/dr-wu-crew" element={<DrWuCrew />} />
+        <Route path="/projects" element={<ProjectsIndex />} />
+        <Route path="/projects/:slug" element={<ProjectDeepDive />} />
       </Routes>
     </>
   );

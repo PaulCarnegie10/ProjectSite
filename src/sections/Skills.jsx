@@ -32,9 +32,9 @@ const ICONS = {
 
 // Per-panel accent: violet / blue / cyan, with matching rgba glow.
 const DOTS = [
-  { color: 'var(--color-violet)', glow: 'rgba(167, 139, 250, 0.6)' },
-  { color: 'var(--color-blue)', glow: 'rgba(96, 165, 250, 0.6)' },
-  { color: 'var(--color-cyan)', glow: 'rgba(125, 211, 252, 0.6)' },
+  { color: 'var(--color-violet)', glow: 'rgba(255, 110, 199, 0.6)' },
+  { color: 'var(--color-blue)', glow: 'rgba(108, 196, 255, 0.6)' },
+  { color: 'var(--color-cyan)', glow: 'rgba(183, 140, 255, 0.6)' },
 ];
 
 // Panel reveals via parent stagger, then staggers its own chips.
