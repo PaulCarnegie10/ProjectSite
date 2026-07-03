@@ -1,9 +1,10 @@
 import { BsGithub, BsLinkedin, BsEnvelopeFill } from 'react-icons/bs';
+import site from '../content/site.json';
 
 const SOCIALS = [
-  { label: 'GitHub', href: 'https://github.com/PaulCarnegie10', Icon: BsGithub },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/paul-colombo-09aa18336/', Icon: BsLinkedin },
-  { label: 'Email', href: 'mailto:pcolombo@andrew.cmu.edu', Icon: BsEnvelopeFill },
+  { label: 'GitHub', href: site.socials.github, Icon: BsGithub },
+  { label: 'LinkedIn', href: site.socials.linkedin, Icon: BsLinkedin },
+  { label: 'Email', href: `mailto:${site.socials.email}`, Icon: BsEnvelopeFill },
 ];
 
 export default function Footer() {
@@ -13,9 +14,9 @@ export default function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-6 py-10 sm:flex-row">
         <div className="flex flex-col items-center gap-1 sm:items-start">
           <span className="text-sm font-semibold tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
-            Paul Colombo
+            {site.footer.name}
           </span>
-          <span className="eyebrow text-[var(--color-fg-faint)]">CS + Robotics — CMU '28</span>
+          <span className="eyebrow text-[var(--color-fg-faint)]">{site.footer.tagline}</span>
         </div>
         <div className="flex items-center gap-5">
           {SOCIALS.map(({ label, href, Icon }) => (
@@ -32,7 +33,7 @@ export default function Footer() {
           ))}
         </div>
         <span className="font-[var(--font-mono)] text-[10px] tracking-[0.2em] uppercase text-[var(--color-fg-faint)]" style={{ fontFamily: 'var(--font-mono)' }}>
-          © {new Date().getFullYear()} — Pittsburgh, PA
+          © {new Date().getFullYear()} — {site.footer.locationSuffix}
         </span>
       </div>
     </footer>

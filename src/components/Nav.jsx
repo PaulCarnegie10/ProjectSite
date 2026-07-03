@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BsGithub, BsLinkedin, BsEnvelopeFill } from 'react-icons/bs';
 import { EASE } from '../lib/motion.js';
+import site from '../content/site.json';
 
 const LINKS = [
   { id: 'about', label: 'About' },
@@ -15,9 +16,9 @@ const LINKS = [
 ];
 
 const SOCIALS = [
-  { label: 'GitHub', href: 'https://github.com/PaulCarnegie10', Icon: BsGithub },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/paul-colombo-09aa18336/', Icon: BsLinkedin },
-  { label: 'Email', href: 'mailto:pcolombo@andrew.cmu.edu', Icon: BsEnvelopeFill },
+  { label: 'GitHub', href: site.socials.github, Icon: BsGithub },
+  { label: 'LinkedIn', href: site.socials.linkedin, Icon: BsLinkedin },
+  { label: 'Email', href: `mailto:${site.socials.email}`, Icon: BsEnvelopeFill },
 ];
 
 export default function Nav() {

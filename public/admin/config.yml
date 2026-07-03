@@ -109,3 +109,165 @@ collections:
                 fields:
                   - { name: name, widget: string }
                   - { name: icon, widget: string, required: false, hint: 'react-icons Simple Icons key, e.g. SiPytorch — must be imported in Skills.jsx' }
+
+      - name: text
+        label: 'Text & headings'
+        file: src/content/site.json
+        fields:
+          - name: hero
+            label: Hero
+            widget: object
+            required: true
+            fields:
+              - { name: eyebrow, label: 'Hero eyebrow', widget: string, required: true }
+              - { name: lines, label: 'Hero name lines (2 lines, e.g. PAUL / COLOMBO)', widget: list, required: true, field: { name: line, widget: string } }
+              - { name: tagline, label: 'Hero tagline', widget: string, required: true }
+              - { name: ctaPrimary, label: 'Hero primary button label', widget: string, required: true }
+              - { name: ctaSecondary, label: 'Hero secondary button label', widget: string, required: true }
+              - { name: scrollCue, label: 'Hero scroll cue label', widget: string, required: true }
+
+          - name: about
+            label: About
+            widget: object
+            required: true
+            fields:
+              - { name: eyebrow, label: 'About eyebrow', widget: string, required: true }
+              - { name: titlePre, label: 'About heading — before accent', widget: string, required: true }
+              - { name: titleAccent, label: 'About heading — accent word', widget: string, required: true }
+              - { name: titlePost, label: 'About heading — after accent', widget: string, required: true }
+              - { name: chips, label: 'About stat chips', widget: list, required: true, field: { name: chip, widget: string } }
+              - { name: caption, label: 'About photo caption', widget: string, required: true }
+              - { name: paragraph1Pre, label: 'About paragraph 1 — part 1', widget: string, required: true }
+              - { name: paragraph1Accent1, label: 'About paragraph 1 — accent 1', widget: string, required: true }
+              - { name: paragraph1Mid, label: 'About paragraph 1 — part 2', widget: string, required: true }
+              - { name: paragraph1Accent2, label: 'About paragraph 1 — accent 2', widget: string, required: true }
+              - { name: paragraph1Post, label: 'About paragraph 1 — part 3', widget: string, required: true }
+              - { name: paragraph2, label: 'About paragraph 2', widget: text, required: true }
+
+          - name: sections
+            label: Section headings
+            widget: object
+            required: true
+            fields:
+              - name: projects
+                label: Projects section
+                widget: object
+                required: true
+                fields:
+                  - { name: eyebrow, label: 'Projects eyebrow', widget: string, required: true }
+                  - { name: titlePre, label: 'Projects heading — before accent', widget: string, required: true }
+                  - { name: titleAccent, label: 'Projects heading — accent word', widget: string, required: true }
+                  - { name: titlePost, label: 'Projects heading — after accent', widget: string, required: true }
+                  - { name: allLink, label: '"All projects" link label', widget: string, required: true }
+              - name: skills
+                label: Skills section
+                widget: object
+                required: true
+                fields:
+                  - { name: eyebrow, label: 'Skills eyebrow', widget: string, required: true }
+                  - { name: titlePre, label: 'Skills heading — before accent 1', widget: string, required: true }
+                  - { name: titleAccent1, label: 'Skills heading — accent 1', widget: string, required: true }
+                  - { name: titleMid, label: 'Skills heading — between accents', widget: string, required: true }
+                  - { name: titleAccent2, label: 'Skills heading — accent 2', widget: string, required: true }
+                  - { name: titlePost, label: 'Skills heading — after accent 2', widget: string, required: true }
+              - name: news
+                label: News section
+                widget: object
+                required: true
+                fields:
+                  - { name: eyebrow, label: 'News eyebrow', widget: string, required: true }
+                  - { name: titlePre, label: 'News heading — before accent', widget: string, required: true }
+                  - { name: titleAccent, label: 'News heading — accent word', widget: string, required: true }
+                  - { name: titlePost, label: 'News heading — after accent', widget: string, required: true }
+                  - { name: allLink, label: '"All updates" link label', widget: string, required: true }
+              - name: github
+                label: GitHub section
+                widget: object
+                required: true
+                fields:
+                  - { name: eyebrow, label: 'GitHub eyebrow', widget: string, required: true }
+                  - { name: titlePre, label: 'GitHub heading — before accent', widget: string, required: true }
+                  - { name: titleAccent, label: 'GitHub heading — accent word', widget: string, required: true }
+                  - { name: titlePost, label: 'GitHub heading — after accent', widget: string, required: true }
+                  - name: statLabels
+                    label: Stat tile labels
+                    widget: object
+                    required: true
+                    fields:
+                      - { name: repos, label: 'Public repos label', widget: string, required: true }
+                      - { name: stars, label: 'Stars label', widget: string, required: true }
+                      - { name: commits, label: 'Commits label', widget: string, required: true }
+                  - { name: topLanguages, label: '"Top languages" label', widget: string, required: true }
+                  - { name: loadingLanguages, label: 'Languages loading text', widget: string, required: true }
+                  - { name: loadingRepos, label: 'Repos loading text', widget: string, required: true }
+              - name: resume
+                label: Resume section
+                widget: object
+                required: true
+                fields:
+                  - { name: eyebrow, label: 'Resume eyebrow', widget: string, required: true }
+                  - { name: titlePre, label: 'Resume heading — before accent', widget: string, required: true }
+                  - { name: titleAccent, label: 'Resume heading — accent words', widget: string, required: true }
+                  - { name: titlePost, label: 'Resume heading — after accent', widget: string, required: true }
+                  - { name: intro, label: 'Resume intro paragraph', widget: text, required: true }
+                  - { name: downloadLabel, label: 'Download button label', widget: string, required: true }
+                  - { name: openInTabLabel, label: '"Open in tab" button label', widget: string, required: true }
+                  - { name: editHint, label: 'Edit hint (mono text)', widget: string, required: true }
+                  - { name: previewUnavailable, label: 'PDF preview-unavailable text', widget: string, required: true }
+                  - { name: downloadFileLabel, label: 'Fallback download link label', widget: string, required: true }
+                  - { name: fileName, label: 'Displayed file name (mobile card)', widget: string, required: true }
+
+          - name: contact
+            label: Contact
+            widget: object
+            required: true
+            fields:
+              - { name: eyebrow, label: 'Contact eyebrow', widget: string, required: true }
+              - { name: titlePre, label: 'Contact heading — before accent', widget: string, required: true }
+              - { name: titleAccent, label: 'Contact heading — accent word', widget: string, required: true }
+              - { name: titlePost, label: 'Contact heading — after accent', widget: string, required: true }
+              - { name: intro, label: 'Contact intro line', widget: string, required: true }
+              - name: methods
+                label: Contact methods
+                widget: object
+                required: true
+                fields:
+                  - name: email
+                    label: Email method
+                    widget: object
+                    required: true
+                    fields:
+                      - { name: label, label: 'Card label', widget: string, required: true }
+                      - { name: handle, label: 'Displayed handle', widget: string, required: true }
+                  - name: github
+                    label: GitHub method
+                    widget: object
+                    required: true
+                    fields:
+                      - { name: label, label: 'Card label', widget: string, required: true }
+                      - { name: handle, label: 'Displayed handle', widget: string, required: true }
+                  - name: linkedin
+                    label: LinkedIn method
+                    widget: object
+                    required: true
+                    fields:
+                      - { name: label, label: 'Card label', widget: string, required: true }
+                      - { name: handle, label: 'Displayed handle', widget: string, required: true }
+
+          - name: footer
+            label: Footer
+            widget: object
+            required: true
+            fields:
+              - { name: name, label: 'Footer name', widget: string, required: true }
+              - { name: tagline, label: 'Footer tagline', widget: string, required: true }
+              - { name: locationSuffix, label: 'Footer copyright location', widget: string, required: true }
+
+          - name: socials
+            label: Social links
+            widget: object
+            required: true
+            fields:
+              - { name: github, label: 'GitHub profile URL', widget: string, required: true }
+              - { name: linkedin, label: 'LinkedIn profile URL', widget: string, required: true }
+              - { name: email, label: 'Email address (no mailto:)', widget: string, required: true }

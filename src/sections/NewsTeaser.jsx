@@ -4,6 +4,7 @@ import { NEWS } from '../data/news.js';
 import SectionHeading from '../components/SectionHeading.jsx';
 import MagneticLink from '../components/MagneticLink.jsx';
 import { fadeUp, stagger, VIEWPORT } from '../lib/motion.js';
+import site from '../content/site.json';
 
 // 2026-06-01 → 2026.06.01
 const fmtDate = (iso) => iso.replaceAll('-', '.');
@@ -69,8 +70,14 @@ export default function NewsTeaser() {
     <section id="news" className="relative mx-auto max-w-6xl px-6 py-28 md:py-36">
       <SectionHeading
         index="04"
-        eyebrow="Field Notes"
-        title={<>What I'm <span className="text-aurora">up to</span>.</>}
+        eyebrow={site.sections.news.eyebrow}
+        title={
+          <>
+            {site.sections.news.titlePre}
+            <span className="text-aurora">{site.sections.news.titleAccent}</span>
+            {site.sections.news.titlePost}
+          </>
+        }
       />
 
       <motion.ol
@@ -98,7 +105,7 @@ export default function NewsTeaser() {
         className="mt-12 pl-10"
       >
         <MagneticLink to="/news" variant="ghost">
-          All updates <FiArrowUpRight className="h-4 w-4" />
+          {site.sections.news.allLink} <FiArrowUpRight className="h-4 w-4" />
         </MagneticLink>
       </motion.div>
     </section>

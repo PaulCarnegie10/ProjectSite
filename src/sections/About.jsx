@@ -2,8 +2,9 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import SectionHeading from '../components/SectionHeading.jsx';
 import { VIEWPORT, fadeUp, scaleIn, stagger } from '../lib/motion.js';
+import site from '../content/site.json';
 
-const CHIPS = ['CMU SCS', 'Class of 2028', 'Pittsburgh, PA'];
+const CHIPS = site.about.chips;
 
 // Position + border edges for the four sci-fi corner brackets.
 const BRACKETS = [
@@ -29,10 +30,12 @@ export default function About() {
     >
       <SectionHeading
         index="01"
-        eyebrow="About"
+        eyebrow={site.about.eyebrow}
         title={
           <>
-            The human in the <span className="text-aurora">loop</span>.
+            {site.about.titlePre}
+            <span className="text-aurora">{site.about.titleAccent}</span>
+            {site.about.titlePost}
           </>
         }
       />
@@ -77,7 +80,7 @@ export default function About() {
                 className="text-[0.65rem] lowercase tracking-[0.18em] text-[var(--color-fg-faint)]"
                 style={{ fontFamily: 'var(--font-mono)' }}
               >
-                fig. 01 — paul colombo / pittsburgh, pa
+                {site.about.caption}
               </p>
               <span className="glow-line min-w-8 flex-1" />
             </div>
@@ -96,9 +99,11 @@ export default function About() {
             variants={fadeUp}
             className="max-w-xl text-2xl font-light leading-snug text-[var(--color-fg)] md:text-3xl"
           >
-            Studying <span className="text-aurora">Computer Science</span> with an additional major
-            in <span className="text-aurora">Robotics</span> at Carnegie Mellon University&apos;s
-            School of Computer Science.
+            {site.about.paragraph1Pre}
+            <span className="text-aurora">{site.about.paragraph1Accent1}</span>
+            {site.about.paragraph1Mid}
+            <span className="text-aurora">{site.about.paragraph1Accent2}</span>
+            {site.about.paragraph1Post}
           </motion.p>
 
           {/* EDIT ME: placeholder bio — replace with your own two sentences */}
@@ -106,9 +111,7 @@ export default function About() {
             variants={fadeUp}
             className="max-w-xl text-base leading-relaxed text-[var(--color-fg-muted)]"
           >
-            I spend most of my time on robot perception — teaching machines to make sense of what
-            their cameras see. Lately that means building vision pipelines in PyTorch and making
-            them fast enough for the real world.
+            {site.about.paragraph2}
           </motion.p>
 
           {/* stat chips */}

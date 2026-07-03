@@ -15,6 +15,7 @@ import {
 import SectionHeading from '../components/SectionHeading.jsx';
 import { EASE, VIEWPORT, fadeIn, stagger } from '../lib/motion.js';
 import { SKILL_GROUPS } from '../data/skills.js';
+import site from '../content/site.json';
 
 // String keys in skills.js → imported icon components.
 const ICONS = {
@@ -157,11 +158,14 @@ export default function Skills() {
     <section id="skills" className="relative mx-auto max-w-6xl px-6 py-28 md:py-36">
       <SectionHeading
         index="03"
-        eyebrow="Skills"
+        eyebrow={site.sections.skills.eyebrow}
         title={
           <>
-            Instruments of <span className="text-aurora">perception</span> and{' '}
-            <span className="text-aurora">motion</span>.
+            {site.sections.skills.titlePre}
+            <span className="text-aurora">{site.sections.skills.titleAccent1}</span>
+            {site.sections.skills.titleMid}
+            <span className="text-aurora">{site.sections.skills.titleAccent2}</span>
+            {site.sections.skills.titlePost}
           </>
         }
       />

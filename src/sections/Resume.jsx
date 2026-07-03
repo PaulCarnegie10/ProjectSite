@@ -3,6 +3,7 @@ import { FiDownload, FiExternalLink, FiFileText } from 'react-icons/fi';
 import SectionHeading from '../components/SectionHeading.jsx';
 import MagneticLink from '../components/MagneticLink.jsx';
 import { VIEWPORT, fadeUp, scaleIn, stagger } from '../lib/motion.js';
+import site from '../content/site.json';
 
 const RESUME_URL = `${import.meta.env.BASE_URL}resume.pdf`;
 
@@ -11,10 +12,12 @@ export default function Resume() {
     <section id="resume" className="relative mx-auto max-w-6xl px-6 py-28 md:py-36">
       <SectionHeading
         index="06"
-        eyebrow="Resume"
+        eyebrow={site.sections.resume.eyebrow}
         title={
           <>
-            The <span className="text-aurora">paper trail</span>.
+            {site.sections.resume.titlePre}
+            <span className="text-aurora">{site.sections.resume.titleAccent}</span>
+            {site.sections.resume.titlePost}
           </>
         }
         align="left"
@@ -30,15 +33,15 @@ export default function Resume() {
           className="flex max-w-sm flex-col gap-7"
         >
           <motion.p variants={fadeUp} className="text-[var(--color-fg-muted)] leading-relaxed">
-            Prefer it on paper? The full resume — coursework, projects, experience.
+            {site.sections.resume.intro}
           </motion.p>
 
           <motion.div variants={fadeUp} className="flex flex-wrap gap-4">
             <MagneticLink href={RESUME_URL} variant="solid" download>
-              <FiDownload aria-hidden /> Download PDF
+              <FiDownload aria-hidden /> {site.sections.resume.downloadLabel}
             </MagneticLink>
             <MagneticLink href={RESUME_URL} variant="ghost" target="_blank" rel="noopener noreferrer">
-              <FiExternalLink aria-hidden /> Open in tab
+              <FiExternalLink aria-hidden /> {site.sections.resume.openInTabLabel}
             </MagneticLink>
           </motion.div>
 
@@ -47,7 +50,7 @@ export default function Resume() {
             className="text-xs text-[var(--color-fg-faint)]"
             style={{ fontFamily: 'var(--font-mono)' }}
           >
-            {'// replace public/resume.pdf to update'}
+            {site.sections.resume.editHint}
           </motion.p>
         </motion.div>
 
@@ -73,14 +76,14 @@ export default function Resume() {
                   className="text-xs text-[var(--color-fg-muted)]"
                   style={{ fontFamily: 'var(--font-mono)' }}
                 >
-                  PDF preview unavailable here — download instead
+                  {site.sections.resume.previewUnavailable}
                 </p>
                 <a
                   href={RESUME_URL}
                   download
                   className="text-sm text-[var(--color-violet-bright)] underline underline-offset-4 hover:text-[var(--color-cyan)]"
                 >
-                  Download resume.pdf
+                  {site.sections.resume.downloadFileLabel}
                 </a>
               </div>
             </object>
@@ -100,14 +103,14 @@ export default function Resume() {
               <FiFileText className="text-xl text-[var(--color-violet)]" aria-hidden />
             </span>
             <div className="min-w-0">
-              <p className="text-sm text-[var(--color-fg)]">resume.pdf</p>
+              <p className="text-sm text-[var(--color-fg)]">{site.sections.resume.fileName}</p>
               <a
                 href={RESUME_URL}
                 download
                 className="text-xs text-[var(--color-violet-bright)] underline underline-offset-4"
                 style={{ fontFamily: 'var(--font-mono)' }}
               >
-                Download PDF
+                {site.sections.resume.downloadLabel}
               </a>
             </div>
           </div>

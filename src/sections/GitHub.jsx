@@ -5,6 +5,7 @@ import { FiArrowUpRight } from 'react-icons/fi';
 import useGitHubStats from '../hooks/useGitHubStats.js';
 import SectionHeading from '../components/SectionHeading.jsx';
 import { EASE, VIEWPORT, fadeUp, stagger } from '../lib/motion.js';
+import site from '../content/site.json';
 
 // Distinct accent shades per language (no longer near-monochrome purple)
 const LANGUAGE_COLORS = {
@@ -75,8 +76,14 @@ export default function GitHub() {
     <section id="github" className="relative mx-auto max-w-6xl px-6 py-28 md:py-36">
       <SectionHeading
         index="05"
-        eyebrow="Activity"
-        title={<>Live from <span className="text-aurora">GitHub</span>.</>}
+        eyebrow={site.sections.github.eyebrow}
+        title={
+          <>
+            {site.sections.github.titlePre}
+            <span className="text-aurora">{site.sections.github.titleAccent}</span>
+            {site.sections.github.titlePost}
+          </>
+        }
       />
 
       {/* Stat tiles */}
@@ -88,9 +95,9 @@ export default function GitHub() {
         className="grid grid-cols-1 gap-4 sm:grid-cols-3"
       >
         {[
-          { Icon: FaGithub, label: 'Public repos', value: user?.public_repos || 0, loading: loading.user },
-          { Icon: FaStar, label: 'Stars', value: totals.stars, loading: loading.langs },
-          { Icon: FaCodeBranch, label: 'Commits', value: totals.commits, loading: loading.commits },
+          { Icon: FaGithub, label: site.sections.github.statLabels.repos, value: user?.public_repos || 0, loading: loading.user },
+          { Icon: FaStar, label: site.sections.github.statLabels.stars, value: totals.stars, loading: loading.langs },
+          { Icon: FaCodeBranch, label: site.sections.github.statLabels.commits, value: totals.commits, loading: loading.commits },
         ].map((s) => (
           <motion.div key={s.label} variants={fadeUp}>
             <StatTile {...s} />
@@ -110,8 +117,8 @@ export default function GitHub() {
           className="mb-3 flex items-center justify-between text-[10px] uppercase tracking-[0.24em] text-[var(--color-fg-muted)]"
           style={{ fontFamily: 'var(--font-mono)' }}
         >
-          <span>Top languages</span>
-          {loading.langs && <span>Loading…</span>}
+          <span>{site.sections.github.topLanguages}</span>
+          {loading.langs && <span>{site.sections.github.loadingLanguages}</span>}
         </div>
         <div className="flex h-2.5 w-full overflow-hidden rounded-full bg-[var(--color-bg-elevated)] shadow-[0_0_18px_rgba(255,110,199,0.3)] ring-1 ring-[var(--color-line)]">
           {Object.entries(languages).map(([lang, bytes]) => {
@@ -173,7 +180,7 @@ export default function GitHub() {
             className="glass rounded-2xl p-6 text-xs text-[var(--color-fg-muted)]"
             style={{ fontFamily: 'var(--font-mono)' }}
           >
-            Loading recent repositories…
+            {site.sections.github.loadingRepos}
           </div>
         )}
         {!loading.repos && recentRepos.slice(0, 2).map((r) => (

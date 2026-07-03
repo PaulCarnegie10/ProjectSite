@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { FiArrowDown, FiArrowUpRight } from 'react-icons/fi';
 import MagneticLink from '../components/MagneticLink.jsx';
 import { EASE, fadeUp, fadeIn, stagger } from '../lib/motion.js';
+import site from '../content/site.json';
 
 // Same hues as .text-aurora — repeated here so the gradient can be sliced
 // per-letter via background-position while reading as one continuous sweep.
@@ -114,7 +115,7 @@ export default function Hero() {
 
         <div className="relative z-10 flex flex-col items-center px-6 text-center">
           <motion.p variants={fadeUp} className="eyebrow mb-7">
-            {'// computer science + robotics — carnegie mellon'}
+            {site.hero.eyebrow}
           </motion.p>
 
           <motion.h1
@@ -127,15 +128,15 @@ export default function Hero() {
               lineHeight: 1.04,
             }}
           >
-            <DisplayLine word="PAUL" />
-            <DisplayLine word="COLOMBO" aurora />
+            <DisplayLine word={site.hero.lines[0]} />
+            <DisplayLine word={site.hero.lines[1]} aurora />
           </motion.h1>
 
           <motion.p
             variants={fadeUp}
             className="mt-7 max-w-md text-base text-[var(--color-fg-muted)] md:text-lg"
           >
-            Building robots that see. Class of 2028.
+            {site.hero.tagline}
           </motion.p>
 
           <motion.div
@@ -143,10 +144,10 @@ export default function Hero() {
             className="mt-10 flex flex-wrap items-center justify-center gap-4"
           >
             <MagneticLink variant="solid" href="#projects" onClick={scrollTo('#projects')}>
-              View Projects <FiArrowDown aria-hidden="true" />
+              {site.hero.ctaPrimary} <FiArrowDown aria-hidden="true" />
             </MagneticLink>
             <MagneticLink variant="ghost" href="#resume" onClick={scrollTo('#resume')}>
-              Resume <FiArrowUpRight aria-hidden="true" />
+              {site.hero.ctaSecondary} <FiArrowUpRight aria-hidden="true" />
             </MagneticLink>
           </motion.div>
         </div>
@@ -166,7 +167,7 @@ export default function Hero() {
             className="pl-[0.3em] text-[10px] uppercase tracking-[0.3em] text-[var(--color-fg-faint)]"
             style={{ fontFamily: 'var(--font-mono)' }}
           >
-            scroll
+            {site.hero.scrollCue}
           </span>
           <span className="relative block h-14 w-px overflow-hidden">
             <span

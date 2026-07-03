@@ -3,24 +3,25 @@ import { BsLinkedin, BsGithub, BsEnvelopeFill } from 'react-icons/bs';
 import { FiArrowUpRight } from 'react-icons/fi';
 import SectionHeading from '../components/SectionHeading.jsx';
 import { VIEWPORT, fadeUp, scaleIn, stagger } from '../lib/motion.js';
+import site from '../content/site.json';
 
 const METHODS = [
   {
-    label: 'Email',
-    handle: 'pcolombo@andrew.cmu.edu',
-    href: 'mailto:pcolombo@andrew.cmu.edu',
+    label: site.contact.methods.email.label,
+    handle: site.contact.methods.email.handle,
+    href: `mailto:${site.socials.email}`,
     Icon: BsEnvelopeFill,
   },
   {
-    label: 'GitHub',
-    handle: '@PaulCarnegie10',
-    href: 'https://github.com/PaulCarnegie10',
+    label: site.contact.methods.github.label,
+    handle: site.contact.methods.github.handle,
+    href: site.socials.github,
     Icon: BsGithub,
   },
   {
-    label: 'LinkedIn',
-    handle: 'paul-colombo',
-    href: 'https://www.linkedin.com/in/paul-colombo-09aa18336/',
+    label: site.contact.methods.linkedin.label,
+    handle: site.contact.methods.linkedin.handle,
+    href: site.socials.linkedin,
     Icon: BsLinkedin,
   },
 ];
@@ -37,9 +38,15 @@ export default function Contact() {
 
       <SectionHeading
         index="07"
-        eyebrow="Contact"
+        eyebrow={site.contact.eyebrow}
         align="center"
-        title={<>Let&apos;s <span className="text-aurora">talk</span>.</>}
+        title={
+          <>
+            {site.contact.titlePre}
+            <span className="text-aurora">{site.contact.titleAccent}</span>
+            {site.contact.titlePost}
+          </>
+        }
       />
 
       {/* Pulled up under the heading (SectionHeading carries mb-14) */}
@@ -50,7 +57,7 @@ export default function Contact() {
         variants={fadeUp}
         className="mx-auto -mt-8 max-w-md text-center text-base text-[var(--color-fg-muted)]"
       >
-        Open to internships, research, and interesting robots.
+        {site.contact.intro}
       </motion.p>
 
       <motion.div

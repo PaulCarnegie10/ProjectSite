@@ -1,0 +1,97 @@
+{
+  "hero": {
+    "eyebrow": "// computer science + robotics — carnegie mellon",
+    "lines": ["PAUL", "COLOMBO"],
+    "tagline": "Building robots that see. Class of 2028.",
+    "ctaPrimary": "View Projects",
+    "ctaSecondary": "Resume",
+    "scrollCue": "scroll"
+  },
+  "about": {
+    "eyebrow": "About",
+    "titlePre": "The human in the ",
+    "titleAccent": "loop",
+    "titlePost": ".",
+    "chips": ["CMU SCS", "Class of 2028", "Pittsburgh, PA"],
+    "caption": "fig. 01 — paul colombo / pittsburgh, pa",
+    "paragraph1Pre": "Studying ",
+    "paragraph1Accent1": "Computer Science",
+    "paragraph1Mid": " with an additional major in ",
+    "paragraph1Accent2": "Robotics",
+    "paragraph1Post": " at Carnegie Mellon University's School of Computer Science.",
+    "paragraph2": "I spend most of my time on robot perception — teaching machines to make sense of what their cameras see. Lately that means building vision pipelines in PyTorch and making them fast enough for the real world."
+  },
+  "sections": {
+    "projects": {
+      "eyebrow": "Selected Work",
+      "titlePre": "Things I’ve ",
+      "titleAccent": "built",
+      "titlePost": " & shipped.",
+      "allLink": "All projects"
+    },
+    "skills": {
+      "eyebrow": "Skills",
+      "titlePre": "Instruments of ",
+      "titleAccent1": "perception",
+      "titleMid": " and ",
+      "titleAccent2": "motion",
+      "titlePost": "."
+    },
+    "news": {
+      "eyebrow": "Field Notes",
+      "titlePre": "What I'm ",
+      "titleAccent": "up to",
+      "titlePost": ".",
+      "allLink": "All updates"
+    },
+    "github": {
+      "eyebrow": "Activity",
+      "titlePre": "Live from ",
+      "titleAccent": "GitHub",
+      "titlePost": ".",
+      "statLabels": {
+        "repos": "Public repos",
+        "stars": "Stars",
+        "commits": "Commits"
+      },
+      "topLanguages": "Top languages",
+      "loadingLanguages": "Loading…",
+      "loadingRepos": "Loading recent repositories…"
+    },
+    "resume": {
+      "eyebrow": "Resume",
+      "titlePre": "The ",
+      "titleAccent": "paper trail",
+      "titlePost": ".",
+      "intro": "Prefer it on paper? The full resume — coursework, projects, experience.",
+      "downloadLabel": "Download PDF",
+      "openInTabLabel": "Open in tab",
+      "editHint": "// replace public/resume.pdf to update",
+      "previewUnavailable": "PDF preview unavailable here — download instead",
+      "downloadFileLabel": "Download resume.pdf",
+      "fileName": "resume.pdf"
+    }
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "titlePre": "Let's ",
+    "titleAccent": "talk",
+    "titlePost": ".",
+    "intro": "Open to internships, research, and interesting robots.",
+    "methods": {
+      "email": { "label": "Email", "handle": "pcolombo@andrew.cmu.edu" },
+      "github": { "label": "GitHub", "handle": "@PaulCarnegie10" },
+      "linkedin": { "label": "LinkedIn", "handle": "paul-colombo" }
+    }
+  },
+  "footer": {
+    "name": "Paul Colombo",
+    "tagline": "CS + Robotics — CMU '28",
+    "locationSuffix": "Pittsburgh, PA"
+  },
+  "socials": {
+    "github": "https://github.com/PaulCarnegie10",
+    "linkedin": "https://www.linkedin.com/in/paul-colombo-09aa18336/",
+    "email": "pcolombo@andrew.cmu.edu"
+  }
+}
