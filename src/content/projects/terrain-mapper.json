@@ -1,0 +1,37 @@
+{
+  "index": 1,
+  "slug": "terrain-mapper",
+  "title": "Terrain Mapping Drone",
+  "pitch": "A hand-built drone carrying a Jetson Orin Nano and a Unitree L2 LiDAR — working toward mapping terrain and localizing from it, no GPS required.",
+  "tags": ["Robotics", "LiDAR", "Jetson", "SolidWorks"],
+  "side": "left",
+  "accent": "rgba(183,140,255,0.22)",
+  "tagline": "Build the drone, solder every connection, tune it, fly it — then strap a LiDAR sensor package to it and teach it to know where it is from the shape of the ground.",
+  "meta": {
+    "timeframe": "2026",
+    "role": "Solo build",
+    "status": "In progress"
+  },
+  "sections": [
+    {
+      "heading": "The build",
+      "body": [
+        "Part one was putting my robotics and CS skills to work building the aircraft itself: assembling the frame, soldering all the electronics, tuning the flight controller, and getting it flying both autonomously and under manual control. That took about a week and a half of locking myself in my room."
+      ]
+    },
+    {
+      "heading": "The sensor package",
+      "body": [
+        "Part two is arguably much harder: setting up a Jetson Orin Nano, bringing up the Unitree L2 LiDAR, and 3D-modeling a full mounting system for the drone. The Jetson and LiDAR are up and capturing point clouds; the mounting system is in active development. I’m using SolidWorks with my 3D printer to rapidly prototype mount designs."
+      ]
+    },
+    {
+      "heading": "End goal",
+      "body": [
+        "Once the sensor package is flying, the first target is mapping a park. The end goal is localization from the terrain scans themselves — knowing where the drone is from the shape of the ground below it, without GPS."
+      ]
+    }
+  ],
+  "media": [],
+  "links": []
+}

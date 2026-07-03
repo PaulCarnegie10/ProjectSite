@@ -1,0 +1,49 @@
+{
+  "index": 3,
+  "slug": "dr-wu-crew",
+  "title": "Dr Wu Crew Autograder",
+  "pitch": "An autograder site that teaches the AP CSP curriculum — in-browser Python labs, per-objective autograding, and a full lesson-authoring flow, built by three high-school sophomores.",
+  "tags": ["Full-Stack", "Python", "EdTech"],
+  "side": "left",
+  "accent": "rgba(108,196,255,0.20)",
+  "cover": "projects/dr-wu-crew/lab-editor.png",
+  "tagline": "Faculty picked three of us from our CS class to build a website that teaches the AP CSP curriculum. It was pretty much all of our first times making a website.",
+  "meta": {
+    "timeframe": "High school · sophomore year",
+    "role": "Co-developer (team of 3)",
+    "status": "Shipped"
+  },
+  "sections": [
+    {
+      "heading": "The assignment",
+      "body": [
+        "Two classmates and I were selected by faculty to create an autograder-style website to teach students the AP Computer Science Principles curriculum. This was sophomore year of high school, and it was pretty much all of our first times making a website — so everything below was learned the hard way."
+      ]
+    },
+    {
+      "heading": "What we built",
+      "body": [
+        "The core is an in-window coding space that compiles Python, HTML, and CSS right in the browser. Each lesson pairs a video walkthrough with a lab: a checklist of autograded objectives (“correct modulo expression exists in the code”, “print the result of 2 to the 4th power”) that check off as the student’s code satisfies them.",
+        "Around that we built Google sign-in, a database storing each student’s scores individually so progress persists across sessions, and an authoring flow that makes adding and editing lesson content easy for non-developers."
+      ]
+    }
+  ],
+  "media": [
+    {
+      "type": "image",
+      "src": "projects/dr-wu-crew/lab-editor.png",
+      "caption": "A Math lab — lesson video, live Python editor, console output, and autograded objectives"
+    },
+    {
+      "type": "image",
+      "src": "projects/dr-wu-crew/login.png",
+      "caption": "Google sign-in, so every student’s lab progress is saved"
+    },
+    {
+      "type": "image",
+      "src": "projects/dr-wu-crew/lessons.png",
+      "caption": "Lesson navigation"
+    }
+  ],
+  "links": []
+}

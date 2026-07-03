@@ -1,0 +1,82 @@
+{
+  "index": 2,
+  "slug": "bee-tracker",
+  "title": "BeeTracker",
+  "pitch": "A general-purpose autolabeling pipeline that turns raw bee-hive footage into trajectory data — YOLO detection, ByteTrack tracking, and an iterative loop that trains its own detector.",
+  "tags": ["Computer Vision", "YOLO", "ByteTrack", "Research"],
+  "side": "right",
+  "accent": "rgba(255,110,199,0.22)",
+  "cover": "projects/bee-tracker/hive-detections.png",
+  "tagline": "Research with Zeynep Temel’s lab at CMU: one researcher, raw hive video in, labeled trajectories out — in an afternoon instead of thousands of hand-drawn boxes.",
+  "meta": {
+    "timeframe": "2025 – 2026",
+    "role": "Researcher · Temel Lab, CMU",
+    "status": "Presented"
+  },
+  "sections": [
+    {
+      "heading": "Where it started",
+      "body": [
+        "This project began before I joined Zeynep Temel’s research team at CMU — it started at Cornell as Guadalupe Bernal’s Masters project, which produced hundreds of hours of bee-hive entrance footage. Hive-entrance video captures exactly what researchers need: foraging rate, traffic patterns, stress response. But raw footage is useless without labels, and training a reliable detector has traditionally meant hand-drawing thousands of bounding boxes per hive.",
+        "My job was to collapse that pipeline: software that tracks bee trajectories, tells when bees enter and exit the hive, and can train new YOLO models inside the app so anyone with a different camera setup can adapt it to their own footage."
+      ]
+    },
+    {
+      "heading": "Detection & tracking",
+      "body": [
+        "Each frame passes through a fine-tuned YOLO detector. A ByteTrack layer links detections into persistent tracks, and a velocity-vector corrector recovers tracks missed between frames. Completed tracks are classified as entry, exit, or neither against a user-placed entrance zone, using a weighted score over displacement, velocity alignment, terminal proximity, and closest approach — with a dwell gate so a bee has to actually hang around the entrance to count."
+      ]
+    },
+    {
+      "heading": "The autolabel loop",
+      "body": [
+        "The core idea is an iterative loop that turns a text prompt into a fine-tuned bee detector: seed prompt → audit data → train → generate labels → analyze performance, where each pass improves the next round of labels. Mean IoU against reviewer-corrected ground truth holds at ~0.86 after the second iteration, and precision keeps rising as YOLO learns bee-specific cues."
+      ]
+    },
+    {
+      "heading": "Results",
+      "body": [
+        "On a 165-minute session the pipeline detected 24 entries and 44 exits, condensed into 143 navigable motion segments. Tracks export to CSV or JSON, and a manual-override UI handles the edge cases. The whole capture rig is just a camera, a stand, and a mesh enclosure at an outdoor apiary.",
+        "The pipeline generalizes past bees — anything that crosses a boundary is fair game: ants at a nest, rats in a lab study, people walking through a doorway. Load a video, sketch an entrance, label a handful of frames, and the rest runs itself."
+      ]
+    }
+  ],
+  "media": [
+    {
+      "type": "video",
+      "src": "projects/bee-tracker/demo-tracking.mp4",
+      "caption": "Live tracking — YOLO detections with velocity-vector trajectory overlay"
+    },
+    {
+      "type": "video",
+      "src": "projects/bee-tracker/demo-full-pipeline.mp4",
+      "caption": "Full desktop-app pipeline, from raw video to exported trajectories"
+    },
+    {
+      "type": "image",
+      "src": "projects/bee-tracker/hive-detections.png",
+      "caption": "YOLO detections on live hive-entrance footage"
+    },
+    {
+      "type": "image",
+      "src": "projects/bee-tracker/trajectory-entry.png",
+      "caption": "A completed track classified as an entry"
+    },
+    {
+      "type": "image",
+      "src": "projects/bee-tracker/trajectory-2.png",
+      "caption": "Trajectory overlay on a motion segment"
+    },
+    {
+      "type": "image",
+      "src": "projects/bee-tracker/trajectory-3.png",
+      "caption": "Orientation-flight path overlaid on the source frame"
+    }
+  ],
+  "links": [
+    {
+      "label": "Research poster (PDF)",
+      "href": "projects/bee-tracker/beetracker-poster.pdf"
+    }
+  ]
+}

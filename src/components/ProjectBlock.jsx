@@ -4,7 +4,10 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { FiArrowUpRight } from 'react-icons/fi';
 import { EASE, VIEWPORT, fadeUp, stagger } from '../lib/motion.js';
 
-const withBase = (path) => `${import.meta.env.BASE_URL}${path}`;
+// Absolute URLs pass through; local paths (with or without a leading
+// slash — the CMS stores '/projects/…') get the deploy base prefixed.
+const withBase = (path) =>
+  /^(https?:)?\/\//.test(path) ? path : `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
 
 // Full-viewport cinematic project slab. Backdrop is generated — accent radial
 // glow + 64px grid + giant index watermark. An optional `cover` image floats

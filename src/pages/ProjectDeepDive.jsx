@@ -7,7 +7,10 @@ import MagneticLink from '../components/MagneticLink.jsx';
 import { VIEWPORT, fadeUp, stagger } from '../lib/motion.js';
 import { PROJECTS } from '../data/projects.js';
 
-const withBase = (path) => `${import.meta.env.BASE_URL}${path}`;
+// Absolute URLs pass through; local paths (with or without a leading
+// slash — the CMS stores '/projects/…') get the deploy base prefixed.
+const withBase = (path) =>
+  /^(https?:)?\/\//.test(path) ? path : `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
 
 // Title with .text-aurora applied to the last word (string titles only).
 function AuroraTitle({ title }) {

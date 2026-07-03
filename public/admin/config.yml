@@ -1,0 +1,111 @@
+backend:
+  name: github
+  repo: PaulCarnegie10/ProjectSite
+  branch: main
+  base_url: https://YOUR-AUTH-WORKER.workers.dev   # placeholder — Paul fills in after deploying sveltia-cms-auth
+
+media_folder: public/projects
+public_folder: projects
+
+collections:
+  - name: projects
+    label: Projects
+    folder: src/content/projects
+    format: json
+    extension: json
+    create: true
+    identifier_field: title
+    slug: '{{fields.slug}}'
+    summary: '{{title}}'
+    fields:
+      - { name: index, label: Order, widget: number, value_type: int, hint: '1 renders first everywhere' }
+      - { name: slug, label: URL slug, widget: string, pattern: ['^[a-z0-9-]+$', 'lowercase letters, numbers and dashes only'] }
+      - { name: title, label: Title, widget: string }
+      - { name: pitch, label: Pitch, widget: text, hint: 'One or two punchy sentences — home slab + projects index card' }
+      - { name: tags, label: Tags, widget: list, default: [] }
+      - { name: side, label: Text side (home slab), widget: select, options: [left, right] }
+      - name: accent
+        label: Accent glow
+        widget: select
+        options:
+          - { label: Orchid pink, value: 'rgba(255,110,199,0.22)' }
+          - { label: Violet, value: 'rgba(183,140,255,0.22)' }
+          - { label: Sky blue, value: 'rgba(108,196,255,0.20)' }
+      - { name: cover, label: Cover image (home slab), widget: image, required: false, hint: 'Leave empty for the typographic slab look' }
+      - { name: tagline, label: Deep-dive tagline, widget: text }
+      - name: meta
+        label: Meta
+        widget: object
+        fields:
+          - { name: timeframe, widget: string }
+          - { name: role, widget: string }
+          - { name: status, widget: string, hint: 'e.g. In progress / Shipped / Presented' }
+      - name: sections
+        label: Story sections
+        widget: list
+        fields:
+          - { name: heading, widget: string }
+          - name: body
+            label: Paragraphs
+            widget: list
+            field: { name: paragraph, label: Paragraph, widget: text }
+      - name: media
+        label: Media gallery
+        widget: list
+        required: false
+        default: []
+        fields:
+          - { name: type, widget: select, options: [image, video] }
+          - { name: src, label: File, widget: file }
+          - { name: caption, widget: string, required: false }
+      - name: links
+        label: Extra links
+        widget: list
+        required: false
+        default: []
+        fields:
+          - { name: label, widget: string }
+          - { name: href, widget: string, hint: 'Full URL, or a public/ relative path like projects/bee-tracker/poster.pdf' }
+
+  - name: news
+    label: News
+    folder: src/content/news
+    format: json
+    extension: json
+    create: true
+    identifier_field: title
+    slug: '{{fields.date}}-{{fields.title}}'
+    summary: '{{date}} — {{title}}'
+    sortable_fields: [date]
+    fields:
+      - { name: date, widget: string, pattern: ['^\d{4}-\d{2}-\d{2}$', 'YYYY-MM-DD'], hint: 'Newest date shows first; home page shows the latest three' }
+      - { name: tag, widget: string, hint: 'Short category chip, e.g. Research / Internship / Robotics' }
+      - { name: title, widget: string }
+      - { name: body, widget: text }
+      - name: link
+        label: External link
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: label, widget: string, required: false }
+          - { name: href, widget: string, required: false }
+
+  - name: site
+    label: Site content
+    files:
+      - name: skills
+        label: Skills
+        file: src/content/skills.json
+        fields:
+          - name: groups
+            label: Skill groups
+            widget: list
+            fields:
+              - { name: label, widget: string }
+              - { name: blurb, widget: string }
+              - name: items
+                widget: list
+                fields:
+                  - { name: name, widget: string }
+                  - { name: icon, widget: string, required: false, hint: 'react-icons Simple Icons key, e.g. SiPytorch — must be imported in Skills.jsx' }
