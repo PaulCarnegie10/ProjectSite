@@ -2,7 +2,7 @@ backend:
   name: github
   repo: PaulCarnegie10/ProjectSite
   branch: main
-  base_url: https://YOUR-AUTH-WORKER.workers.dev   # placeholder — Paul fills in after deploying sveltia-cms-auth
+  base_url: https://sveltia-cms-auth.paulcolombo.workers.dev
 
 media_folder: public/projects
 public_folder: projects
