@@ -1,46 +1,31 @@
-# Content Manager (/admin) — one-time setup
+# Content Manager (/admin)
 
 The site has a CMS at **https://paulcarnegie10.github.io/ProjectSite/admin/**.
-Every save in the CMS becomes a git commit to `main`, and GitHub Actions
-rebuilds and publishes the site automatically (~2 minutes).
+Sign in with GitHub (only accounts with write access to this repo can edit).
+Every save becomes a git commit to `main`, and GitHub Actions rebuilds and
+publishes the site automatically (~2 minutes).
 
-Editing works two ways:
+Setup is COMPLETE (2026-07-03). For reference, the moving parts:
 
-## A. Local editing (works right now, no setup)
+- **Auth worker**: `https://sveltia-cms-auth.paulcolombo.workers.dev` —
+  Cloudflare Worker (project `sveltia-cms-auth`, repo
+  `PaulCarnegie10/sveltia-cms-auth`). Holds `GITHUB_CLIENT_ID`,
+  `GITHUB_CLIENT_SECRET` (encrypted), and `ALLOWED_DOMAINS=paulcarnegie10.github.io`.
+- **GitHub OAuth app**: "ProjectSite CMS" (github.com → Settings →
+  Developer settings → OAuth Apps), callback = worker URL + `/callback`.
+- **CMS config**: `public/admin/config.yml` (`base_url` points at the worker).
+- **workers.dev subdomain**: `paulcolombo.workers.dev` (account-level).
+
+If the secret ever leaks or breaks: generate a new client secret on the
+OAuth app page, then `printf '<secret>' | npx wrangler secret put
+GITHUB_CLIENT_SECRET --name sveltia-cms-auth`.
+
+## Local editing (no sign-in needed)
 
 1. `npm run dev`
 2. Open http://localhost:5173/ProjectSite/admin/
 3. Click **Work with Local Repository** and select the `ProjectSite` folder.
 4. Edits write straight to `src/content/` — commit and push when happy.
-
-## B. Editing from anywhere (needs ~10 minutes of one-time setup)
-
-The deployed /admin signs you in with GitHub. GitHub Pages can't hold the
-OAuth secret, so a tiny free Cloudflare Worker does the handshake.
-
-1. **Deploy the auth worker** — go to
-   https://github.com/sveltia/sveltia-cms-auth and click
-   "Deploy to Cloudflare Workers" (free Cloudflare account is fine).
-   Copy the worker URL, e.g. `https://sveltia-cms-auth.YOURNAME.workers.dev`.
-
-2. **Create a GitHub OAuth app** — GitHub → Settings → Developer settings →
-   OAuth Apps → New OAuth App:
-   - Homepage URL: `https://paulcarnegie10.github.io/ProjectSite/`
-   - Authorization callback URL: `<YOUR_WORKER_URL>/callback`
-   Register it, copy the **Client ID**, and generate a **Client Secret**.
-
-3. **Configure the worker** — Cloudflare dashboard → your worker →
-   Settings → Variables. Add:
-   - `GITHUB_CLIENT_ID` = the Client ID
-   - `GITHUB_CLIENT_SECRET` = the Client Secret (use the Encrypt button)
-
-4. **Point the CMS at the worker** — in `public/admin/config.yml`, replace
-   the placeholder `base_url` with your worker URL and push (or tell Claude
-   the URL and it'll do it).
-
-5. Open https://paulcarnegie10.github.io/ProjectSite/admin/ → **Sign In
-   with GitHub**. Only accounts with write access to this repo can edit —
-   that's you.
 
 ## Notes
 
