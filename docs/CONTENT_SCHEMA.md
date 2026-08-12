@@ -92,6 +92,8 @@ A content path is a single string: `<file relative to content/>#<key>`.
 // rawValue (optional): when children are RENDERED output (e.g. markdown body),
 // the editor uses rawValue as the edit buffer; children/innerText would mangle it.
 <EditableImage path src alt className />        // drop target replaces file + frontmatter
+// Falsy src: renders nothing in prod; renders an empty drop target in dev
+// (so an absent hero can be ADDED through the UI). Bind slots unconditionally.
 <EditableGallery path items={[{src,name}]} renderItem />  // drop adds; per-item remove
 <EditableVideos path items={[{src,name}]} renderItem />   // drop adds (auto-compressed); per-item remove
 // renderItem(item, i) is optional; when given, it renders each item.
