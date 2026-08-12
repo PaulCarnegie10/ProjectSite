@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { EditToolbar } from './edit/index.jsx';
-import { getProjects } from './content/loader.js';
+import { getAllProjects } from './content/loader.js';
 import Home from './pages/Home.jsx';
 import Projects from './pages/Projects.jsx';
 import ProjectDetail, { NotFound } from './pages/ProjectDetail.jsx';
@@ -27,7 +27,9 @@ function App() {
         {/* Unknown paths get the dedicated not-found view, never a crash. */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <EditToolbar projects={getProjects().map((project) => project.slug)} />
+      {/* Drafts included: a just-created project is a draft, and it must still be
+          reorderable and deletable from the toolbar. */}
+      <EditToolbar projects={getAllProjects().map((project) => project.slug)} />
     </>
   );
 }

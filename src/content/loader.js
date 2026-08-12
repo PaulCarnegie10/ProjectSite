@@ -159,6 +159,13 @@ const allProjects = Object.entries(projectFiles)
   .filter((project) => project.slug)
   .sort((a, b) => a.order - b.order || a.slug.localeCompare(b.slug));
 
+/** Project[], order-sorted ascending, drafts INCLUDED. Dev tooling only: the
+ *  edit toolbar must be able to reorder and delete a just-created project,
+ *  which the server scaffolds as a draft. */
+export function getAllProjects() {
+  return allProjects;
+}
+
 /** Project[], order-sorted ascending, drafts excluded. */
 export function getProjects() {
   return allProjects.filter((project) => !project.draft);

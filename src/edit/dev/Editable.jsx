@@ -71,7 +71,10 @@ export function DevEditable({
   const hasRaw = typeof rawValue === 'string';
   const explicit = hasRaw ? rawValue : childText(children);
   const currentText = override ?? explicit;
-  const shown = override ?? children;
+  // For a rawValue slot the override holds SOURCE while children hold RENDERED
+  // output, so showing the override optimistically would paint raw markdown.
+  // Keep the rendered children until the reload brings the re-rendered value.
+  const shown = hasRaw ? children : (override ?? children);
   // rawValue means children are rendered output, so the in-place contentEditable
   // path (which commits innerText) would write mangled source. Force the overlay.
   const useOverlay = multiline || hasRaw;

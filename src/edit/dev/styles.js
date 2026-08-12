@@ -37,6 +37,24 @@ const CSS = `
   outline-offset: 2px;
   background: rgba(200, 189, 166, 0.06);
 }
+/* An empty bound slot is the ONLY way to enter a value that does not exist yet
+   (an unset date, a missing blurb). The site stylesheet collapses :empty blocks,
+   which would make those slots unclickable — so in edit mode, force them back to
+   a real click target with a placeholder. Higher specificity than the site rule. */
+.pe-editable[data-pe-on='1']:empty {
+  display: inline-block;
+  min-width: 7rem;
+  min-height: 1.2em;
+  outline: 1px dashed var(--pe-accent);
+  vertical-align: middle;
+}
+.pe-editable[data-pe-on='1']:empty::before {
+  content: 'empty, click to add';
+  color: var(--pe-line-soft);
+  font-size: 0.8em;
+  font-style: italic;
+  padding: 0 0.35em;
+}
 .pe-editable[data-pe-busy='1'] {
   opacity: 0.55;
 }
