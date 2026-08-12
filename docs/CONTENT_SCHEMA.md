@@ -88,7 +88,9 @@ A content path is a single string: `<file relative to content/>#<key>`.
 ### 3.2 Components
 
 ```jsx
-<Editable path as="h1|p|span|..." multiline={bool}>{currentValue}</Editable>
+<Editable path as="h1|p|span|..." multiline={bool} rawValue={string?}>{currentValue}</Editable>
+// rawValue (optional): when children are RENDERED output (e.g. markdown body),
+// the editor uses rawValue as the edit buffer; children/innerText would mangle it.
 <EditableImage path src alt className />        // drop target replaces file + frontmatter
 <EditableGallery path items={[{src,name}]} renderItem />  // drop adds; per-item remove
 <EditableVideos path items={[{src,name}]} renderItem />   // drop adds (auto-compressed); per-item remove
