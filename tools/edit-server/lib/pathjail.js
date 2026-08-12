@@ -96,12 +96,23 @@ export function resolveInRoot(contentRoot, rel) {
   const root = path.resolve(contentRoot);
   const safeRel = validateRelPath(rel);
   const resolved = path.resolve(root, safeRel);
-  const r = forCompare(resolved);
-  const base = forCompare(root);
-  if (r !== base && !r.startsWith(base + path.sep)) {
-    throw bad('path escapes content root');
-  }
+  assertInsideRoot(root, resolved);
   return resolved;
+}
+
+/**
+ * Prove an already-absolute path lives inside contentRoot. Used to re-check
+ * WRITE destinations the server itself constructs (trash dir, atomic-temp
+ * sibling, encoded-asset final path) — defense in depth beyond request paths.
+ * @throws {EditError} bad_path
+ */
+export function assertInsideRoot(contentRoot, absPath) {
+  const base = forCompare(path.resolve(contentRoot));
+  const r = forCompare(path.resolve(absPath));
+  if (r !== base && !r.startsWith(base + path.sep)) {
+    throw bad('write target escapes content root');
+  }
+  return absPath;
 }
 
 /**

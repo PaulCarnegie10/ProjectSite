@@ -69,7 +69,13 @@ export async function readMultipart(req, limit = MULTIPART_LIMIT) {
   }
 
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'edit-upload-'));
-  const cleanup = () => fs.rmSync(dir, { recursive: true, force: true });
+  let activeOut = null;
+  const cleanup = () => {
+    // Close the write stream before removing the dir: on Windows an open handle
+    // makes rmSync throw EPERM. maxRetries covers the flush lag.
+    try { activeOut?.destroy(); } catch { /* already closed */ }
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3, retryDelay: 50 });
+  };
 
   return new Promise((resolve, reject) => {
     const fields = {};
@@ -93,6 +99,17 @@ export async function readMultipart(req, limit = MULTIPART_LIMIT) {
       done(reject, err);
     };
 
+    // Client disconnect mid-upload (tab close, xhr.abort): req closes before it
+    // is complete. Without this the promise never settles, dispatch's
+    // finally{cleanup} never runs, and a partial temp file (up to 512 MB) leaks
+    // forever. req.complete distinguishes an abort from an orderly end.
+    req.on('close', () => {
+      if (!settled && !req.complete) abort(fail('encode_failed', 'client disconnected during upload'));
+    });
+    req.on('error', (err) => {
+      if (!settled) abort(fail('encode_failed', `request stream error: ${err.message}`));
+    });
+
     bb.on('field', (name, value) => { fields[name] = value; });
 
     // busboy's 'close' can land before the fs write stream has flushed, so the
@@ -103,6 +120,7 @@ export async function readMultipart(req, limit = MULTIPART_LIMIT) {
       const tmpPath = path.join(dir, 'upload.bin');
       let bytes = 0;
       const out = fs.createWriteStream(tmpPath);
+      activeOut = out;
       written = new Promise((resolveWrite) => {
         stream.on('data', (chunk) => { bytes += chunk.length; });
         stream.on('limit', () => {

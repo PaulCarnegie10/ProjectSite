@@ -165,7 +165,7 @@ test('POST /__edit/project scaffolds a project with every §1.1 key', async () =
       assert.match(raw, new RegExp(`^${key}:`, 'm'), `scaffold must contain ${key}`);
     }
     assert.match(raw, /^order: 3$/m, 'order must be max existing (2) + 1');
-    assert.match(raw, /^draft: false$/m);
+    assert.match(raw, /^draft: true$/m, 'new projects start as drafts (owner clears the flag)');
     assert.match(raw, /^tags: \[\]$/m);
     assert.ok(raw.includes(TODO_MARKER), 'body must carry the TODO marker');
 
@@ -244,6 +244,82 @@ test('reorder validates the whole list before writing anything', async () => {
     assert.equal(status, 404);
     assert.equal(body.error, 'not_found');
     assert.equal(read(root, 'projects/bee-tracker/index.md'), before, 'no partial write');
+  });
+});
+
+// S9: a subset renumbers 1..k and collides with the untouched projects.
+test('reorder rejects a partial (subset) slug list', async () => {
+  await withServer(async ({ origin }, root) => {
+    const before = read(root, 'projects/bee-tracker/index.md');
+    const { status, body } = await api(origin, 'POST', '/__edit/reorder', {
+      slugs: ['bee-tracker'], // robot-arm is also non-draft and is missing
+    });
+    assert.equal(status, 400);
+    assert.equal(body.error, 'bad_path');
+    assert.match(body.message, /all 2 non-draft projects/);
+    assert.equal(read(root, 'projects/bee-tracker/index.md'), before, 'no write on rejection');
+  });
+});
+
+test('reorder rejects a duplicated slug', async () => {
+  await withServer(async ({ origin }) => {
+    const { status, body } = await api(origin, 'POST', '/__edit/reorder', {
+      slugs: ['bee-tracker', 'bee-tracker'],
+    });
+    assert.equal(status, 400);
+    assert.equal(body.error, 'bad_path');
+  });
+});
+
+test('reorder accepts the full non-draft set once a project is drafted out', async () => {
+  await withServer(async ({ origin }) => {
+    // Draft robot-arm; the non-draft set becomes just bee-tracker.
+    await api(origin, 'POST', '/__edit/text', {
+      path: 'projects/robot-arm/index.md#draft',
+      value: true,
+    });
+    const { status, body } = await api(origin, 'POST', '/__edit/reorder', { slugs: ['bee-tracker'] });
+    assert.equal(status, 200, JSON.stringify(body));
+    assert.deepEqual(body.orders, { 'bee-tracker': 1 });
+  });
+});
+
+/* ---------------------------------------------------------------- CSRF gate */
+
+// B1: the loopback peer is the owner's own browser, so a page he visits could
+// fire a no-preflight simple-request POST. The required custom header forces a
+// preflight the dev server won't grant, so such a request never arrives.
+test('a request WITHOUT the x-edit-dev header is rejected', async () => {
+  await withServer(async ({ origin }, root) => {
+    const before = read(root, 'projects/bee-tracker/index.md');
+    const { status, body } = await api(
+      origin, 'POST', '/__edit/text',
+      { path: 'projects/bee-tracker/index.md#title', value: 'CSRF' },
+      { noDevHeader: true },
+    );
+    assert.equal(status, 403);
+    assert.equal(body.error, 'not_loopback');
+    assert.equal(read(root, 'projects/bee-tracker/index.md'), before, 'no write without the header');
+  });
+});
+
+test('GET ping without the x-edit-dev header is rejected', async () => {
+  await withServer(async ({ origin }) => {
+    const { status, body } = await api(origin, 'GET', '/__edit/ping', undefined, { noDevHeader: true });
+    assert.equal(status, 403);
+    assert.equal(body.error, 'not_loopback');
+  });
+});
+
+test('the same request WITH the x-edit-dev header succeeds', async () => {
+  await withServer(async ({ origin }) => {
+    const { status, body } = await api(origin, 'POST', '/__edit/text', {
+      path: 'projects/bee-tracker/index.md#title',
+      value: 'Allowed',
+    });
+    assert.equal(status, 200);
+    assert.equal(body.ok, true);
+    assert.equal(body.value, 'Allowed');
   });
 });
 

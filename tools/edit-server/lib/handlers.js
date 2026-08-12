@@ -7,7 +7,7 @@ import os from 'node:os';
 import path from 'node:path';
 import process from 'node:process';
 import { fail } from './errors.js';
-import { resolveInRoot, splitContentPath, validateRelPath } from './pathjail.js';
+import { resolveInRoot, splitContentPath, validateRelPath, assertInsideRoot } from './pathjail.js';
 import * as fm from './frontmatter.js';
 import { getJsonValue, setJsonValue } from './jsonedit.js';
 import { classifyUpload, slugify, uniqueName } from './filename.js';
@@ -20,11 +20,23 @@ export const TODO_MARKER = `[TODO ${EM_DASH} Paul]`;
 
 /* ------------------------------------------------------------------ utils */
 
-/** Write via a sibling temp file + rename so a crash cannot truncate content. */
-function atomicWrite(target, contents) {
+/**
+ * Write via a sibling temp file + rename so a crash cannot truncate content.
+ * Both the destination and the temp sibling are re-checked for containment
+ * (defense in depth: the path jail validates REQUEST paths, this validates the
+ * WRITE destinations). A failed rename unlinks the orphan temp file.
+ */
+function atomicWrite(contentRoot, target, contents) {
+  assertInsideRoot(contentRoot, target);
   const tmp = path.join(path.dirname(target), `.${path.basename(target)}.${process.pid}.${Date.now()}.tmp`);
+  assertInsideRoot(contentRoot, tmp);
   fs.writeFileSync(tmp, contents, 'utf8');
-  fs.renameSync(tmp, target);
+  try {
+    fs.renameSync(tmp, target);
+  } catch (err) {
+    fs.rmSync(tmp, { force: true });
+    throw err;
+  }
 }
 
 function readExisting(abs, rel) {
@@ -72,7 +84,7 @@ export async function setText(ctx, body) {
   const { value } = body;
 
   if (/\.json$/i.test(rel)) {
-    atomicWrite(abs, setJsonValue(raw, key, value));
+    atomicWrite(ctx.contentRoot, abs, setJsonValue(raw, key, value));
     return { path: contentPath, value };
   }
   if (/\.md$/i.test(rel)) {
@@ -82,7 +94,7 @@ export async function setText(ctx, body) {
       if (!doc.hasFrontmatter) throw fail('not_found', `${rel} has no frontmatter block`);
       fm.setValue(doc, key, value);
     }
-    atomicWrite(abs, fm.serialize(doc));
+    atomicWrite(ctx.contentRoot, abs, fm.serialize(doc));
     return { path: contentPath, value };
   }
   throw fail('bad_path', 'only .json and .md files are editable');
@@ -103,7 +115,7 @@ export function readText(ctx, contentPath) {
  * @param {{contentRoot:string}} ctx
  * @param {{fields:object, file:object|null}} upload
  */
-export async function putAsset(ctx, upload) {
+export async function putAsset(ctx, upload, { signal } = {}) {
   const contentPath = requireString(upload.fields.path, 'path');
   const { rel, key } = splitContentPath(contentPath);
   if (!ASSET_KEYS.has(key)) {
@@ -123,6 +135,8 @@ export async function putAsset(ctx, upload) {
 
   const outExt = kind === 'image' ? '.webp' : '.mp4';
   const name = uniqueName(dir, stem, outExt);
+  const finalPath = path.join(dir, name);
+  assertInsideRoot(ctx.contentRoot, finalPath);
   // Encode to a temp file first; a failed encode must not leave a half-written
   // asset inside content/.
   const stageDir = fs.mkdtempSync(path.join(os.tmpdir(), 'edit-encode-'));
@@ -131,8 +145,16 @@ export async function putAsset(ctx, upload) {
   try {
     result = kind === 'image'
       ? await compressImage(upload.file.tmpPath, staged, { animated: ext === '.gif' })
-      : await compressVideo(upload.file.tmpPath, staged);
-    fs.renameSync(staged, path.join(dir, name));
+      : await compressVideo(upload.file.tmpPath, staged, { signal });
+    // rename across the tmp/repo volume boundary throws EXDEV on Windows; fall
+    // back to copy + unlink, same as deleteProject.
+    try {
+      fs.renameSync(staged, finalPath);
+    } catch (err) {
+      if (err.code !== 'EXDEV') throw err;
+      fs.copyFileSync(staged, finalPath);
+      fs.rmSync(staged, { force: true });
+    }
   } catch (err) {
     fs.rmSync(stageDir, { recursive: true, force: true });
     throw err;
@@ -148,7 +170,7 @@ export async function putAsset(ctx, upload) {
     items.push(name);
     fm.setArray(doc, key, items);
   }
-  atomicWrite(abs, fm.serialize(doc));
+  atomicWrite(ctx.contentRoot, abs, fm.serialize(doc));
 
   return {
     name,
@@ -184,7 +206,7 @@ export async function deleteAsset(ctx, body) {
     if (items.length === before.length) throw fail('not_found', `${name} is not listed in ${key}`);
     fm.setArray(doc, key, items);
   }
-  atomicWrite(abs, fm.serialize(doc));
+  atomicWrite(ctx.contentRoot, abs, fm.serialize(doc));
   return { path: contentPath, items };
 }
 
@@ -215,7 +237,7 @@ export function scaffold(title, order) {
     `date: "${yyyymm()}"`,
     'tags: []',
     `order: ${order}`,
-    'draft: false',
+    'draft: true',
     'hero: ""',
     'gallery: []',
     'videos: []',
@@ -232,7 +254,7 @@ export async function createProject(ctx, body) {
   const dir = resolveInRoot(ctx.contentRoot, `projects/${slug}`);
   if (fs.existsSync(dir)) throw fail('bad_path', `project "${slug}" already exists`);
   fs.mkdirSync(dir, { recursive: true });
-  atomicWrite(path.join(dir, 'index.md'), scaffold(title, maxOrder(ctx.contentRoot) + 1));
+  atomicWrite(ctx.contentRoot, path.join(dir, 'index.md'), scaffold(title, maxOrder(ctx.contentRoot) + 1));
   return { slug };
 }
 
@@ -247,6 +269,7 @@ export async function deleteProject(ctx, body) {
   fs.mkdirSync(trashRoot, { recursive: true });
   const stamp = `${slug}-${Date.now()}`;
   const dest = path.join(trashRoot, stamp);
+  assertInsideRoot(ctx.contentRoot, dest); // defense in depth on the write destination
   try {
     fs.renameSync(dir, dest);
   } catch (err) {
@@ -259,6 +282,22 @@ export async function deleteProject(ctx, body) {
 
 /* ---------------------------------------------------------------- reorder */
 
+/** Slugs of every non-draft project on disk (drafts don't participate in order). */
+function nonDraftSlugs(contentRoot) {
+  const dir = projectsDir(contentRoot);
+  if (!fs.existsSync(dir)) return [];
+  const out = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const index = path.join(dir, entry.name, 'index.md');
+    if (!fs.existsSync(index)) continue;
+    const doc = fm.parseDocument(fs.readFileSync(index, 'utf8'));
+    if (fm.getValue(doc, 'draft') === true) continue;
+    out.push(entry.name);
+  }
+  return out;
+}
+
 export async function reorder(ctx, body) {
   const { slugs } = body;
   if (!Array.isArray(slugs)) throw fail('bad_path', 'slugs must be an array');
@@ -270,13 +309,28 @@ export async function reorder(ctx, body) {
     if (!fs.existsSync(abs)) throw fail('not_found', `no such project: ${slug}`);
     return { slug, abs, order: i + 1 };
   });
+
+  // `order` is contiguous across ALL non-draft projects, so a partial reorder
+  // would renumber a subset 1..k and collide with the untouched ones. Require
+  // the submitted list to be exactly the non-draft set, each slug once.
+  const submitted = targets.map((t) => t.slug);
+  if (new Set(submitted).size !== submitted.length) {
+    throw fail('bad_path', 'duplicate slug in reorder list');
+  }
+  const expected = nonDraftSlugs(ctx.contentRoot);
+  const a = [...submitted].sort();
+  const b = [...expected].sort();
+  if (a.length !== b.length || a.some((s, i) => s !== b[i])) {
+    throw fail('bad_path', `reorder must list all ${expected.length} non-draft projects exactly once`);
+  }
+
   // Validated as a set before anything is written, so a bad slug at the end of
   // the list cannot leave a half-applied ordering behind.
   for (const t of targets) {
     const doc = fm.parseDocument(fs.readFileSync(t.abs, 'utf8'));
     if (!doc.hasFrontmatter) throw fail('not_found', `${t.slug}/index.md has no frontmatter block`);
     fm.setValue(doc, 'order', t.order);
-    atomicWrite(t.abs, fm.serialize(doc));
+    atomicWrite(ctx.contentRoot, t.abs, fm.serialize(doc));
     orders[t.slug] = t.order;
   }
   return { orders };

@@ -178,3 +178,46 @@ test('unterminated frontmatter is not treated as frontmatter', () => {
   assert.equal(doc.hasFrontmatter, false);
   assert.equal(fm.serialize(doc), raw);
 });
+
+// S2: a pasted control character must not be written raw (that makes the file
+// unloadable by a real YAML parser). It is \xNN-escaped and round-trips.
+test('control characters are escaped, not written raw, and round-trip', () => {
+  const bel = String.fromCharCode(7);
+  const soh = String.fromCharCode(1);
+  const ff = String.fromCharCode(12);
+  const del = String.fromCharCode(0x7f);
+  const value = `a${bel}b${soh}c${ff}d${del}e`;
+
+  const doc = fm.parseDocument(beeRaw());
+  fm.setValue(doc, 'title', value);
+  const out = fm.serialize(doc);
+
+  // No raw C0/C1/DEL byte survives in the serialized document.
+  const control = new RegExp(`[${String.fromCharCode(0)}-${String.fromCharCode(8)}${String.fromCharCode(11)}${String.fromCharCode(12)}${String.fromCharCode(14)}-${String.fromCharCode(0x1f)}${String.fromCharCode(0x7f)}-${String.fromCharCode(0x9f)}]`);
+  assert.ok(!control.test(out), 'serialized output must contain no raw control char');
+  assert.match(out, /title: "a\\x07b\\x01c\\x0cd\\x7fe"/);
+
+  // Symmetric: re-parsing decodes the escapes back to the original bytes.
+  assert.equal(fm.getValue(fm.parseDocument(out), 'title'), value);
+});
+
+test('a plain-styled control-char value is forced into double quotes', () => {
+  const doc = fm.parseDocument(beeRaw());
+  fm.setValue(doc, 'blurb', `has a ${String.fromCharCode(3)} control`); // blurb is plain
+  const out = fm.serialize(doc);
+  assert.match(out, /blurb: "has a \\x03 control"/);
+  assert.equal(fm.getValue(fm.parseDocument(out), 'blurb'), `has a ${String.fromCharCode(3)} control`);
+});
+
+// S3: a duplicate top-level key is a silent-no-op trap (loaders keep the last
+// value, our editor targets the first), so we refuse to touch the document.
+test('a duplicate top-level frontmatter key is rejected at parse time', () => {
+  const raw = '---\ntitle: one\norder: 1\ntitle: two\n---\nbody\n';
+  assert.throws(() => fm.parseDocument(raw), (e) => e.code === 'bad_path' && /duplicate/.test(e.message));
+});
+
+test('a key duplicated only at a deeper indent is NOT treated as a top-level dup', () => {
+  // Nested "url" keys inside block-mapping items must not trip the guard.
+  const raw = '---\ntitle: x\nlinks:\n  - label: a\n    url: one\n  - label: b\n    url: two\n---\nbody\n';
+  assert.doesNotThrow(() => fm.parseDocument(raw));
+});

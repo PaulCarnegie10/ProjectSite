@@ -36,22 +36,39 @@ export async function loadFfmpeg() {
 
 export const hasFfmpeg = async () => (await loadFfmpeg()) !== null;
 
-/** Run ffmpeg with an argument array. Never a shell string. */
-function run(bin, args) {
+/**
+ * Run ffmpeg with an argument array. Never a shell string.
+ * An AbortSignal kills the child (SIGKILL) so a client cancel actually stops
+ * the encode server-side rather than orphaning ffmpeg. Resolves with
+ * `aborted:true` in that case.
+ */
+function run(bin, args, signal) {
   return new Promise((resolve) => {
+    if (signal?.aborted) {
+      resolve({ code: -1, stdout: '', stderr: 'aborted before start', aborted: true });
+      return;
+    }
     const child = spawn(bin, args, { shell: false, windowsHide: true });
     let stderr = '';
     let stdout = '';
+    let aborted = false;
     const timer = setTimeout(() => child.kill('SIGKILL'), SPAWN_TIMEOUT_MS);
+    const onAbort = () => {
+      aborted = true;
+      child.kill('SIGKILL');
+    };
+    signal?.addEventListener('abort', onAbort, { once: true });
     child.stdout.on('data', (d) => { stdout += d.toString(); });
     child.stderr.on('data', (d) => { stderr += d.toString(); });
     child.on('error', (err) => {
       clearTimeout(timer);
-      resolve({ code: -1, stdout, stderr: `${stderr}\n${err.message}` });
+      signal?.removeEventListener('abort', onAbort);
+      resolve({ code: -1, stdout, stderr: `${stderr}\n${err.message}`, aborted });
     });
     child.on('close', (code) => {
       clearTimeout(timer);
-      resolve({ code, stdout, stderr });
+      signal?.removeEventListener('abort', onAbort);
+      resolve({ code, stdout, stderr, aborted });
     });
   });
 }
@@ -96,12 +113,19 @@ const outputArgs = (bitrate) => [
   '-movflags', '+faststart',
 ];
 
+const abortedError = () => fail('encode_failed', 'video encode cancelled');
+
 /**
  * Compress to H.264 MP4 under TARGET_BYTES. Single ABR pass first; if that
- * overshoots, a proper two-pass encode at the same computed bitrate.
+ * overshoots AND the budget was not already at the floor, a proper two-pass
+ * encode at the same computed bitrate. When bitrate is already at
+ * MIN_VIDEO_BITRATE the target is unreachable, so a second pass at the same
+ * bitrate would only burn two more encodes for the same oversized result — we
+ * return the honest oversized bytesOut instead.
+ * @param {{signal?: AbortSignal}} [opts]
  * @returns {Promise<{bytesIn,bytesOut,duration,bitrate,twoPass}>}
  */
-export async function compressVideo(inputPath, outPath) {
+export async function compressVideo(inputPath, outPath, { signal } = {}) {
   const bin = await loadFfmpeg();
   if (!bin) throw fail('encode_failed', 'ffmpeg is not available; cannot process video uploads');
 
@@ -110,16 +134,19 @@ export async function compressVideo(inputPath, outPath) {
   const bitrate = videoBitrateFor(duration);
 
   const one = await run(bin, [
-    '-hide_banner', '-i', inputPath,
+    '-hide_banner', '-nostats', '-i', inputPath,
     ...baseVideoArgs(bitrate),
     ...outputArgs(bitrate),
     '-y', outPath,
-  ]);
+  ], signal);
+  if (one.aborted) throw abortedError();
   if (one.code !== 0 || !fs.existsSync(outPath)) {
     throw fail('encode_failed', `ffmpeg failed: ${tail(one.stderr)}`);
   }
   let bytesOut = fs.statSync(outPath).size;
-  if (bytesOut <= TARGET_BYTES) {
+  // At the bitrate floor the target is mathematically unreachable; don't waste
+  // two more encodes chasing it.
+  if (bytesOut <= TARGET_BYTES || bitrate === MIN_VIDEO_BITRATE) {
     return { bytesIn, bytesOut, duration, bitrate, twoPass: false };
   }
 
@@ -128,19 +155,21 @@ export async function compressVideo(inputPath, outPath) {
   const scratch = path.join(workDir, 'pass1.mp4');
   try {
     const p1 = await run(bin, [
-      '-hide_banner', '-i', inputPath,
+      '-hide_banner', '-nostats', '-i', inputPath,
       ...baseVideoArgs(bitrate),
       '-pass', '1', '-passlogfile', passlog,
       '-an', '-f', 'mp4', '-y', scratch,
-    ]);
+    ], signal);
+    if (p1.aborted) throw abortedError();
     if (p1.code !== 0) throw fail('encode_failed', `ffmpeg pass 1 failed: ${tail(p1.stderr)}`);
     const p2 = await run(bin, [
-      '-hide_banner', '-i', inputPath,
+      '-hide_banner', '-nostats', '-i', inputPath,
       ...baseVideoArgs(bitrate),
       '-pass', '2', '-passlogfile', passlog,
       ...outputArgs(bitrate),
       '-y', outPath,
-    ]);
+    ], signal);
+    if (p2.aborted) throw abortedError();
     if (p2.code !== 0 || !fs.existsSync(outPath)) {
       throw fail('encode_failed', `ffmpeg pass 2 failed: ${tail(p2.stderr)}`);
     }

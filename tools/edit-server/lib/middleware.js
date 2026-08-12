@@ -12,6 +12,16 @@ import * as h from './handlers.js';
 
 const EDIT_PREFIX = '/__edit/';
 
+// CSRF guard. The loopback gate alone is not enough: the owner's own browser is
+// a loopback peer, so any web page he visits could fire a "simple" cross-origin
+// POST (text/plain or multipart, no preflight) at http://localhost:5173/__edit/*
+// and it would pass Host + peer + content-type checks. Requiring a custom header
+// forces the browser to send a CORS preflight, which Vite's dev server does not
+// grant for this route, so the real request never leaves the browser. The E2
+// client sends this header on every fetch/XHR call.
+export const EDIT_DEV_HEADER = 'x-edit-dev';
+export const EDIT_DEV_TOKEN = '__EDIT_DEV_ONLY__';
+
 /**
  * Extract the action from a URL that may be bare (`/__edit/ping`) or carry the
  * Vite base (`/ProjectSite/__edit/ping`).
@@ -28,7 +38,7 @@ export function matchAction(url) {
   return /^[a-z]+$/.test(action) ? action : null;
 }
 
-async function dispatch(action, method, req, ctx) {
+async function dispatch(action, method, req, res, ctx) {
   if (action === 'ping' && method === 'GET') return h.ping(ctx);
   if (action === 'text' && method === 'POST') return h.setText(ctx, await readJsonBody(req));
   if (action === 'project' && method === 'POST') return h.createProject(ctx, await readJsonBody(req));
@@ -37,9 +47,15 @@ async function dispatch(action, method, req, ctx) {
   if (action === 'asset' && method === 'DELETE') return h.deleteAsset(ctx, await readJsonBody(req));
   if (action === 'asset' && method === 'POST') {
     const upload = await readMultipart(req);
+    // If the client hangs up before we finish (xhr.abort during a long video
+    // encode), abort the signal so compressVideo kills ffmpeg server-side.
+    const ac = new AbortController();
+    const onClose = () => { if (!res.writableEnded) ac.abort(); };
+    res.on('close', onClose);
     try {
-      return await h.putAsset(ctx, upload);
+      return await h.putAsset(ctx, upload, { signal: ac.signal });
     } finally {
+      res.off('close', onClose);
       upload.cleanup();
     }
   }
@@ -74,11 +90,19 @@ export function createEditMiddleware(options) {
       return closeAfter(req, res, fail('not_loopback', 'edit API is restricted to loopback clients'));
     }
 
+    // CSRF guard (see EDIT_DEV_HEADER). A missing/wrong token means the request
+    // did not come from the E2 edit client, so it is refused before any body is
+    // read. Reported as not_loopback: to a browser these are the same "you are
+    // not an allowed caller" outcome, and the frozen code list has no CSRF code.
+    if (req.headers[EDIT_DEV_HEADER] !== EDIT_DEV_TOKEN) {
+      return closeAfter(req, res, fail('not_loopback', 'edit API requires the edit-dev header'));
+    }
+
     if (!fs.existsSync(contentRoot)) {
       return sendError(res, fail('not_found', `content root does not exist: ${contentRoot}`));
     }
 
-    return dispatch(action, req.method, req, ctx)
+    return dispatch(action, req.method, req, res, ctx)
       .then((payload) => sendOk(res, payload))
       .catch((err) => {
         // A capped body left unread bytes in flight; answer, then hang up.

@@ -197,6 +197,17 @@ export function parseDocument(raw) {
   doc.close = lines[closeIdx];
   doc.body = joinLines(lines.slice(closeIdx + 1));
   doc.eol = doc.open.eol || '\n';
+
+  // A duplicate top-level key is a trap: YAML loaders keep the LAST value while
+  // our single-line editor targets the FIRST, so an edit would appear to no-op.
+  // Refuse to touch such a document rather than write a silent lie.
+  const base = topIndent(doc);
+  const seen = new Set();
+  for (const l of doc.fm) {
+    if (l.kind !== 'key' || l.indent !== base) continue;
+    if (seen.has(l.key)) throw fail('bad_path', `duplicate frontmatter key: ${l.key}`);
+    seen.add(l.key);
+  }
   return doc;
 }
 
@@ -280,9 +291,14 @@ export function decodeScalar(text) {
 
 const PLAIN_UNSAFE_HEAD = new Set(['-', '?', ':', ',', '[', ']', '{', '}', '#', '&', '*', '!', '|', '>', "'", '"', '%', '@', '`']);
 
+// C0 (incl. NUL/BS/FF/VT), DEL, and C1 controls. Any of these written raw into
+// a scalar makes the file unloadable by a real YAML parser, so they always
+// force double-quoting and get \xNN-escaped there.
+const CONTROL_CHARS = new RegExp('[' + String.fromCharCode(0) + '-' + String.fromCharCode(0x1f) + String.fromCharCode(0x7f) + '-' + String.fromCharCode(0x9f) + ']');
+
 function plainSafe(s) {
   if (s === '' || s !== s.trim()) return false;
-  if (/[\n\r\t\0]/.test(s)) return false;
+  if (CONTROL_CHARS.test(s)) return false;
   if (PLAIN_UNSAFE_HEAD.has(s[0])) return false;
   if (s.includes(': ') || s.endsWith(':')) return false;
   if (s.includes(' #')) return false;
@@ -294,12 +310,20 @@ function plainSafe(s) {
   return true;
 }
 
+// Global form of CONTROL_CHARS for the escaping pass. \t\n\r already have named
+// escapes above, so they are excluded here to avoid double-escaping.
+const CONTROL_CHARS_G = new RegExp(
+  `[${String.fromCharCode(0)}-${String.fromCharCode(8)}${String.fromCharCode(11)}${String.fromCharCode(12)}${String.fromCharCode(14)}-${String.fromCharCode(0x1f)}${String.fromCharCode(0x7f)}-${String.fromCharCode(0x9f)}]`,
+  'g',
+);
+
 const dquote = (s) => `"${s
   .replace(/\\/g, '\\\\')
   .replace(/"/g, '\\"')
   .replace(/\n/g, '\\n')
   .replace(/\r/g, '\\r')
-  .replace(/\t/g, '\\t')}"`;
+  .replace(/\t/g, '\\t')
+  .replace(CONTROL_CHARS_G, (c) => `\\x${c.charCodeAt(0).toString(16).padStart(2, '0')}`)}"`;
 
 /**
  * Encode a JS value as a YAML scalar, honouring the style the file already used.

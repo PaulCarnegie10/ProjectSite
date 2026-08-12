@@ -51,7 +51,10 @@ export function classifyUpload(originalName) {
 
 /** stem + ext, bumped to stem-2 / stem-3 ... until it does not collide. */
 export function uniqueName(dir, stem, ext) {
-  let candidate = `${stem}${ext}`.slice(0, MAX_NAME);
+  // Trim the STEM to fit, never the whole name: `slice(0, MAX_NAME)` would eat
+  // the extension's last char when a 4-char source ext maps to 5-char `.webp`,
+  // so the recorded name (`.web`) would never match the file on disk.
+  let candidate = `${stem.slice(0, Math.max(1, MAX_NAME - ext.length))}${ext}`;
   if (!fs.existsSync(path.join(dir, candidate))) return candidate;
   for (let n = 2; n < 1000; n += 1) {
     const suffix = `-${n}${ext}`;

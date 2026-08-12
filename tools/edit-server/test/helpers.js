@@ -59,13 +59,20 @@ export async function startServer(contentRoot) {
   };
 }
 
+// The E2 edit client sends this on every call; the server's CSRF guard rejects
+// requests without it. Tests default to sending it (like the real client) and
+// pass { noDevHeader: true } to exercise the guard.
+export const EDIT_DEV_HEADER = 'x-edit-dev';
+export const EDIT_DEV_TOKEN = '__EDIT_DEV_ONLY__';
+
 /** @returns {Promise<{status:number, body:object}>} */
-export async function api(origin, method, route, body) {
-  const init = { method };
+export async function api(origin, method, route, body, { noDevHeader = false } = {}) {
+  const init = { method, headers: {} };
+  if (!noDevHeader) init.headers[EDIT_DEV_HEADER] = EDIT_DEV_TOKEN;
   if (body instanceof FormData) {
     init.body = body;
   } else if (body !== undefined) {
-    init.headers = { 'Content-Type': 'application/json' };
+    init.headers['Content-Type'] = 'application/json';
     init.body = JSON.stringify(body);
   }
   const res = await fetch(origin + route, init);
