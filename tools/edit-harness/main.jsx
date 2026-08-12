@@ -122,6 +122,13 @@ function App() {
         </button>
       </p>
 
+      <h2>falsy-src EditableImage (contract §3.2 prod parity)</h2>
+      {/* With edit mode OFF this must render nothing and fire no image request;
+          with edit mode ON it becomes an empty drop target. */}
+      <div id="falsy-src-probe">
+        <EditableImage path="projects/bee-tracker/index.md#hero" src={null} alt="" className="hero" />
+      </div>
+
       <h2>site/home.json#intro — Editable multiline</h2>
       <Editable as="div" className="body" path="site/home.json#intro" multiline>
         {state.home.intro}

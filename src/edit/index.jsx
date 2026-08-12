@@ -12,6 +12,7 @@
 //
 // Adding OPTIONAL props here is allowed; renaming or removing anything is not.
 
+import { Fragment } from 'react';
 import { DevEditableGallery, DevEditableImage, DevEditableVideos } from './dev/Assets.jsx';
 import { DevEditable } from './dev/Editable.jsx';
 import { DevEditToolbar } from './dev/Toolbar.jsx';
@@ -51,6 +52,9 @@ export function EditableImage({ path, src, alt = '', className }) {
   if (import.meta.env.DEV) {
     return <DevEditableImage path={path} src={src} alt={alt} className={className} />;
   }
+  // Contract §3.2: a falsy src renders nothing. An empty src="" would make the
+  // browser re-fetch the whole page and paint a broken-image icon.
+  if (!src) return null;
   return <img src={src} alt={alt} className={className} />;
 }
 
@@ -59,7 +63,13 @@ export function EditableGallery({ path, items = [], renderItem }) {
   if (import.meta.env.DEV) {
     return <DevEditableGallery path={path} items={items} renderItem={renderItem} />;
   }
-  return <>{items.map((item, i) => (renderItem ? renderItem(item, i) : null))}</>;
+  return (
+    <>
+      {items.map((item, i) => (
+        <Fragment key={item?.name ?? i}>{renderItem ? renderItem(item, i) : null}</Fragment>
+      ))}
+    </>
+  );
 }
 
 /** Video list slot. Drop appends (server re-encodes); each item gets a remove control. */
@@ -67,7 +77,13 @@ export function EditableVideos({ path, items = [], renderItem }) {
   if (import.meta.env.DEV) {
     return <DevEditableVideos path={path} items={items} renderItem={renderItem} />;
   }
-  return <>{items.map((item, i) => (renderItem ? renderItem(item, i) : null))}</>;
+  return (
+    <>
+      {items.map((item, i) => (
+        <Fragment key={item?.name ?? i}>{renderItem ? renderItem(item, i) : null}</Fragment>
+      ))}
+    </>
+  );
 }
 
 /**

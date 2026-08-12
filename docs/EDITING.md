@@ -76,8 +76,13 @@ Same thing, drag an `.mp4` onto the videos area of a project.
 
 Video is slower than pictures. A lot slower. The upload bar fills up quickly,
 and then it switches to "compressing" with a timer counting up. That's the
-video being re-encoded to H.264 and squeezed under 10 MB. A 90 MB clip takes a
-few minutes.
+video being re-encoded to H.264. A 90 MB clip takes a few minutes.
+
+Short clips come out under 10 MB. Longer ones do not. Past about 3 minutes the
+encoder hits its bitrate floor, so the result comes out bigger than 10 MB and
+just keeps growing with length. That is normal, a longer clip is a bigger file.
+Either way the job row shows the real size it ended up at once it finishes, so
+you never have to guess.
 
 **Leave the tab open while that timer is running.** If you close it or navigate
 away, the encode is thrown out and you start over. There's a cancel link next
@@ -155,10 +160,11 @@ video. PDFs, zips, Word docs and so on get rejected on purpose. See the PDF
 section above. Also check you're dropping a video onto the video area and a
 picture onto a picture area, they don't mix.
 
-**"Too large."** The file is over the size cap. For video, trim it before
-dropping it. There's no point uploading a 10 minute clip that gets squeezed to
-10 MB anyway, it'll look bad. Cut it down to the part you actually want to
-show.
+**"Too large."** The file you dropped is over the upload cap, before any
+encoding happens. The cap is on the file you hand over, not on the result. Trim
+the clip down and drop it again. A long clip that encodes to more than 10 MB is
+not rejected for that, it just ends up as a bigger file and the job row tells
+you the size it landed at.
 
 **The video has been "compressing" forever.** Check how long. A few minutes for
 a big file is normal, and the timer counting up means it's still working. If

@@ -26,7 +26,11 @@ export default defineConfig({
   server: {
     port: 5199,
     strictPort: false,
-    fs: { allow: [repoRoot] },
+    // Narrowed from the whole repo to just what the harness serves: its own
+    // root, the code under test, and the dependency store.
+    fs: {
+      allow: [here, path.join(repoRoot, 'src/edit'), path.join(repoRoot, 'node_modules')],
+    },
   },
   build: {
     outDir: path.join(here, 'dist'),

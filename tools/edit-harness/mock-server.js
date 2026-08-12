@@ -21,6 +21,13 @@ const JSON_CAP = 1024 * 1024; // 1 MB
 const MULTIPART_CAP = 512 * 1024 * 1024; // 512 MB
 const LOOPBACK = new Set(['127.0.0.1', '::1', '::ffff:127.0.0.1']);
 
+// CSRF defence mirrored from the real server: a required custom header forces a
+// CORS preflight, which a cross-site simple-request POST can't satisfy. The real
+// server hard-fails a missing/wrong header as not_loopback, so we do too. This
+// makes the harness a regression guard that the client sends it on EVERY path.
+const EDIT_HEADER = 'x-edit-dev';
+const EDIT_TOKEN = ['__EDIT', 'DEV', 'ONLY__'].join('_'); // node-side only; never in a client bundle
+
 const IMAGE_EXT = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.avif', '.bmp']);
 const VIDEO_EXT = new Set(['.mp4', '.mov', '.webm', '.mkv', '.m4v', '.avi']);
 
@@ -62,16 +69,23 @@ function readBody(req, cap) {
   return new Promise((resolve, reject) => {
     const chunks = [];
     let size = 0;
+    let over = false;
     req.on('data', (c) => {
+      if (over) return; // already rejected; drain and ignore so the socket can close
       size += c.length;
       if (size > cap) {
+        over = true;
+        // Reject WITHOUT destroying the socket. The caller sends a real 413 JSON
+        // body; tearing the request down here (the old req.destroy()) aborted the
+        // response before it flushed, so the client only ever saw a network error.
         reject(fail('too_large', `Body over ${cap} bytes.`));
-        req.destroy();
         return;
       }
       chunks.push(c);
     });
-    req.on('end', () => resolve(Buffer.concat(chunks)));
+    req.on('end', () => {
+      if (!over) resolve(Buffer.concat(chunks));
+    });
     req.on('error', reject);
   });
 }
@@ -438,7 +452,14 @@ async function handleAssetUpload(req, res) {
   }
   // Bytes pass through unchanged; only the reported size pretends to be encoded.
   fs.writeFileSync(path.join(dir, name), filePart.data);
-  const bytesOut = Math.max(1, Math.round(bytesIn * (isVideo ? 0.18 : 0.42)));
+  // Real encoder output is NOT a fixed fraction of the input. Near-static screen
+  // recordings re-encoded to the H.264 bitrate floor frequently come out LARGER
+  // than the source, so model growth for video (with a floor), and only-usually-
+  // smaller for images. This keeps the "in -> out" readout honest, including the
+  // growth case the UI has to render.
+  const bytesOut = isVideo
+    ? Math.max(2 * 1024 * 1024, Math.round(bytesIn * 1.15)) // floor + growth; exceeds 10 MB for big inputs
+    : Math.max(20 * 1024, Math.round(bytesIn * 0.8));
 
   if (key === 'hero') {
     doc.data.hero = name;
@@ -493,7 +514,9 @@ async function handleProjectDelete(req, res) {
   const dest = resolveContent(rel);
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.renameSync(dir, dest);
-  sendJson(res, 200, { ok: true, slug, trashed: `content/${rel}` });
+  // Real server returns the path relative to content/, WITHOUT a "content/"
+  // prefix (Toolbar renders this string verbatim).
+  sendJson(res, 200, { ok: true, slug, trashed: rel });
 }
 
 async function handleReorder(req, res) {
@@ -571,6 +594,13 @@ export function mockEditServer() {
         const peer = req.socket?.remoteAddress || '';
         if (!LOOPBACK.has(peer)) {
           sendError(res, fail('not_loopback', `Refusing non-loopback peer ${peer}.`));
+          return;
+        }
+
+        // Every /__edit/* write must carry the CSRF header. Harness-internal
+        // /__harness/* routes are exempt (the page fetches those directly).
+        if (route.startsWith('/__edit') && req.headers[EDIT_HEADER] !== EDIT_TOKEN) {
+          sendError(res, fail('not_loopback', 'Missing or bad X-Edit-Dev header.'));
           return;
         }
 

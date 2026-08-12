@@ -352,7 +352,13 @@ export function DevEditableImage({ path, src, alt = '', className }) {
     if (active) ensureStyles();
   }, [active]);
 
-  if (!active) return <img src={src} alt={alt} className={className} />;
+  if (!active) {
+    // Edit mode off: match production exactly, including "falsy src renders
+    // nothing" (contract §3.2). An <img src=""> re-fetches the page + shows a
+    // broken-image icon, so the empty check has to come first.
+    if (!src) return null;
+    return <img src={src} alt={alt} className={className} />;
+  }
 
   const slot = slotOf(path);
   if (!src) {
