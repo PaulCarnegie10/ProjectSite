@@ -1,21 +1,19 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { FiArrowUpRight } from 'react-icons/fi';
 import Layout from '../components/Layout.jsx';
 import Footer from '../sections/Footer.jsx';
 import { PROJECTS } from '../data/projects.js';
-import { fadeUp, stagger, VIEWPORT } from '../lib/motion.js';
 
 function ProjectCard({ project }) {
   const { index, slug, title, pitch, tags = [], meta = {} } = project;
   const num = String(index).padStart(2, '0');
 
   return (
-    <motion.li variants={fadeUp} className="group relative">
+    <li className="group relative">
       <Link
         to={`/projects/${slug}`}
-        className="glass block rounded-2xl border border-[var(--color-line)] p-8 transition-colors duration-300 hover:border-[var(--color-line-bright)] md:p-10"
+        className="glass block rounded-2xl border border-[var(--color-line)] p-8 transition-colors duration-200 hover:border-[var(--color-line-bright)] md:p-10"
       >
         <div className="flex items-center gap-3">
           <span className="eyebrow">
@@ -24,7 +22,7 @@ function ProjectCard({ project }) {
         </div>
 
         <h2
-          className="mt-5 text-[clamp(1.6rem,4vw,2.6rem)] font-bold leading-[1.1] tracking-tight transition-colors duration-300 group-hover:text-[var(--color-violet-bright)]"
+          className="mt-5 text-[clamp(1.6rem,4vw,2.6rem)] font-bold leading-[1.1] tracking-tight transition-colors duration-200 group-hover:text-[var(--color-violet-bright)]"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           {title}
@@ -56,15 +54,15 @@ function ProjectCard({ project }) {
           </div>
 
           <span
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-[var(--color-fg)] transition-colors duration-300 group-hover:text-[var(--color-violet-bright)]"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-[var(--color-fg)] transition-colors duration-200 group-hover:text-[var(--color-violet-bright)]"
             style={{ fontFamily: 'var(--font-mono)' }}
           >
             View deep-dive
-            <FiArrowUpRight className="text-sm transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            <FiArrowUpRight className="text-sm" />
           </span>
         </div>
       </Link>
-    </motion.li>
+    </li>
   );
 }
 
@@ -77,37 +75,30 @@ export default function ProjectsIndex() {
     <Layout>
       <div className="mx-auto max-w-6xl px-6 pt-36 md:pt-44">
         {/* Page header */}
-        <motion.header initial="hidden" animate="visible" variants={stagger(0.12, 0.05)} className="mb-16">
-          <motion.div variants={fadeUp} className="flex items-center gap-3">
+        <header className="mb-16">
+          <div className="flex items-center gap-3">
             <span className="eyebrow">
               selected work <span className="text-[var(--color-fg-faint)]">//</span> archive
             </span>
             <span className="glow-line w-16" />
-          </motion.div>
-          <motion.h1
-            variants={fadeUp}
+          </div>
+          <h1
             className="mt-5 text-[clamp(2.4rem,7vw,4.2rem)] font-bold leading-[1.05] tracking-tight"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             <span className="text-aurora">Projects</span>.
-          </motion.h1>
-          <motion.p variants={fadeUp} className="mt-4 max-w-xl text-[var(--color-fg-muted)]">
+          </h1>
+          <p className="mt-4 max-w-xl text-[var(--color-fg-muted)]">
             Everything I&rsquo;ve built and shipped, from research to weekend builds. Pick one to dive in.
-          </motion.p>
-        </motion.header>
+          </p>
+        </header>
 
         {/* Card list */}
-        <motion.ol
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT}
-          variants={stagger(0.14, 0.05)}
-          className="flex list-none flex-col gap-6 pb-28 md:pb-36"
-        >
+        <ol className="flex list-none flex-col gap-6 pb-28 md:pb-36">
           {PROJECTS.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}
-        </motion.ol>
+        </ol>
       </div>
       <Footer />
     </Layout>

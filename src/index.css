@@ -1,38 +1,45 @@
 @import "tailwindcss";
 
 @theme {
-  /* ─── Orchid palette ───────────────────────────────────────────
-     Dark violet base, hot-pink aurora accents.
-     Legacy aliases (--color-accent*) kept so nothing breaks mid-migration. */
-  --color-bg: #1c1533;
-  --color-bg-soft: #261d45;
-  --color-bg-elevated: #2f2456;
-  --color-fg: #f1ecff;
-  --color-fg-muted: #a99fce;
-  --color-fg-faint: #7a7295;
+  /* ─── Matte palette ────────────────────────────────────────────
+     Warm near-black surfaces, warm-sand accent. Token NAMES are held
+     over from the previous orchid system so the ~48 existing utility
+     usages resolve without touching JSX; only the VALUES moved.
+     (Yes, --color-violet holds a warm gray. Naming debt, tracked.)
+     Prefer the semantic aliases at the bottom for new work. */
+  --color-bg: #141312;
+  --color-bg-sunken: #0e0d0c;
+  --color-bg-soft: #1b1917;
+  --color-bg-elevated: #232120;
+  --color-fg: #e9e5df;
+  --color-fg-muted: #a9a29a;
+  --color-fg-faint: #6b6560;
 
-  --color-violet: #ff6ec7;
-  --color-violet-bright: #ff9ad8;
-  --color-violet-deep: #c73d94;
-  --color-blue: #6cc4ff;
-  --color-cyan: #b78cff;
+  --color-violet: #c2b49c;
+  --color-violet-bright: #d8cdb9;
+  --color-violet-deep: #9c8f78;
+  --color-blue: #a9a29a;
+  --color-cyan: #c2b49c;
 
-  --color-line: rgba(255, 110, 199, 0.15);
-  --color-line-bright: rgba(255, 110, 199, 0.45);
+  --color-line: #2e2a27;
+  --color-line-bright: #46403a;
 
   /* Legacy aliases */
-  --color-accent: #ff6ec7;
-  --color-accent-hover: #ff9ad8;
-  --color-accent-deep: #c73d94;
+  --color-accent: #c2b49c;
+  --color-accent-hover: #d8cdb9;
+  --color-accent-deep: #9c8f78;
+
+  /* Semantic aliases — same values, clearer names */
+  --color-surface: #1b1917;
+  --color-surface-hover: #232120;
+  --color-border: #2e2a27;
+  --color-text: #e9e5df;
+  --color-text-muted: #a9a29a;
 
   /* Type system: Bricolage Grotesque = display, Instrument Sans = body, Plex Mono = labels */
   --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 html,
@@ -53,21 +60,21 @@ body {
 }
 
 ::selection {
-  background: var(--color-violet);
+  background: var(--color-accent);
   color: var(--color-bg);
 }
 
 /* Thin themed scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 110, 199, 0.35) transparent;
+  scrollbar-color: #3a3532 transparent;
 }
 *::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 *::-webkit-scrollbar-thumb {
-  background: rgba(255, 110, 199, 0.35);
+  background: #3a3532;
   border-radius: 999px;
 }
 *::-webkit-scrollbar-track {
@@ -76,21 +83,15 @@ body {
 
 /* ─── Utilities ─────────────────────────────────────────────── */
 
-/* Gradient text — the signature accent */
+/* Accent text. Flat colour — the old gradient fill is gone. */
 .text-aurora {
-  background: linear-gradient(100deg, #ff9ad8 0%, #ff6ec7 30%, #b78cff 70%, #6cc4ff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--color-accent);
 }
 
-/* Frosted glass card. No backdrop-filter: with dozens of these scrolling
-   over a fixed background it tanks frame rate; a translucent fill over the
-   near-black page reads identically. */
+/* Raised card: flat surface fill over the page ground, hairline border. */
 .glass {
-  background: linear-gradient(160deg, rgba(255, 110, 199, 0.09), rgba(108, 196, 255, 0.05)),
-    rgba(38, 29, 69, 0.55);
-  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
 }
 
 /* Mono technical label, e.g. eyebrows and chips */
@@ -99,14 +100,14 @@ body {
   font-size: 0.7rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--color-violet);
+  color: var(--color-accent);
 }
 
-/* Horizontal gradient hairline */
+/* Horizontal hairline */
 .glow-line {
   height: 1px;
   border: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 110, 199, 0.5), rgba(108, 196, 255, 0.5), transparent);
+  background: var(--color-border);
 }
 
 /* Subtle film-grain layer (no blend mode — it forces offscreen
@@ -120,47 +121,21 @@ body {
   opacity: 0.25;
 }
 
-/* Vignette overlay */
+/* Edge falloff behind the hero. Neutral darkening only, no hue. */
 .vignette {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.55) 100%);
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.45) 100%);
 }
 
-/* ─── Aurora drift keyframes (used by AuroraBackground) ──────── */
-@keyframes aurora-a {
-  0%   { transform: translate(-12%, -8%) rotate(0deg) scale(1); }
-  50%  { transform: translate(10%, 12%) rotate(40deg) scale(1.15); }
-  100% { transform: translate(-12%, -8%) rotate(0deg) scale(1); }
-}
-@keyframes aurora-b {
-  0%   { transform: translate(14%, 6%) rotate(0deg) scale(1.1); }
-  50%  { transform: translate(-10%, -10%) rotate(-35deg) scale(0.95); }
-  100% { transform: translate(14%, 6%) rotate(0deg) scale(1.1); }
-}
-@keyframes aurora-c {
-  0%   { transform: translate(0%, 10%) scale(1); }
-  50%  { transform: translate(6%, -12%) scale(1.2); }
-  100% { transform: translate(0%, 10%) scale(1); }
-}
-
-/* Blobs are soft radial gradients — no blur filter. A 90px blur on
-   three ~60vw elements is the main scroll-jank culprit on weaker GPUs. */
-.aurora-blob {
-  position: absolute;
-  border-radius: 9999px;
-  will-change: transform;
-  pointer-events: none;
-}
-
+/* The site is deliberately still: the only motion anywhere is a ≤200ms
+   colour/opacity transition on hover or focus. This kills even those. */
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
+  *,
+  *::before,
+  *::after {
     transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
   }
 }

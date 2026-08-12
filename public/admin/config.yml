@@ -28,9 +28,9 @@ collections:
         label: Accent glow
         widget: select
         options:
-          - { label: Orchid pink, value: 'rgba(255,110,199,0.22)' }
-          - { label: Violet, value: 'rgba(183,140,255,0.22)' }
-          - { label: Sky blue, value: 'rgba(108,196,255,0.20)' }
+          - { label: Warm sand, value: 'rgba(194,180,156,0.06)' }
+          - { label: Stone, value: 'rgba(169,162,154,0.05)' }
+          - { label: Graphite, value: 'rgba(140,134,126,0.05)' }
       - { name: cover, label: Cover image (home slab), widget: image, required: false, hint: 'Leave empty for the typographic slab look' }
       - { name: tagline, label: Deep-dive tagline, widget: text }
       - name: meta
@@ -180,26 +180,6 @@ collections:
                   - { name: titleAccent, label: 'News heading — accent word', widget: string, required: true }
                   - { name: titlePost, label: 'News heading — after accent', widget: string, required: true }
                   - { name: allLink, label: '"All updates" link label', widget: string, required: true }
-              - name: github
-                label: GitHub section
-                widget: object
-                required: true
-                fields:
-                  - { name: eyebrow, label: 'GitHub eyebrow', widget: string, required: true }
-                  - { name: titlePre, label: 'GitHub heading — before accent', widget: string, required: true }
-                  - { name: titleAccent, label: 'GitHub heading — accent word', widget: string, required: true }
-                  - { name: titlePost, label: 'GitHub heading — after accent', widget: string, required: true }
-                  - name: statLabels
-                    label: Stat tile labels
-                    widget: object
-                    required: true
-                    fields:
-                      - { name: repos, label: 'Public repos label', widget: string, required: true }
-                      - { name: stars, label: 'Stars label', widget: string, required: true }
-                      - { name: commits, label: 'Commits label', widget: string, required: true }
-                  - { name: topLanguages, label: '"Top languages" label', widget: string, required: true }
-                  - { name: loadingLanguages, label: 'Languages loading text', widget: string, required: true }
-                  - { name: loadingRepos, label: 'Repos loading text', widget: string, required: true }
               - name: resume
                 label: Resume section
                 widget: object

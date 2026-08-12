@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
 import { BsGithub, BsLinkedin, BsEnvelopeFill } from 'react-icons/bs';
-import { EASE } from '../lib/motion.js';
 import site from '../content/site.json';
 
 const LINKS = [
@@ -10,7 +8,6 @@ const LINKS = [
   { id: 'projects', label: 'Projects' },
   { id: 'skills', label: 'Skills' },
   { id: 'news', label: 'News' },
-  { id: 'github', label: 'GitHub' },
   { id: 'resume', label: 'Resume' },
   { id: 'contact', label: 'Contact' },
 ];
@@ -20,6 +17,10 @@ const SOCIALS = [
   { label: 'LinkedIn', href: site.socials.linkedin, Icon: BsLinkedin },
   { label: 'Email', href: `mailto:${site.socials.email}`, Icon: BsEnvelopeFill },
 ];
+
+// Burger → X without motion: the open state is a static transform applied
+// instantly, no transition, so nothing on the page ever animates.
+const BAR_OPEN = ['translateY(7px) rotate(45deg)', null, 'translateY(-7px) rotate(-45deg)'];
 
 export default function Nav() {
   const [active, setActive] = useState('');
@@ -73,7 +74,7 @@ export default function Nav() {
     e.preventDefault();
     setOpen(false);
     if (onHome) {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.getElementById(id)?.scrollIntoView({ block: 'start' });
     } else {
       navigate(`/#${id}`);
     }
@@ -82,9 +83,9 @@ export default function Nav() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-200 ${
           scrolled && !open
-            ? 'border-b border-[var(--color-line)] bg-[rgba(28,21,51,0.7)] backdrop-blur-xl'
+            ? 'border-b border-[var(--color-line)] bg-[rgba(20,19,18,0.86)] backdrop-blur-xl'
             : 'bg-transparent'
         }`}
       >
@@ -95,10 +96,10 @@ export default function Nav() {
               setOpen(false);
               if (onHome) {
                 e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({ top: 0 });
               }
             }}
-            className="font-[var(--font-mono)] text-sm tracking-[0.18em] text-[var(--color-fg)] transition-colors hover:text-[var(--color-violet-bright)]"
+            className="font-[var(--font-mono)] text-sm tracking-[0.18em] text-[var(--color-fg)] transition-colors duration-200 hover:text-[var(--color-violet-bright)]"
             style={{ fontFamily: 'var(--font-mono)' }}
           >
             PC<span className="text-aurora">//</span>
@@ -111,7 +112,7 @@ export default function Nav() {
                 <a
                   href={`/#${link.id}`}
                   onClick={(e) => goTo(e, link.id)}
-                  className={`relative z-10 rounded-full px-4 py-2 font-[var(--font-mono)] text-[11px] uppercase tracking-[0.18em] transition-colors ${
+                  className={`relative z-10 rounded-full px-4 py-2 font-[var(--font-mono)] text-[11px] uppercase tracking-[0.18em] transition-colors duration-200 ${
                     active === link.id
                       ? 'text-[var(--color-violet-bright)]'
                       : 'text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]'
@@ -120,13 +121,7 @@ export default function Nav() {
                 >
                   {link.label}
                 </a>
-                {active === link.id && (
-                  <motion.span
-                    layoutId="nav-active"
-                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                    className="glass absolute inset-0 rounded-full"
-                  />
-                )}
+                {active === link.id && <span className="glass absolute inset-0 rounded-full" />}
               </li>
             ))}
           </ul>
@@ -140,17 +135,17 @@ export default function Nav() {
             className="relative z-50 flex h-10 w-10 items-center justify-center lg:hidden"
           >
             <span className="relative block h-3.5 w-6">
-              <motion.span
-                animate={open ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+              <span
                 className="absolute top-0 left-0 block h-px w-6 bg-[var(--color-fg)]"
+                style={{ transform: open ? BAR_OPEN[0] : undefined }}
               />
-              <motion.span
-                animate={open ? { opacity: 0 } : { opacity: 1 }}
+              <span
                 className="absolute top-[7px] left-0 block h-px w-6 bg-[var(--color-fg)]"
+                style={{ opacity: open ? 0 : 1 }}
               />
-              <motion.span
-                animate={open ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
+              <span
                 className="absolute bottom-0 left-0 block h-px w-6 bg-[var(--color-fg)]"
+                style={{ transform: open ? BAR_OPEN[2] : undefined }}
               />
             </span>
           </button>
@@ -158,63 +153,39 @@ export default function Nav() {
       </header>
 
       {/* Mobile full-screen overlay */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35, ease: EASE }}
-            className="fixed inset-0 z-40 flex flex-col justify-between bg-[rgba(28,21,51,0.96)] px-8 pb-10 pt-28 lg:hidden"
-          >
-            <motion.ul
-              initial="hidden"
-              animate="visible"
-              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } } }}
-              className="flex flex-col gap-5"
-            >
-              {LINKS.map((link, i) => (
-                <motion.li
-                  key={link.id}
-                  variants={{
-                    hidden: { opacity: 0, x: -24 },
-                    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: EASE } },
-                  }}
-                >
-                  <a
-                    href={`/#${link.id}`}
-                    onClick={(e) => goTo(e, link.id)}
-                    className="flex items-baseline gap-4 text-3xl font-semibold tracking-tight text-[var(--color-fg)] transition-colors hover:text-[var(--color-violet-bright)]"
-                    style={{ fontFamily: 'var(--font-display)' }}
-                  >
-                    <span className="eyebrow">0{i + 1}</span>
-                    {link.label}
-                  </a>
-                </motion.li>
-              ))}
-            </motion.ul>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="flex items-center gap-6"
-            >
-              {SOCIALS.map(({ label, href, Icon }) => (
+      {open && (
+        <div className="fixed inset-0 z-40 flex flex-col justify-between bg-[rgba(20,19,18,0.97)] px-8 pb-10 pt-28 lg:hidden">
+          <ul className="flex flex-col gap-5">
+            {LINKS.map((link, i) => (
+              <li key={link.id}>
                 <a
-                  key={label}
-                  href={href}
-                  target={href.startsWith('http') ? '_blank' : undefined}
-                  rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  aria-label={label}
-                  className="text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-violet-bright)]"
+                  href={`/#${link.id}`}
+                  onClick={(e) => goTo(e, link.id)}
+                  className="flex items-baseline gap-4 text-3xl font-semibold tracking-tight text-[var(--color-fg)] transition-colors duration-200 hover:text-[var(--color-violet-bright)]"
+                  style={{ fontFamily: 'var(--font-display)' }}
                 >
-                  <Icon className="h-5 w-5" />
+                  <span className="eyebrow">0{i + 1}</span>
+                  {link.label}
                 </a>
-              ))}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              </li>
+            ))}
+          </ul>
+          <div className="flex items-center gap-6">
+            {SOCIALS.map(({ label, href, Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith('http') ? '_blank' : undefined}
+                rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                aria-label={label}
+                className="text-[var(--color-fg-muted)] transition-colors duration-200 hover:text-[var(--color-violet-bright)]"
+              >
+                <Icon className="h-5 w-5" />
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 }

@@ -5,7 +5,7 @@
   "pitch": "A general-purpose autolabeling pipeline that turns raw bee-hive footage into trajectory data — YOLO detection, ByteTrack tracking, and an iterative loop that trains its own detector.",
   "tags": ["Computer Vision", "YOLO", "ByteTrack", "Research"],
   "side": "right",
-  "accent": "rgba(255,110,199,0.22)",
+  "accent": "rgba(194,180,156,0.06)",
   "cover": "projects/bee-tracker/hive-detections.png",
   "tagline": "Research with Zeynep Temel’s lab at CMU: one researcher, raw hive video in, labeled trajectories out — in an afternoon instead of thousands of hand-drawn boxes.",
   "meta": {

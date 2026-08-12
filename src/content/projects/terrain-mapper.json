@@ -5,7 +5,7 @@
   "pitch": "A hand-built drone carrying a Jetson Orin Nano and a Unitree L2 LiDAR — working toward mapping terrain and localizing from it, no GPS required.",
   "tags": ["Robotics", "LiDAR", "Jetson", "SolidWorks"],
   "side": "left",
-  "accent": "rgba(183,140,255,0.22)",
+  "accent": "rgba(140,134,126,0.05)",
   "tagline": "Build the drone, solder every connection, tune it, fly it — then strap a LiDAR sensor package to it and teach it to know where it is from the shape of the ground.",
   "meta": {
     "timeframe": "2026",

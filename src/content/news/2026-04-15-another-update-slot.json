@@ -1,6 +1,6 @@
 {
   "date": "2026-04-15",
-  "tag": "Placeholder",
-  "title": "Another update slot",
-  "body": "Placeholder — internships, hackathons, research, club robotics, course projects… anything worth a line."
+  "tag": "Research",
+  "title": "BeeTracker poster is done",
+  "body": "Wrote up the whole stack for the Temel Lab poster: YOLO detection, ByteTrack, the entry and exit classifier, and the numbers off a 165 minute session. The PDF is linked on the project page."
 }

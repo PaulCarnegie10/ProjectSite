@@ -13,7 +13,7 @@ function ScrollManager() {
     if (hash) {
       const el = document.getElementById(hash.slice(1));
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        el.scrollIntoView({ block: 'start' });
         return;
       }
     }

@@ -44,20 +44,6 @@
       "titlePost": ".",
       "allLink": "All updates"
     },
-    "github": {
-      "eyebrow": "Activity",
-      "titlePre": "Live from ",
-      "titleAccent": "GitHub",
-      "titlePost": ".",
-      "statLabels": {
-        "repos": "Public repos",
-        "stars": "Stars",
-        "commits": "Commits"
-      },
-      "topLanguages": "Top languages",
-      "loadingLanguages": "Loading…",
-      "loadingRepos": "Loading recent repositories…"
-    },
     "resume": {
       "eyebrow": "Resume",
       "titlePre": "The ",

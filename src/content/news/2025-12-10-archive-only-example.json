@@ -1,6 +1,6 @@
 {
   "date": "2025-12-10",
-  "tag": "Placeholder",
-  "title": "Archive-only example",
-  "body": "Placeholder — this one only shows on the News page, demonstrating the teaser cutoff of three."
+  "tag": "Research",
+  "title": "BeeTracker is labeling its own training data",
+  "body": "The iterative loop runs end to end now: seed prompt, audit the data, train, generate labels, check performance, repeat. Every pass makes the next round of boxes better, which beats drawing thousands of them by hand."
 }

@@ -1,8 +1,6 @@
-import { motion } from 'framer-motion';
 import { FiDownload, FiExternalLink, FiFileText } from 'react-icons/fi';
 import SectionHeading from '../components/SectionHeading.jsx';
 import MagneticLink from '../components/MagneticLink.jsx';
-import { VIEWPORT, fadeUp, scaleIn, stagger } from '../lib/motion.js';
 import site from '../content/site.json';
 
 const RESUME_URL = `${import.meta.env.BASE_URL}resume.pdf`;
@@ -25,43 +23,30 @@ export default function Resume() {
 
       <div className="grid gap-12 md:grid-cols-[minmax(0,24rem)_1fr] md:items-start">
         {/* Left column — copy + actions */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT}
-          variants={stagger(0.12, 0.1)}
-          className="flex max-w-sm flex-col gap-7"
-        >
-          <motion.p variants={fadeUp} className="text-[var(--color-fg-muted)] leading-relaxed">
+        <div className="flex max-w-sm flex-col gap-7">
+          <p className="text-[var(--color-fg-muted)] leading-relaxed">
             {site.sections.resume.intro}
-          </motion.p>
+          </p>
 
-          <motion.div variants={fadeUp} className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4">
             <MagneticLink href={RESUME_URL} variant="solid" download>
               <FiDownload aria-hidden /> {site.sections.resume.downloadLabel}
             </MagneticLink>
             <MagneticLink href={RESUME_URL} variant="ghost" target="_blank" rel="noopener noreferrer">
               <FiExternalLink aria-hidden /> {site.sections.resume.openInTabLabel}
             </MagneticLink>
-          </motion.div>
+          </div>
 
-          <motion.p
-            variants={fadeUp}
+          <p
             className="text-xs text-[var(--color-fg-faint)]"
             style={{ fontFamily: 'var(--font-mono)' }}
           >
             {site.sections.resume.editHint}
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
         {/* Right column — embedded viewer (sm+) */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT}
-          variants={scaleIn}
-          className="glass hidden rounded-2xl p-2 shadow-[0_0_60px_rgba(255,110,199,0.22),0_0_120px_rgba(108,196,255,0.1)] sm:block"
-        >
+        <div className="glass hidden rounded-2xl p-2 sm:block">
           <div className="aspect-[8.5/11] max-h-[70vh] w-full">
             <object
               data={RESUME_URL}
@@ -70,7 +55,7 @@ export default function Resume() {
               aria-label="Resume PDF"
             >
               {/* Shown when the browser can't inline PDFs */}
-              <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-xl bg-[rgba(47,36,86,0.6)] px-8 text-center">
+              <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-xl bg-[var(--color-bg-elevated)] px-8 text-center">
                 <FiFileText className="text-3xl text-[var(--color-violet)]" aria-hidden />
                 <p
                   className="text-xs text-[var(--color-fg-muted)]"
@@ -81,25 +66,19 @@ export default function Resume() {
                 <a
                   href={RESUME_URL}
                   download
-                  className="text-sm text-[var(--color-violet-bright)] underline underline-offset-4 hover:text-[var(--color-cyan)]"
+                  className="text-sm text-[var(--color-violet-bright)] underline underline-offset-4 transition-colors duration-200 hover:text-[var(--color-fg)]"
                 >
                   {site.sections.resume.downloadFileLabel}
                 </a>
               </div>
             </object>
           </div>
-        </motion.div>
+        </div>
 
         {/* Compact card replaces the viewer below sm */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT}
-          variants={scaleIn}
-          className="glass block rounded-2xl p-6 sm:hidden"
-        >
+        <div className="glass block rounded-2xl p-6 sm:hidden">
           <div className="flex items-center gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[rgba(255,110,199,0.08)]">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[var(--color-bg-elevated)]">
               <FiFileText className="text-xl text-[var(--color-violet)]" aria-hidden />
             </span>
             <div className="min-w-0">
@@ -114,7 +93,7 @@ export default function Resume() {
               </a>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
