@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Edit layer harness</title>
+    <style>
+      :root { color-scheme: dark; }
+      html, body { margin: 0; background: #0f0e0d; color: #e6e1d8; }
+      body {
+        font: 400 15px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        padding: 28px 28px 240px;
+      }
+      a { color: #c8bda6; }
+      h1 { font-size: 30px; margin: 0 0 4px; font-weight: 500; letter-spacing: -0.01em; }
+      h2 { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #a49c8f;
+           margin: 34px 0 10px; font-weight: 500; border-bottom: 1px solid #2a2724; padding-bottom: 6px; }
+      h3 { font-size: 18px; margin: 0 0 4px; font-weight: 500; }
+      p  { margin: 0 0 10px; max-width: 62ch; }
+      .sub { color: #a49c8f; }
+      .rule { color: #6f675c; font-size: 12px; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; max-width: 760px; }
+      .grid img, .grid video { width: 100%; display: block; border: 1px solid #2a2724; background: #1a1917; }
+      .hero { max-width: 380px; display: block; border: 1px solid #2a2724; }
+      .card { border: 1px solid #2a2724; padding: 16px; margin: 0 0 18px; }
+      .body { white-space: pre-wrap; font: 400 13px/1.65 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+              color: #cfc8bb; background: #161513; border: 1px solid #2a2724; padding: 12px; max-width: 72ch; }
+      .prose { max-width: 72ch; border: 1px solid #2a2724; padding: 12px 14px; background: #161513; }
+      .prose p { margin: 0 0 10px; }
+      .prose p:last-child { margin-bottom: 0; }
+      .md-code { margin: 0 0 10px; padding: 10px; background: #100f0e; border: 1px solid #2a2724; overflow-x: auto;
+                 font: 400 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #9fb08f; }
+      nav { display: flex; gap: 14px; font-size: 13px; margin: 6px 0 0; }
+      code { font: 400 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #a49c8f; }
+      button.reset { background: #201e1b; color: #e6e1d8; border: 1px solid #3a352e; border-radius: 2px;
+                     padding: 4px 8px; font-size: 12px; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./main.jsx"></script>
+  </body>
+</html>
