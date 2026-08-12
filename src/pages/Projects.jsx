@@ -13,9 +13,9 @@ export default function Projects() {
   const navLink = nav.links?.[navIndex];
 
   return (
-    <div>
-      <header>
-        <button type="button" aria-label="Go back" onClick={() => navigate(-1)}>
+    <div className="page">
+      <header className="page-header">
+        <button className="back-button" type="button" aria-label="Go back" onClick={() => navigate(-1)}>
           <BsArrowLeft />
         </button>
         {navLink ? (
@@ -25,16 +25,16 @@ export default function Projects() {
         ) : null}
       </header>
 
-      <ul>
+      <ul className="card-list">
         {projects.map((project) => (
-          <li key={project.slug}>
+          <li className="card" key={project.slug}>
             <Link to={`/projects/${project.slug}`}>
               <Editable path={`projects/${project.slug}/index.md#title`} as="h2">
                 {project.title}
               </Editable>
             </Link>
             {project.heroUrl ? (
-              <img src={project.heroUrl} alt={project.title} />
+              <img className="card-thumb" src={project.heroUrl} alt={project.title} />
             ) : null}
             <Editable path={`projects/${project.slug}/index.md#blurb`} as="p">
               {project.blurb}

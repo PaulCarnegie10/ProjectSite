@@ -14,9 +14,9 @@ export default function Skills() {
   const navLink = nav.links?.[navIndex];
 
   return (
-    <div>
-      <header>
-        <button type="button" aria-label="Go back" onClick={() => navigate(-1)}>
+    <div className="page">
+      <header className="page-header">
+        <button className="back-button" type="button" aria-label="Go back" onClick={() => navigate(-1)}>
           <BsArrowLeft />
         </button>
         {navLink ? (
@@ -27,7 +27,7 @@ export default function Skills() {
       </header>
 
       {categories.map((category, c) => (
-        <section key={category.name ?? c}>
+        <section className="skill-group" key={category.name ?? c}>
           <Editable path={`site/skills.json#categories.${c}.name`} as="h2">
             {category.name}
           </Editable>
@@ -35,19 +35,24 @@ export default function Skills() {
             {category.note}
           </Editable>
 
-          <ul>
+          <ul className="skill-list">
             {(category.skills ?? []).map((skill, s) => (
-              <li key={skill.name ?? s}>
+              <li className="skill" key={skill.name ?? s}>
                 <Editable path={`site/skills.json#categories.${c}.skills.${s}.name`} as="h3">
                   {skill.name}
                 </Editable>
-                <Editable
-                  path={`site/skills.json#categories.${c}.skills.${s}.level`}
-                  as="span"
-                >
-                  {skill.level}
-                </Editable>
-                <progress value={skill.level ?? 0} max={100} />
+                {/* Level is a number, so it stays read-only: a text edit would
+                    write a string into a numeric field. */}
+                <span className="skill-level">{skill.level}</span>
+                {/* Label is composed from the two values already on screen. */}
+                <progress
+                  className="skill-meter"
+                  aria-label={[skill.name, skill.level]
+                    .filter((part) => part != null && part !== '')
+                    .join(' ')}
+                  value={skill.level ?? 0}
+                  max={100}
+                />
                 <Editable path={`site/skills.json#categories.${c}.skills.${s}.note`} as="p">
                   {skill.note}
                 </Editable>

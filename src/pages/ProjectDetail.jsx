@@ -2,17 +2,18 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs';
 import Markdown from 'react-markdown';
 import { Editable, EditableImage, EditableGallery, EditableVideos } from '../edit/index.jsx';
-import { getProject, getSiteText } from '../content/loader.js';
+import { getProject, getSiteText, safeUrl } from '../content/loader.js';
 
-function NotFound() {
+/** Shared by the unknown-slug branch below and by App's catch-all route. */
+export function NotFound() {
   const nav = getSiteText('nav');
   const navIndex = (nav.links ?? []).findIndex((link) => link.path === '/projects');
   const navLink = nav.links?.[navIndex];
   return (
-    <div>
+    <div className="page">
       <h1>Not found</h1>
       {navLink ? (
-        <Link to={navLink.path}>
+        <Link className="text-link" to={navLink.path}>
           <Editable path={`site/nav.json#links.${navIndex}.label`} as="span">
             {navLink.label}
           </Editable>
@@ -32,9 +33,9 @@ export default function ProjectDetail() {
   const base = `projects/${project.slug}/index.md`;
 
   return (
-    <div>
-      <header>
-        <button type="button" aria-label="Go back" onClick={() => navigate(-1)}>
+    <div className="page">
+      <header className="page-header detail-header">
+        <button className="back-button" type="button" aria-label="Go back" onClick={() => navigate(-1)}>
           <BsArrowLeft />
         </button>
         <Editable path={`${base}#title`} as="h1">{project.title}</Editable>
@@ -43,43 +44,58 @@ export default function ProjectDetail() {
       </header>
 
       {project.tags.length > 0 ? (
-        <ul>
+        <ul className="tag-list">
           {project.tags.map((tag, i) => (
             <Editable key={tag} path={`${base}#tags.${i}`} as="li">{tag}</Editable>
           ))}
         </ul>
       ) : null}
 
-      {project.heroUrl ? (
-        <EditableImage path={`${base}#hero`} src={project.heroUrl} alt={project.title} />
-      ) : null}
+      {/* Always rendered: with no hero on disk this is the owner's drop target. */}
+      <EditableImage
+        className="detail-hero"
+        path={`${base}#hero`}
+        src={project.heroUrl}
+        alt={project.title}
+      />
 
-      <Editable path={`${base}#body`} as="div" multiline>
+      <Editable path={`${base}#body`} as="div" multiline rawValue={project.body}>
         <Markdown>{project.body}</Markdown>
       </Editable>
 
       <EditableGallery
         path={`${base}#gallery`}
         items={project.gallery}
-        renderItem={(item) => <img key={item.name} src={item.src} alt={item.name} />}
+        renderItem={(item) => (
+          <img className="media-item" key={item.name} src={item.src} alt={item.name} />
+        )}
       />
 
       <EditableVideos
         path={`${base}#videos`}
         items={project.videos}
         renderItem={(item) => (
-          <video key={item.name} src={item.src} controls preload="metadata" />
+          <video className="media-video" key={item.name} src={item.src} controls preload="metadata" />
         )}
       />
 
       {project.links.length > 0 ? (
-        <ul>
+        <ul className="link-list">
           {project.links.map((link, i) => {
-            const isExternal = typeof link.url === 'string' && link.url.startsWith('http');
+            // The array keeps every frontmatter entry so `i` stays aligned with
+            // the file; entries we cannot safely link are skipped here instead.
+            const url = safeUrl(link.url);
+            if (!url) {
+              if (import.meta.env.DEV) {
+                console.warn(`[content] ${base}#links.${i}: unusable url, link not rendered`);
+              }
+              return null;
+            }
+            const isExternal = url.startsWith('http');
             return (
-              <li key={link.url ?? i}>
+              <li key={i}>
                 <a
-                  href={link.url}
+                  href={url}
                   {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 >
                   <Editable path={`${base}#links.${i}.label`} as="span">{link.label}</Editable>
