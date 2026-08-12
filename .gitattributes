@@ -1,0 +1,4 @@
+# Edit-server test fixtures assert exact bytes, including line endings.
+# Without this, core.autocrlf rewrites them to CRLF on checkout and the
+# frontmatter round-trip tests fail on a fresh clone.
+tools/edit-server/test/fixtures/** text eol=lf

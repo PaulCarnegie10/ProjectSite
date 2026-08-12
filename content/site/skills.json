@@ -1,0 +1,66 @@
+{
+  "categories": [
+    {
+      "name": "Programming Languages",
+      "note": "Core programming languages I work with",
+      "skills": [
+        { "name": "[TODO — Paul]", "level": 95, "note": "Data structures, memory management, and algorithms" },
+        { "name": "C++", "level": 85, "note": "Systems programming, performance optimization" },
+        { "name": "Java", "level": 90, "note": "Object-oriented programming, algorithms" },
+        { "name": "JavaScript", "level": 85, "note": "Web development, frontend frameworks" },
+        { "name": "Python", "level": 90, "note": "Data science, machine learning, and automation" }
+      ]
+    },
+    {
+      "name": "Frontend Development",
+      "note": "Modern web development technologies",
+      "skills": [
+        { "name": "HTML/CSS", "level": 90, "note": "Semantic markup and responsive design" },
+        { "name": "React", "level": 85, "note": "Component-based UI development" },
+        { "name": "Bootstrap", "level": 80, "note": "Rapid UI development framework" },
+        { "name": "Responsive Design", "level": 80, "note": "Mobile-first design principles" }
+      ]
+    },
+    {
+      "name": "Data Science & ML",
+      "note": "Machine learning and data analysis",
+      "skills": [
+        { "name": "NumPy", "level": 85, "note": "Numerical computing and arrays" },
+        { "name": "Pandas", "level": 80, "note": "Data manipulation and analysis" },
+        { "name": "Scikit-learn", "level": 75, "note": "Machine learning algorithms" },
+        { "name": "TensorFlow", "level": 65, "note": "Deep learning framework" },
+        { "name": "OpenCV", "level": 70, "note": "Computer vision and image processing" }
+      ]
+    },
+    {
+      "name": "Robotics & Hardware",
+      "note": "Robotics and embedded systems",
+      "skills": [
+        { "name": "Arduino", "level": 80, "note": "Microcontroller programming" },
+        { "name": "Raspberry Pi", "level": 75, "note": "Single-board computer projects" },
+        { "name": "ROS", "level": 70, "note": "Robot Operating System" },
+        { "name": "Computer Vision", "level": 75, "note": "Image processing and object detection" }
+      ]
+    },
+    {
+      "name": "Backend & Databases",
+      "note": "Server-side development and data storage",
+      "skills": [
+        { "name": "Node.js", "level": 75, "note": "Server-side JavaScript runtime" },
+        { "name": "MongoDB", "level": 70, "note": "NoSQL document database" },
+        { "name": "PostgreSQL", "level": 65, "note": "Relational database management" },
+        { "name": "REST APIs", "level": 80, "note": "API design and development" }
+      ]
+    },
+    {
+      "name": "Development Tools",
+      "note": "Integrated development environments",
+      "skills": [
+        { "name": "VS Code", "level": 90, "note": "Primary code editor" },
+        { "name": "IntelliJ IDEA", "level": 80, "note": "Java development IDE" },
+        { "name": "Eclipse", "level": 70, "note": "Multi-language IDE" },
+        { "name": "Figma", "level": 65, "note": "UI/UX design and prototyping" }
+      ]
+    }
+  ]
+}

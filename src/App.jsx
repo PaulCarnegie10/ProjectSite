@@ -1,28 +1,36 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Home from './Home.jsx';
-import Projects from './Projects.jsx';
-import Skills from './Skills.jsx';
-import Experience from './Experience.jsx';
-import About from './About.jsx';
-import TerrainMapper from './TerrainMapper.jsx';
-import DrWuCrew from './DrWuCrew.jsx';
-import Portfolio from './PortfolioWebsite.jsx';
-
-
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { EditToolbar } from './edit/index.jsx';
+import { getAllProjects } from './content/loader.js';
+import Home from './pages/Home.jsx';
+import Projects from './pages/Projects.jsx';
+import ProjectDetail, { NotFound } from './pages/ProjectDetail.jsx';
+import Skills from './pages/Skills.jsx';
+import Experience from './pages/Experience.jsx';
+import About from './pages/About.jsx';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home/>} />
-      <Route path="/projects" element={<Projects/>} />
-      <Route path="/skills" element={<Skills/>} />
-      <Route path="/experience" element={<Experience/>} />
-      <Route path="/about" element={<About/>} />
-      <Route path="/terrainmapper" element={<TerrainMapper/>} />
-      <Route path="/drwucrew" element={<DrWuCrew/>} />
-      <Route path="/portfolio" element={<Portfolio/>} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/projects/:slug" element={<ProjectDetail />} />
+        <Route path="/skills" element={<Skills />} />
+        <Route path="/experience" element={<Experience />} />
+        <Route path="/about" element={<About />} />
+
+        {/* Legacy routes from the hardcoded-page era. */}
+        <Route path="/terrainmapper" element={<Navigate to="/projects/terrain-mapping-drone" replace />} />
+        <Route path="/drwucrew" element={<Navigate to="/projects/highschool-autograder" replace />} />
+        <Route path="/portfolio" element={<Navigate to="/projects/portfolio-website" replace />} />
+
+        {/* Unknown paths get the dedicated not-found view, never a crash. */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      {/* Drafts included: a just-created project is a draft, and it must still be
+          reorderable and deletable from the toolbar. */}
+      <EditToolbar projects={getAllProjects().map((project) => project.slug)} />
+    </>
   );
 }
 
