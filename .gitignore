@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Deleted projects land here (recoverable locally, never committed)
+content/.trash/
+
+# Local agent worktrees
+.claude/worktrees/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
