@@ -1,0 +1,16 @@
+{
+  "categories": [
+    {
+      "name": "Perception",
+      "note": "cameras and point clouds",
+      "skills": [
+        { "name": "OpenCV", "level": 80, "note": "" },
+        { "name": "PyTorch", "level": 75, "note": "" }
+      ]
+    },
+    {
+      "name": "Embedded",
+      "skills": [{ "name": "C++", "level": 70, "note": "" }]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "heroTitle": "Paul Colombo",
+  "heroSubtitle": "Robotics and computer vision",
+  "intro": "CS and robotics at CMU.",
+  "socials": [
+    { "label": "GitHub", "url": "https://github.com/example", "kind": "github" }
+  ],
+  "featuredSlugs": ["bee-tracker"],
+  "infoCards": [{ "label": "Based in", "value": "Pittsburgh" }]
+}
