@@ -107,12 +107,17 @@ button {
 }
 
 /* Content slots the owner has not filled in yet collapse instead of leaving a
-   hole in the rhythm. An empty block is zero-height anyway, so this costs the
-   dev edit layer no click target. */
+   hole in the rhythm - an unset date or blurb, a tag with no text, a link list
+   whose entries were all skipped. Bound slots stay mounted either way: an
+   empty block is zero-height already, so this costs the dev edit layer no
+   click target it did not already lack. */
 .page h1:empty,
 .page h2:empty,
 .page h3:empty,
-.page p:empty {
+.page p:empty,
+.page li:empty,
+.page span:empty,
+.page ul:empty {
   display: none;
 }
 

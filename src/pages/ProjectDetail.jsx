@@ -2,7 +2,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs';
 import Markdown from 'react-markdown';
 import { Editable, EditableImage, EditableGallery, EditableVideos } from '../edit/index.jsx';
-import { getProject, getSiteText } from '../content/loader.js';
+import { getProject, getSiteText, safeUrl } from '../content/loader.js';
 
 /** Shared by the unknown-slug branch below and by App's catch-all route. */
 export function NotFound() {
@@ -82,11 +82,20 @@ export default function ProjectDetail() {
       {project.links.length > 0 ? (
         <ul className="link-list">
           {project.links.map((link, i) => {
-            const isExternal = typeof link.url === 'string' && link.url.startsWith('http');
+            // The array keeps every frontmatter entry so `i` stays aligned with
+            // the file; entries we cannot safely link are skipped here instead.
+            const url = safeUrl(link.url);
+            if (!url) {
+              if (import.meta.env.DEV) {
+                console.warn(`[content] ${base}#links.${i}: unusable url, link not rendered`);
+              }
+              return null;
+            }
+            const isExternal = url.startsWith('http');
             return (
-              <li key={link.url ?? i}>
+              <li key={i}>
                 <a
-                  href={link.url}
+                  href={url}
                   {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 >
                   <Editable path={`${base}#links.${i}.label`} as="span">{link.label}</Editable>

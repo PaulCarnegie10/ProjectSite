@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { BsGithub, BsLinkedin, BsEnvelopeFill } from 'react-icons/bs';
 import { Editable } from '../edit/index.jsx';
-import { getSiteText } from '../content/loader.js';
+import { getSiteText, safeUrl } from '../content/loader.js';
 
 const SOCIAL_ICONS = { linkedin: BsLinkedin, github: BsGithub, email: BsEnvelopeFill };
 
@@ -29,13 +29,22 @@ export default function Home() {
 
         <ul className="social-list">
           {socials.map((social, i) => {
+            // site/home.json is hand-edited and reaches here untransformed, so
+            // it gets the same allowlist as project links.
+            const url = safeUrl(social.url);
+            if (!url) {
+              if (import.meta.env.DEV) {
+                console.warn(`[content] site/home.json#socials.${i}: unusable url, not rendered`);
+              }
+              return null;
+            }
             const Icon = SOCIAL_ICONS[social.kind];
-            const isExternal = typeof social.url === 'string' && social.url.startsWith('http');
+            const isExternal = url.startsWith('http');
             return (
-              <li key={social.url ?? i}>
+              <li key={i}>
                 <a
                   className="social-link"
-                  href={social.url}
+                  href={url}
                   {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 >
                   {Icon ? <Icon size={22} aria-hidden="true" /> : null}

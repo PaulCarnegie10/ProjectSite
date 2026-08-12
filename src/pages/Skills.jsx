@@ -44,7 +44,15 @@ export default function Skills() {
                 {/* Level is a number, so it stays read-only: a text edit would
                     write a string into a numeric field. */}
                 <span className="skill-level">{skill.level}</span>
-                <progress className="skill-meter" value={skill.level ?? 0} max={100} />
+                {/* Label is composed from the two values already on screen. */}
+                <progress
+                  className="skill-meter"
+                  aria-label={[skill.name, skill.level]
+                    .filter((part) => part != null && part !== '')
+                    .join(' ')}
+                  value={skill.level ?? 0}
+                  max={100}
+                />
                 <Editable path={`site/skills.json#categories.${c}.skills.${s}.note`} as="p">
                   {skill.note}
                 </Editable>
