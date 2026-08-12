@@ -2,7 +2,7 @@
 title: "Bee Tracker Research"
 blurb: "[TODO — Paul]"
 date: ""
-tags: ["YOLO", "bees", "software", "research", "CMU"]
+tags: []
 order: 1
 draft: false
 gallery:

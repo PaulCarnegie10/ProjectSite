@@ -2,7 +2,7 @@
 title: "Highschool Autograder"
 blurb: "[TODO — Paul]"
 date: ""
-tags: ["APCSP", "autograder", "website", "python", "database"]
+tags: []
 order: 2
 draft: false
 gallery:

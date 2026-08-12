@@ -2,7 +2,7 @@
 title: "Terrain Mapping Drone"
 blurb: "[TODO — Paul]"
 date: ""
-tags: ["drone", "robotics", "lidar", "solidworks", "localization"]
+tags: []
 order: 3
 draft: false
 ---
