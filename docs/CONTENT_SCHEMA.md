@@ -51,7 +51,7 @@ resolves relative link urls to servable URLs.
 
 ### 1.2 `site/*.json` shapes
 
-- `home.json`: `{ heroTitle, heroSubtitle, intro, socials: [{label, url, kind}], featuredSlugs: [string], infoCards: [{label, value}] }`
+- `home.json`: `{ heroTitle, heroSubtitle, intro, socials: [{label, url, kind}], infoCards: [{label, value}] }`
   (`kind` in `github|linkedin|email` — Site team maps to icons; `infoCards` optional)
 - `nav.json`: `{ links: [{label, path, blurb}] }` (`blurb` optional)
 - `skills.json`: `{ categories: [{ name, note, skills: [{name, level, note}] }] }` (`level` 0–100; category `note` optional)
@@ -73,7 +73,9 @@ must be glob-based so a NEW project folder appears with zero code changes.
 ## 3. Edit primitives — owned by Team Edit (`src/edit/`)
 
 Team Site imports ONLY from `src/edit/index.jsx` and binds every user-visible
-string/media slot. A committed no-op stub keeps Site compiling before the real
+string/media slot. Known v1 exception: the profile photo lives in `public/`
+outside `content/`, so it is swapped by replacing the file manually, not
+through the edit UI. A committed no-op stub keeps Site compiling before the real
 implementation lands. In production builds (`import.meta.env.PROD`) all
 primitives render inert output with zero edit code in the bundle.
 
