@@ -1,0 +1,36 @@
+{
+  "heroTitle": "Paul Colombo's Portfolio",
+  "heroSubtitle": "[TODO — Paul]",
+  "intro": "[TODO — Paul]",
+  "socials": [
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/paul-colombo-09aa18336/",
+      "kind": "linkedin"
+    },
+    {
+      "label": "GitHub",
+      "url": "https://github.com/PaulCarnegie10",
+      "kind": "github"
+    },
+    {
+      "label": "Email",
+      "url": "mailto:pcolombo@andrew.cmu.edu",
+      "kind": "email"
+    }
+  ],
+  "infoCards": [
+    {
+      "label": "School",
+      "value": "Carnegie Mellon University School of Computer Science"
+    },
+    {
+      "label": "Degree Pursuit",
+      "value": "Bachelors: Computer Science with a Concentration in Robotics"
+    },
+    {
+      "label": "Graduation",
+      "value": "Class of 2028"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "links": [
+    {
+      "label": "Projects",
+      "path": "/projects",
+      "blurb": "Check out what Ive been working on"
+    },
+    {
+      "label": "Skills",
+      "path": "/skills",
+      "blurb": "See what languages and tools I have experience with"
+    },
+    {
+      "label": "Experience",
+      "path": "/experience",
+      "blurb": "Under Construction"
+    },
+    {
+      "label": "About",
+      "path": "/about",
+      "blurb": "Under Construction"
+    }
+  ]
+}
