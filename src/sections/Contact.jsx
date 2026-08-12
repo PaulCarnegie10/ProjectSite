@@ -28,7 +28,7 @@ export default function Contact() {
   return (
     <section id="contact" className="relative mx-auto max-w-6xl px-6 py-32 md:py-44">
       <SectionHeading
-        index="07"
+        index="06"
         eyebrow={site.contact.eyebrow}
         align="center"
         title={

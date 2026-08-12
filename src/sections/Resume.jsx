@@ -9,7 +9,7 @@ export default function Resume() {
   return (
     <section id="resume" className="relative mx-auto max-w-6xl px-6 py-28 md:py-36">
       <SectionHeading
-        index="06"
+        index="05"
         eyebrow={site.sections.resume.eyebrow}
         title={
           <>
