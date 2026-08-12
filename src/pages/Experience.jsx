@@ -9,15 +9,20 @@ export default function Experience() {
   const experience = getSiteText('experience');
 
   return (
-    <div>
-      <header>
-        <button type="button" aria-label="Go back" onClick={() => navigate(-1)}>
+    <div className="page">
+      <header className="page-header">
+        <button className="back-button" type="button" aria-label="Go back" onClick={() => navigate(-1)}>
           <BsArrowLeft />
         </button>
         <Editable path="site/experience.json#title" as="h1">{experience.title}</Editable>
       </header>
 
-      <Editable path="site/experience.json#body" as="div" multiline>
+      <Editable
+        path="site/experience.json#body"
+        as="div"
+        multiline
+        rawValue={experience.body}
+      >
         <Markdown>{experience.body ?? ''}</Markdown>
       </Editable>
     </div>

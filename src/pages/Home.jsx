@@ -13,21 +13,28 @@ export default function Home() {
   const navLinks = nav.links ?? [];
 
   return (
-    <div>
-      <header>
+    <div className="page page-home">
+      <header className="hero">
         <Editable path="site/home.json#heroTitle" as="h1">{home.heroTitle}</Editable>
         <Editable path="site/home.json#heroSubtitle" as="p">{home.heroSubtitle}</Editable>
 
         {/* Lives in public/, not content/ - BASE_URL keeps it correct under /ProjectSite/. */}
-        <img src={`${import.meta.env.BASE_URL}Paul-Profile.jpg`} alt="" width={240} height={240} />
+        <img
+          className="hero-portrait"
+          src={`${import.meta.env.BASE_URL}Paul-Profile.jpg`}
+          alt=""
+          width={240}
+          height={240}
+        />
 
-        <ul>
+        <ul className="social-list">
           {socials.map((social, i) => {
             const Icon = SOCIAL_ICONS[social.kind];
             const isExternal = typeof social.url === 'string' && social.url.startsWith('http');
             return (
               <li key={social.url ?? i}>
                 <a
+                  className="social-link"
                   href={social.url}
                   {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 >
@@ -44,18 +51,18 @@ export default function Home() {
 
       <Editable path="site/home.json#intro" as="p" multiline>{home.intro}</Editable>
 
-      <section>
+      <section className="info-grid">
         {infoCards.map((card, i) => (
-          <article key={card.label ?? i}>
+          <article className="info-card" key={card.label ?? i}>
             <Editable path={`site/home.json#infoCards.${i}.label`} as="h2">{card.label}</Editable>
             <Editable path={`site/home.json#infoCards.${i}.value`} as="p">{card.value}</Editable>
           </article>
         ))}
       </section>
 
-      <nav>
+      <nav className="nav-grid">
         {navLinks.map((link, i) => (
-          <article key={link.path ?? i}>
+          <article className="nav-card" key={link.path ?? i}>
             <Link to={link.path}>
               <Editable path={`site/nav.json#links.${i}.label`} as="h2">{link.label}</Editable>
             </Link>

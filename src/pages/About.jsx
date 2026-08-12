@@ -9,15 +9,15 @@ export default function About() {
   const about = getSiteText('about');
 
   return (
-    <div>
-      <header>
-        <button type="button" aria-label="Go back" onClick={() => navigate(-1)}>
+    <div className="page">
+      <header className="page-header">
+        <button className="back-button" type="button" aria-label="Go back" onClick={() => navigate(-1)}>
           <BsArrowLeft />
         </button>
         <Editable path="site/about.json#title" as="h1">{about.title}</Editable>
       </header>
 
-      <Editable path="site/about.json#body" as="div" multiline>
+      <Editable path="site/about.json#body" as="div" multiline rawValue={about.body}>
         <Markdown>{about.body ?? ''}</Markdown>
       </Editable>
     </div>
