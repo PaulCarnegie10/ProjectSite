@@ -44,12 +44,17 @@ Markdown body. Code fences allowed. This text is the owner's own wording —
 agents never rewrite it; unfinished sections carry the marker `[TODO — Paul]`.
 ```
 
+`order` is 1-based and contiguous across non-draft projects; the reorder
+endpoint rewrites it wholesale. `links[].url` may be an external URL or a
+relative filename in the project folder (e.g. `"./poster.pdf"`) — the loader
+resolves relative link urls to servable URLs.
+
 ### 1.2 `site/*.json` shapes
 
-- `home.json`: `{ heroTitle, heroSubtitle, intro, socials: [{label, url, kind}], featuredSlugs: [string] }`
-  (`kind` in `github|linkedin|email` — Site team maps to icons)
-- `nav.json`: `{ links: [{label, path}] }`
-- `skills.json`: `{ categories: [{ name, skills: [{name, level, note}] }] }` (`level` 0–100)
+- `home.json`: `{ heroTitle, heroSubtitle, intro, socials: [{label, url, kind}], featuredSlugs: [string], infoCards: [{label, value}] }`
+  (`kind` in `github|linkedin|email` — Site team maps to icons; `infoCards` optional)
+- `nav.json`: `{ links: [{label, path, blurb}] }` (`blurb` optional)
+- `skills.json`: `{ categories: [{ name, note, skills: [{name, level, note}] }] }` (`level` 0–100; category `note` optional)
 - `about.json`, `experience.json`: `{ title, body }` (body = markdown string)
 
 ## 2. Loader API — owned by Team Site (`src/content/loader.js`)
@@ -85,27 +90,44 @@ A content path is a single string: `<file relative to content/>#<key>`.
 ```jsx
 <Editable path as="h1|p|span|..." multiline={bool}>{currentValue}</Editable>
 <EditableImage path src alt className />        // drop target replaces file + frontmatter
-<EditableGallery path items={[{src,name}]} />   // drop adds; per-item remove
-<EditableVideos path items={[{src,name}]} />    // drop adds (auto-compressed); per-item remove
+<EditableGallery path items={[{src,name}]} renderItem />  // drop adds; per-item remove
+<EditableVideos path items={[{src,name}]} renderItem />   // drop adds (auto-compressed); per-item remove
+// renderItem(item, i) is optional; when given, it renders each item.
 <EditToolbar />                                 // mounted once in App.jsx (dev only):
                                                 // edit-mode toggle, Add Project, reorder, delete
 ```
 
 ## 4. Dev edit API — owned by Team Edit (`tools/edit-server/`)
 
-Vite dev-server middleware, dev only, same-origin under `/__edit/*`:
+Vite dev-server middleware, dev only, same-origin under `/__edit/*`. All
+responses `application/json`: success `{ok:true, ...}`, failure
+`{ok:false, error:<code>, message}` with codes `not_loopback`(403),
+`bad_path`(400), `not_found`(404), `too_large`(413),
+`unsupported_media`(415), `encode_failed`(500).
 
-- `POST /__edit/text`        `{path, value}` → writes JSON key / frontmatter key / md body
-- `POST /__edit/asset`       multipart `{path, file}` → compresses (sharp for images;
-                             ffmpeg-static → H.264 ≤10MB for video), writes into the
-                             project folder, updates frontmatter list/key
-- `POST /__edit/project`     `{title}` → scaffolds `content/projects/<slug>/index.md`
-- `DELETE /__edit/project`   `{slug}`
-- `POST /__edit/reorder`     `{slugs: [...]}` → rewrites `order` frontmatter
+```
+GET    /__edit/ping                          -> {ok, contentRoot, ffmpeg:bool, sharp:bool}
+POST   /__edit/text    {path, value}         -> {ok, path, value}
+POST   /__edit/asset   multipart: path, file -> {ok, name, kind:"image"|"video", bytesIn, bytesOut, path}
+DELETE /__edit/asset   {path, name}          -> {ok, path, items:[...]}   // frontmatter-only removal; file stays on disk
+POST   /__edit/project {title}               -> {ok, slug}
+DELETE /__edit/project {slug}                -> {ok, slug, trashed:"<rel path>"}  // moves folder to content/.trash/<slug>-<epoch>/
+POST   /__edit/reorder {slugs:[...]}         -> {ok, orders:{slug:number}}
+```
 
-Security requirements (blocking): serve on 127.0.0.1 only; every write jailed
-to `content/` (reject traversal); sanitized filenames; ffmpeg/sharp invoked
-with argument arrays, never a shell string; request body size caps.
+Asset `path` keys: `#hero` (replace), `#gallery` (append), `#videos`
+(append). Image uploads are converted to `.webp` (q82, max dimension
+2000px). Videos are compressed to H.264 ≤10MB. Body caps: 1 MB JSON,
+512 MB multipart. The server accepts URLs bare (`/__edit/x`) and
+base-prefixed (`/ProjectSite/__edit/x`); clients fetch bare root-relative.
+PDF uploads are unsupported in v1 (reject `unsupported_media`); owners copy
+PDFs into the project folder manually.
+
+Security requirements (blocking): reject any request whose socket peer
+address is not loopback (127.0.0.1 / ::1 / ::ffff:127.0.0.1) — never trust
+Host/X-Forwarded-For/Origin; every write jailed to `content/` (reject
+traversal); sanitized filenames; ffmpeg/sharp invoked with argument arrays,
+never a shell string; request body size caps.
 
 ## 5. Shared-file rules
 
