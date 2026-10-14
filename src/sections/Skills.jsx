@@ -1,35 +1,57 @@
 import {
   SiPython,
   SiCplusplus,
-  SiTypescript,
+  SiOpenjdk,
+  SiJavascript,
   SiPytorch,
-  SiOpencv,
-  SiRos,
   SiArduino,
+  SiReact,
+  SiNodedotjs,
+  SiVite,
+  SiBootstrap,
+  SiHtml5,
+  SiFirebase,
   SiGit,
   SiLinux,
-  SiReact,
+  SiGradle,
+  SiLatex,
+  SiKalilinux,
+  SiVirtualbox,
 } from 'react-icons/si';
 import SectionHeading from '../components/SectionHeading.jsx';
 import { SKILL_GROUPS } from '../data/skills.js';
 import site from '../content/site.json';
 
-// String keys in skills.js → imported icon components.
+// String keys in skills.json → imported icon components. A skill with no
+// matching icon still renders as a plain chip.
 const ICONS = {
   SiPython,
   SiCplusplus,
-  SiTypescript,
+  SiOpenjdk,
+  SiJavascript,
   SiPytorch,
-  SiOpencv,
-  SiRos,
   SiArduino,
+  SiReact,
+  SiNodedotjs,
+  SiVite,
+  SiBootstrap,
+  SiHtml5,
+  SiFirebase,
   SiGit,
   SiLinux,
-  SiReact,
+  SiGradle,
+  SiLatex,
+  SiKalilinux,
+  SiVirtualbox,
 };
 
-// Per-panel marker: three steps down the neutral ramp, no glow.
-const DOTS = ['var(--color-accent)', 'var(--color-fg-muted)', 'var(--color-fg-faint)'];
+// Per-panel marker: steps down the neutral ramp, no glow.
+const DOTS = [
+  'var(--color-accent)',
+  'var(--color-fg-muted)',
+  'var(--color-fg-faint)',
+  'var(--color-accent-deep)',
+];
 
 // Flat, deduped icon list for the strip under the panels.
 const STRIP_ICONS = [
@@ -42,26 +64,14 @@ const STRIP_ICONS = [
 
 function Chip({ item }) {
   const Icon = ICONS[item.icon];
-
-  if (!Icon) {
-    // Empty slot — dashed outline inviting future content.
-    return (
-      <span
-        className="inline-flex items-center gap-2 rounded-full border border-dashed border-[var(--color-line)] px-3.5 py-1.5 text-xs text-[var(--color-fg-faint)]"
-        style={{ fontFamily: 'var(--font-mono)' }}
-      >
-        <span aria-hidden>+</span>
-        {item.name}
-      </span>
-    );
-  }
-
   return (
     <span
       className="group glass inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs text-[var(--color-fg-muted)] transition-colors duration-200 hover:border-[var(--color-line-bright)] hover:text-[var(--color-fg)]"
       style={{ fontFamily: 'var(--font-mono)' }}
     >
-      <Icon className="text-sm text-[var(--color-violet)] transition-colors duration-200 group-hover:text-[var(--color-violet-bright)]" />
+      {Icon && (
+        <Icon className="text-sm text-[var(--color-violet)] transition-colors duration-200 group-hover:text-[var(--color-violet-bright)]" />
+      )}
       {item.name}
     </span>
   );
@@ -84,7 +94,7 @@ export default function Skills() {
         }
       />
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2">
         {SKILL_GROUPS.map((group, i) => (
           <div key={group.label} className="glass rounded-2xl p-6 md:p-8">
             <div className="flex items-center gap-2.5">
@@ -99,7 +109,9 @@ export default function Skills() {
                 {group.label}
               </span>
             </div>
-            <p className="mt-3 text-sm leading-relaxed text-[var(--color-fg-muted)]">{group.blurb}</p>
+            {group.blurb && (
+              <p className="mt-3 text-sm leading-relaxed text-[var(--color-fg-muted)]">{group.blurb}</p>
+            )}
             <div className="mt-6 flex flex-wrap gap-2">
               {group.items.map((item) => (
                 <Chip key={item.name} item={item} />
@@ -109,7 +121,7 @@ export default function Skills() {
         ))}
       </div>
 
-      {/* Static icon strip — the scrolling marquee is gone. */}
+      {/* Static icon strip. */}
       <div
         aria-hidden
         className="mt-16 flex flex-wrap items-center justify-center gap-8 text-2xl text-[var(--color-fg-faint)] opacity-40 md:mt-20"

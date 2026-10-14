@@ -139,3 +139,19 @@ body {
     transition-delay: 0ms !important;
   }
 }
+
+/* A clip frame taken fullscreen through the Fullscreen API: black stage,
+   video centred and letterboxed instead of stretched to the frame. */
+.clip-frame:fullscreen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  border: 0;
+  border-radius: 0;
+}
+.clip-frame:fullscreen video {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+}

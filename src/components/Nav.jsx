@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BsGithub, BsLinkedin, BsEnvelopeFill } from 'react-icons/bs';
 import site from '../content/site.json';
+import { NEWS } from '../data/news.js';
 
 const LINKS = [
   { id: 'about', label: 'About' },
@@ -10,7 +11,7 @@ const LINKS = [
   { id: 'news', label: 'News' },
   { id: 'resume', label: 'Resume' },
   { id: 'contact', label: 'Contact' },
-];
+].filter((link) => link.id !== 'news' || NEWS.length > 0);
 
 const SOCIALS = [
   { label: 'GitHub', href: site.socials.github, Icon: BsGithub },

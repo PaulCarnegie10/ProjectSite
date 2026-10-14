@@ -3,6 +3,7 @@ import { FiArrowUpRight } from 'react-icons/fi';
 import Layout from '../components/Layout.jsx';
 import Footer from '../sections/Footer.jsx';
 import { NEWS } from '../data/news.js';
+import site from '../content/site.json';
 
 // 2026-06-01 → 2026.06.01
 const fmtDate = (iso) => iso.replaceAll('-', '.');
@@ -95,7 +96,7 @@ function YearMarker({ year }) {
 
 export default function News() {
   useEffect(() => {
-    document.title = 'News — Paul Colombo';
+    document.title = 'News | Paul Colombo';
   }, []);
 
   return (
@@ -116,7 +117,7 @@ export default function News() {
             <span className="text-aurora">News</span>.
           </h1>
           <p className="mt-4 max-w-xl text-[var(--color-fg-muted)]">
-            Every update so far — research, robotics, hackathons, and whatever else made the cut. Newest first.
+            {site.sections.news.pageBlurb}
           </p>
         </header>
 
@@ -126,6 +127,9 @@ export default function News() {
             aria-hidden="true"
             className="absolute bottom-32 left-[5px] top-1 w-px bg-[var(--color-line)]"
           />
+          {YEARS.length === 0 && (
+            <p className="pl-10 text-[var(--color-fg-muted)]">{site.sections.news.empty}</p>
+          )}
           {YEARS.map(({ year, entries }, gi) => (
             <div key={year} className="pb-14 last:pb-0">
               <YearMarker year={year} />

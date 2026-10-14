@@ -2,33 +2,53 @@
   "groups": [
     {
       "label": "Languages",
-      "blurb": "Placeholder — the languages you think in.",
+      "blurb": "",
       "items": [
         { "name": "Python", "icon": "SiPython" },
-        { "name": "C++", "icon": "SiCplusplus" },
-        { "name": "TypeScript", "icon": "SiTypescript" },
-        { "name": "Skill Slot", "icon": "" }
+        { "name": "C/C++", "icon": "SiCplusplus" },
+        { "name": "Java", "icon": "SiOpenjdk" },
+        { "name": "JavaScript", "icon": "SiJavascript" },
+        { "name": "SML", "icon": "" }
       ]
     },
     {
-      "label": "Robotics & Vision",
-      "blurb": "Placeholder — perception, control, and the stack between.",
+      "label": "ML / Robotics",
+      "blurb": "",
       "items": [
         { "name": "PyTorch", "icon": "SiPytorch" },
-        { "name": "OpenCV", "icon": "SiOpencv" },
-        { "name": "ROS", "icon": "SiRos" },
+        { "name": "Sensor fusion", "icon": "" },
+        { "name": "LiDAR", "icon": "" },
+        { "name": "Gyro / accelerometer", "icon": "" },
         { "name": "Arduino", "icon": "SiArduino" },
-        { "name": "Skill Slot", "icon": "" }
+        { "name": "CAD", "icon": "" },
+        { "name": "Soldering", "icon": "" }
       ]
     },
     {
-      "label": "Tools & Platforms",
-      "blurb": "Placeholder — the everyday toolkit.",
+      "label": "Web",
+      "blurb": "",
+      "items": [
+        { "name": "React", "icon": "SiReact" },
+        { "name": "Node.js", "icon": "SiNodedotjs" },
+        { "name": "Vite", "icon": "SiVite" },
+        { "name": "Bootstrap", "icon": "SiBootstrap" },
+        { "name": "HTML/CSS", "icon": "SiHtml5" },
+        { "name": "SQL", "icon": "" },
+        { "name": "Firebase", "icon": "SiFirebase" }
+      ]
+    },
+    {
+      "label": "Tools",
+      "blurb": "",
       "items": [
         { "name": "Git", "icon": "SiGit" },
         { "name": "Linux", "icon": "SiLinux" },
-        { "name": "React", "icon": "SiReact" },
-        { "name": "Skill Slot", "icon": "" }
+        { "name": "AWS", "icon": "" },
+        { "name": "Gradle", "icon": "SiGradle" },
+        { "name": "LaTeX", "icon": "SiLatex" },
+        { "name": "JavaFX", "icon": "" },
+        { "name": "Kali", "icon": "SiKalilinux" },
+        { "name": "VirtualBox", "icon": "SiVirtualbox" }
       ]
     }
   ]

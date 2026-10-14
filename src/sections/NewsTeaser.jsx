@@ -66,6 +66,7 @@ function TimelineEntry({ entry, newest }) {
 }
 
 export default function NewsTeaser() {
+  if (NEWS.length === 0) return null;
   return (
     <section id="news" className="relative mx-auto max-w-6xl px-6 py-28 md:py-36">
       <SectionHeading

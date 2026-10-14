@@ -33,7 +33,7 @@ export default function Footer() {
           ))}
         </div>
         <span className="font-[var(--font-mono)] text-[10px] tracking-[0.2em] uppercase text-[var(--color-fg-faint)]" style={{ fontFamily: 'var(--font-mono)' }}>
-          © {new Date().getFullYear()} — {site.footer.locationSuffix}
+          © {new Date().getFullYear()} · {site.footer.locationSuffix}
         </span>
       </div>
     </footer>

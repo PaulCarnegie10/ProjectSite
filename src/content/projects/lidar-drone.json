@@ -1,0 +1,127 @@
+{
+  "index": 1,
+  "slug": "lidar-drone",
+  "title": "GPS-Denied Lidar Drone",
+  "pitch": "A custom quadcopter that holds position, flies a figure-8, and lands on its own with no GPS, using a Unitree L2 lidar and a Jetson Orin Nano to know where it is.",
+  "tags": [
+    "Robotics",
+    "Lidar",
+    "ArduPilot",
+    "Jetson"
+  ],
+  "side": "left",
+  "accent": "rgba(140,134,126,0.05)",
+  "cover": "projects/lidar-drone/cover.jpg",
+  "tagline": "Built a drone from parts, strapped a lidar and a Jetson under it, then removed the GPS and got it to fly on its own.",
+  "meta": {
+    "timeframe": "2026",
+    "role": "Solo build",
+    "status": "Autonomous"
+  },
+  "sections": [
+    {
+      "heading": "The parts",
+      "body": [
+        "I had wanted to do a project like this since the summer after my freshman year, but I didn't have the knowledge to pull it off yet. Thankfully, after adding Robotics as a second major (instead of just Computer Science), I felt like I finally knew enough to get started. I spent a long time hunting for drone parts online, and after waiting forever for everything to ship from China, I ended up with the following:",
+        {
+          "label": "Drone",
+          "items": [
+            "HobbyWing XRotor 40A 2-6S Opto ESCs",
+            "Tarot 650 carbon fiber frame",
+            "M9N GPS",
+            "SiK telemetry radio V3",
+            "Pixhawk 6C with a PM02 power module",
+            "13 inch propellers (later upgraded to 15 inch)",
+            "SunnySky V3508 380KV high efficiency brushless motors",
+            "SFPV XT60 PDB (a kind of sketchy PDB with an XT60)",
+            "5200 mAh LiPo",
+            "RP3 V2 ExpressLRS 2.4 GHz nano receiver"
+          ]
+        },
+        {
+          "label": "Sensor pod",
+          "items": [
+            "3D printed pod",
+            "Jetson Orin Nano",
+            "Unitree L2 lidar",
+            "Another generic Matek PDB",
+            "Some kind of fuse",
+            "A capacitor",
+            "A Matek BEC"
+          ]
+        },
+        "I didn't list every wire and connector, but these are the big ones."
+      ],
+      "image": {
+        "src": "projects/lidar-drone/cloud-oblique.jpg",
+        "caption": "The backyard as the lidar sees it, mapped by Point-LIO on the first pod flight"
+      }
+    },
+    {
+      "heading": "First flight",
+      "body": [
+        "This flight occurred months before I had even built the sensor pod, so it was just the bare drone. I built it, tuned it, and took it to the park to make sure it actually flew.",
+        "Nothing fancy was going on yet. The Pixhawk ran stock ArduCopter, the GPS and compass told it where it was, and I flew it on the sticks. This was just to prove the frame, the soldering and the tune all worked properly."
+      ],
+      "video": {
+        "src": "projects/lidar-drone/01-first-flight.mp4",
+        "poster": "projects/lidar-drone/01-first-flight-poster.jpg",
+        "caption": "First flight, no sensor pod"
+      }
+    },
+    {
+      "heading": "First flight with the pod",
+      "body": [
+        "This was the first flight where the drone had the sensor pod mounted to it. The sensor pod holds the Jetson, the power boards and the lidar, with the dome pointing down at the ground.",
+        "On this flight the lidar wasn't doing any navigating. The drone was still flying on GPS while the Jetson recorded what the lidar saw, so I could compare it to the GPS track afterwards. The extra weight had the motors working near their limit on 13 inch props, so it was shaky and hard to hold steady (eventually crashing). This led me to upgrade to 15 inch props, which fixed the instability issues and gave the motors more breathing room."
+      ],
+      "video": {
+        "src": "projects/lidar-drone/02-first-flight-pod.mp4",
+        "poster": "projects/lidar-drone/02-first-flight-pod-poster.jpg",
+        "caption": "Pod on, 13 inch props"
+      },
+      "image": {
+        "src": "projects/lidar-drone/cloud-top.jpg",
+        "caption": "Top-down view of the same map"
+      }
+    },
+    {
+      "heading": "Position hold and figure-8 on lidar",
+      "body": [
+        "During this flight I took off using GPS, then flipped a switch in the air to hand position over to the lidar. It held position and flew a figure-8 on lidar only (GPS was still plugged in just in case).",
+        "How it worked: Point-LIO runs on the Jetson and fuses the lidar points with the lidar's own IMU into a position and heading, about twelve times a second. A small program I call \"the bridge\" turns that into a MAVLink odometry message and sends it to the Pixhawk, which treats it like a second GPS. The lidar's map starts with a random heading, so while I flew a short calibrating path, the bridge compared how the lidar and the GPS saw the drone moving and lined the two frames up. Once they agreed, I flipped a switch and a Lua script on the flight controller swapped the EKF's position source from GPS to the lidar. Loiter mode held position on the lidar, then Guided mode flew the figure-8 from position targets the Jetson streamed to it. If the lidar had started bugging out, the script would have switched back to the GPS."
+      ],
+      "video": {
+        "src": "projects/lidar-drone/03-gps-to-lidar.mp4",
+        "poster": "projects/lidar-drone/03-gps-to-lidar-poster.jpg",
+        "caption": "GPS to lidar, switched mid-air"
+      }
+    },
+    {
+      "heading": "No GPS",
+      "body": [
+        "This flight was honestly scary as I unplugged the GPS module (meaning I had no compass and was completely relying on the lidar). I took off, the lidar locked in a few seconds after lift-off, then it held position and flew the figure-8 again.",
+        "With no GPS and no compass, the lidar was the only thing telling the drone where it was and which way it was pointing. The lidar's map now starts wherever the drone is sitting when it is powered on: the nose is heading zero and that spot is the origin. I took off in AltHold, which only needs height, and a few seconds after lift-off the lidar could see enough of the yard to report ready. From there Loiter held position on the lidar and the figure-8 ran again. If the lidar had dropped out, the script on the flight controller would have put it into AltHold so I could fly it down by hand."
+      ],
+      "video": {
+        "src": "projects/lidar-drone/04-no-gps.mp4",
+        "poster": "projects/lidar-drone/04-no-gps-poster.jpg",
+        "caption": "No GPS module on board"
+      }
+    },
+    {
+      "heading": "Autonomous",
+      "body": [
+        "All I did for this was press one button. It armed, took off, waited for the lidar, held a hover, flew two laps of the figure-8, and landed on the spot it took off from. There was no GPS, and no input from me.",
+        "The button in my laptop app sends a mission file to the Jetson. The bridge runs through a preflight checklist, counts down, arms the drone and sends the takeoff command. It waits for the lidar to be ready, climbs to the hold height, checks that the hover is steady, then streams the figure-8 targets for two laps, flies back over the takeoff spot and lands. The lidar cannot see anything closer than about half a meter, so the last bit of the landing was on the flight controller's own estimate, which is why it touched down a little off the spot."
+      ],
+      "video": {
+        "src": "projects/lidar-drone/05-autonomous.mp4",
+        "poster": "projects/lidar-drone/05-autonomous-poster.jpg",
+        "caption": "Takeoff, hold, figure-8, landing"
+      }
+    }
+  ],
+  "media": [],
+  "links": []
+}

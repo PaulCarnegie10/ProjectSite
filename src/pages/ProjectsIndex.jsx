@@ -68,7 +68,7 @@ function ProjectCard({ project }) {
 
 export default function ProjectsIndex() {
   useEffect(() => {
-    document.title = 'Projects — Paul Colombo';
+    document.title = 'Projects | Paul Colombo';
   }, []);
 
   return (
@@ -89,7 +89,7 @@ export default function ProjectsIndex() {
             <span className="text-aurora">Projects</span>.
           </h1>
           <p className="mt-4 max-w-xl text-[var(--color-fg-muted)]">
-            Everything I&rsquo;ve built and shipped, from research to weekend builds. Pick one to dive in.
+            Here lies everything I have created or accidentally broken.
           </p>
         </header>
 

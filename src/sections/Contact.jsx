@@ -2,6 +2,7 @@ import { BsLinkedin, BsGithub, BsEnvelopeFill } from 'react-icons/bs';
 import { FiArrowUpRight } from 'react-icons/fi';
 import SectionHeading from '../components/SectionHeading.jsx';
 import site from '../content/site.json';
+import { NEWS } from '../data/news.js';
 
 const METHODS = [
   {
@@ -28,7 +29,7 @@ export default function Contact() {
   return (
     <section id="contact" className="relative mx-auto max-w-6xl px-6 py-32 md:py-44">
       <SectionHeading
-        index="06"
+        index={NEWS.length ? '06' : '05'}
         eyebrow={site.contact.eyebrow}
         align="center"
         title={
